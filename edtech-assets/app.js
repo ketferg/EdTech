@@ -1,12 +1,19 @@
 'use strict';
 const services = [
-  { id: 'web', name: 'Página web institucional', price: 2500 },
-  { id: 'gestion', name: 'Sistema de gestión académica', price: 8000 },
-  { id: 'aulas', name: 'Plataforma de aulas virtuales', price: 5500 },
-  { id: 'automatizacion', name: 'Automatización de procesos', price: 3500 },
-  { id: 'asistencia', name: 'Control de asistencia', price: 3000 },
-  { id: 'soporte', name: 'Soporte y mantenimiento', price: 600, monthly: true }
+  { id: 'web', name: 'Página web institucional', price: 2500, desc: 'Presencia web, dominio y diseño adaptado a móviles' },
+  { id: 'gestion', name: 'Sistema de gestión académica', price: 8000, desc: 'Notas, inscripciones, kardex y roles para docentes' },
+  { id: 'aulas', name: 'Plataforma de aulas virtuales', price: 5500, desc: 'Espacio digital para tareas, exámenes y materiales' },
+  { id: 'automatizacion', name: 'Automatización de procesos', price: 3500, desc: 'Digitalización de trámites y solicitudes cero papel' },
+  { id: 'asistencia', name: 'Control de asistencia', price: 3000, desc: 'Registro digital mediante código QR y reportes' },
+  { id: 'soporte', name: 'Soporte y mantenimiento', price: 600, monthly: true, desc: 'Actualizaciones periódicas, copias de seguridad y soporte' }
 ];
+
+const packages = {
+  esencial: { name: 'Plan Esencial', services: ['web', 'soporte'] },
+  institucional: { name: 'Plan Gestión', services: ['gestion', 'asistencia', 'soporte'] },
+  campus: { name: 'Campus 360°', services: ['gestion', 'aulas', 'automatizacion', 'soporte'] }
+};
+
 const storageKey = 'edtech-cotizacion-v1';
 let selected = new Set();
 try {
@@ -17,18 +24,64 @@ const money = amount => 'Bs ' + new Intl.NumberFormat('es-BO', { maximumFraction
 const dialog = document.querySelector('#quote-dialog');
 const list = document.querySelector('#quote-items');
 const sendLink = document.querySelector('#quote-send');
+const clientNameInput = document.querySelector('#qm-client-name');
+const clientInstInput = document.querySelector('#qm-client-inst');
 const whatsappUrl = message => 'https://wa.me/59162143492?text=' + encodeURIComponent(message);
 let toastTimer;
 function notify(message) {
   const toast = document.querySelector('#toast');
+  if (!toast) return;
   toast.textContent = message;
   toast.classList.add('visible');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove('visible'), 3000);
 }
+
+function buildWhatsAppMessage() {
+  const chosen = services.filter(service => selected.has(service.id));
+  const clientName = (document.querySelector('#qm-client-name')?.value || '').trim();
+  const clientInst = (document.querySelector('#qm-client-inst')?.value || '').trim();
+
+  let msg = '👋 ¡Hola Ketfer! ';
+  if (clientName) {
+    msg += `Mi nombre es *${clientName}*`;
+    if (clientInst) {
+      msg += ` de *${clientInst}*`;
+    }
+    msg += '.\n\n';
+  } else if (clientInst) {
+    msg += `Te escribo de parte de *${clientInst}*.\n\n`;
+  } else {
+    msg += 'Estuve revisando la web de EdTech y me gustaría cotizar una propuesta personalizada.\n\n';
+  }
+
+  if (chosen.length) {
+    const initial = chosen.filter(s => !s.monthly).reduce((t, s) => t + s.price, 0);
+    const monthly = chosen.filter(s => s.monthly).reduce((t, s) => t + s.price, 0);
+
+    msg += '📋 *Servicios incluidos en mi cotización:*\n';
+    chosen.forEach(s => {
+      msg += `• ${s.name} (${money(s.price)}${s.monthly ? ' / mes' : ''})\n`;
+    });
+
+    msg += `\n💰 *Inversión referencial:* ${money(initial)}`;
+    if (monthly) {
+      msg += `\n⚙️ *Mantenimiento mensual opcional:* ${money(monthly)} / mes`;
+    }
+    msg += '\n\n¿Podríamos coordinar una breve llamada o reunión para conocer el alcance y los tiempos de entrega? ¡Muchas gracias!';
+  } else {
+    msg += 'Quiero conocer más sobre las soluciones de EdTech y la propuesta SOLICITA. ¿Podríamos conversar sobre opciones y presupuestos?';
+  }
+  return msg;
+}
+
 function renderQuote() {
   try { localStorage.setItem(storageKey, JSON.stringify([...selected])); } catch { /* Sigue en memoria. */ }
-  document.querySelector('#quote-count').textContent = selected.size;
+  const countEl = document.querySelector('#quote-count');
+  if (countEl) countEl.textContent = selected.size;
+  const countBadgeEl = document.querySelector('#qm-count-badge');
+  if (countBadgeEl) countBadgeEl.textContent = `${selected.size} servicio${selected.size === 1 ? '' : 's'}`;
+
   document.querySelectorAll('[data-service]').forEach(button => {
     const active = selected.has(button.dataset.service);
     button.setAttribute('aria-pressed', String(active));
@@ -36,47 +89,107 @@ function renderQuote() {
       ? (active ? 'Seleccionado ✓' : 'Añadir +')
       : (active ? '✓' : '+');
   });
-  list.replaceChildren();
-  const chosen = services.filter(service => selected.has(service.id));
-  if (!chosen.length) {
-    const item = document.createElement('li');
-    item.textContent = 'Todavía no has seleccionado servicios. Puedes consultarnos también por SOLICITA.';
-    list.append(item);
-  }
-  chosen.forEach(service => {
-    const item = document.createElement('li');
-    const content = document.createElement('div');
-    const title = document.createElement('strong');
-    title.textContent = service.name;
-    const price = document.createElement('small');
-    price.textContent = 'Desde ' + money(service.price) + (service.monthly ? ' / mes' : '');
-    content.append(title, price);
-    const remove = document.createElement('button');
-    remove.type = 'button';
-    remove.textContent = 'Quitar';
-    remove.setAttribute('aria-label', 'Quitar ' + service.name);
-    remove.addEventListener('click', () => {
-      const nextId = chosen[chosen.indexOf(service) + 1]?.id || chosen[chosen.indexOf(service) - 1]?.id;
-      selected.delete(service.id);
-      renderQuote();
-      const nextButton = nextId && list.querySelector('[data-remove="' + nextId + '"]');
-      (nextButton || document.querySelector('#close-quote')).focus();
-    });
-    remove.dataset.remove = service.id;
-    item.append(content, remove);
-    list.append(item);
+
+  // Check active packages
+  document.querySelectorAll('[data-plan]').forEach(planBtn => {
+    const planKey = planBtn.dataset.plan;
+    const pkg = packages[planKey];
+    if (pkg) {
+      const allSelected = pkg.services.every(id => selected.has(id));
+      planBtn.classList.toggle('active-plan', allSelected);
+    }
   });
-  const initial = chosen.filter(service => !service.monthly).reduce((total, service) => total + service.price, 0);
-  const monthly = chosen.filter(service => service.monthly).reduce((total, service) => total + service.price, 0);
-  document.querySelector('#quote-summary').textContent = chosen.length
-    ? ['Inversión referencial: ' + money(initial), ...(monthly ? ['Mantenimiento: ' + money(monthly) + ' / mes'] : [])].join(' · ')
-    : '';
-  const message = chosen.length
-    ? 'Hola EdTech, me gustaría solicitar una cotización para:\n\n' + chosen.map(service => '• ' + service.name + ' (desde ' + money(service.price) + (service.monthly ? ' / mes' : '') + ')').join('\n') + '\n\nEntiendo que son precios referenciales. ¿Podemos conversar sobre el alcance de mi proyecto?'
-    : 'Hola EdTech, quiero conocer sus servicios y la propuesta SOLICITA. ¿Podemos conversar?';
-  sendLink.href = whatsappUrl(message);
+
+  if (list) {
+    list.replaceChildren();
+    const chosen = services.filter(service => selected.has(service.id));
+    if (!chosen.length) {
+      const empty = document.createElement('div');
+      empty.className = 'qm-empty-note';
+      empty.textContent = 'Aún no tienes servicios seleccionados. Puedes elegir un paquete arriba con 1 clic o explorar los servicios en la página.';
+      list.append(empty);
+    } else {
+      chosen.forEach(service => {
+        const item = document.createElement('li');
+        const main = document.createElement('div');
+        main.className = 'qm-item-main';
+        const title = document.createElement('span');
+        title.className = 'qm-item-title';
+        title.textContent = service.name;
+        const price = document.createElement('span');
+        price.className = 'qm-item-price';
+        price.textContent = `${money(service.price)}${service.monthly ? ' / mes' : ''}`;
+        const desc = document.createElement('span');
+        desc.className = 'qm-item-desc';
+        desc.textContent = service.desc || '';
+        main.append(title, price, desc);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'qm-remove-btn';
+        removeBtn.textContent = 'Quitar';
+        removeBtn.setAttribute('aria-label', 'Quitar ' + service.name);
+        removeBtn.addEventListener('click', () => {
+          selected.delete(service.id);
+          renderQuote();
+        });
+        item.append(main, removeBtn);
+        list.append(item);
+      });
+    }
+
+    const initial = chosen.filter(service => !service.monthly).reduce((total, service) => total + service.price, 0);
+    const monthly = chosen.filter(service => service.monthly).reduce((total, service) => total + service.price, 0);
+
+    const totalEl = document.querySelector('#quote-summary-total');
+    if (totalEl) totalEl.textContent = money(initial);
+
+    const monthlyEl = document.querySelector('#quote-summary-monthly');
+    if (monthlyEl) {
+      if (monthly > 0) {
+        monthlyEl.style.display = 'block';
+        monthlyEl.textContent = `+ Mantenimiento opcional: ${money(monthly)} / mes`;
+      } else {
+        monthlyEl.style.display = 'none';
+      }
+    }
+  }
+
+  const sendBtn = document.querySelector('#quote-send');
+  if (sendBtn) {
+    sendBtn.href = whatsappUrl(buildWhatsAppMessage());
+  }
 }
-document.querySelector('.service-grid').addEventListener('click', event => {
+
+// Live update WhatsApp message when typing name or institution
+document.querySelector('#qm-client-name')?.addEventListener('input', () => {
+  const sendBtn = document.querySelector('#quote-send');
+  if (sendBtn) sendBtn.href = whatsappUrl(buildWhatsAppMessage());
+});
+document.querySelector('#qm-client-inst')?.addEventListener('input', () => {
+  const sendBtn = document.querySelector('#quote-send');
+  if (sendBtn) sendBtn.href = whatsappUrl(buildWhatsAppMessage());
+});
+
+// Quick Plan package selector
+document.querySelectorAll('[data-plan]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const planKey = btn.dataset.plan;
+    const pkg = packages[planKey];
+    if (!pkg) return;
+    const allSelected = pkg.services.every(id => selected.has(id));
+    if (allSelected) {
+      pkg.services.forEach(id => selected.delete(id));
+      notify(`Se retiró el ${pkg.name}.`);
+    } else {
+      pkg.services.forEach(id => selected.add(id));
+      notify(`¡${pkg.name} aplicado a tu cotización!`);
+    }
+    renderQuote();
+  });
+});
+
+document.querySelector('.service-grid')?.addEventListener('click', event => {
     const button = event.target.closest('[data-service]');
     if (!button) return;
     const id = button.dataset.service;
@@ -85,9 +198,10 @@ document.querySelector('.service-grid').addEventListener('click', event => {
     renderQuote();
     notify(wasSelected ? 'Servicio retirado de tu cotización.' : 'Servicio añadido. Revisa «Mi cotización».');
 });
-document.querySelector('[data-open-quote]').addEventListener('click', () => dialog.showModal());
-document.querySelector('#close-quote').addEventListener('click', () => dialog.close());
-dialog.addEventListener('click', event => {
+
+document.querySelector('[data-open-quote]')?.addEventListener('click', () => dialog?.showModal());
+document.querySelector('#close-quote')?.addEventListener('click', () => dialog?.close());
+dialog?.addEventListener('click', event => {
   const bounds = dialog.getBoundingClientRect();
   if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
 });

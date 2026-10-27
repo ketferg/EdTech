@@ -130,6 +130,108 @@
   <footer><div class="container footer-inner"><a class="brand" href="#inicio">Ed<span class="orange">Tech</span></a><p>Ideas de hoy. Oportunidades de mañana.</p><div class="footer-social"><a href="https://www.facebook.com/share/1Lw34AXMSt/" class="footer-social-link fb-footer" target="_blank" rel="noopener noreferrer" aria-label="Página de Facebook de EdTech"><svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>Facebook</span><span class="f-arrow">↗</span></a><a href="https://www.tiktok.com/@edtech.tecnologa?is_from_webapp=1&amp;sender_device=pc" class="footer-social-link tt-footer" target="_blank" rel="noopener noreferrer" aria-label="Perfil de TikTok de EdTech"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.883 2.896 2.896 2.896 0 0 1-2.896-2.896 2.896 2.896 0 0 1 2.896-2.896c.488 0 .944.119 1.345.328V9.61a6.34 6.34 0 0 0-1.345-.145A6.342 6.342 0 0 0 3.149 15.8a6.342 6.342 0 0 0 6.342 6.342 6.342 6.342 0 0 0 6.342-6.342V9.082a8.232 8.232 0 0 0 4.956 1.625V7.262a4.79 4.79 0 0 1-1.2-.576z"/></svg><span>TikTok</span><span class="f-arrow">↗</span></a></div><span>© 2026 EdTech · Proyecto académico</span></div></footer>
   <a class="whatsapp" href="https://wa.me/59162143492?text=Hola%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20EdTech." target="_blank" rel="noopener" aria-label="Contactar a EdTech por WhatsApp (abre otra pestaña)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8.5 8 9 9 0 0 1-3.6-.8L3 20l1.4-4.6A8 8 0 1 1 20 11.5Z"/></svg></a>
   <div id="toast" role="status" class="toast"></div>
-  <dialog id="quote-dialog" aria-labelledby="quote-title"><div class="dialog-header"><div><p class="eyebrow blue">HABLEMOS DE TU PROYECTO</p><h2 id="quote-title">Mi cotización</h2></div><button type="button" id="close-quote" class="close-button" aria-label="Cerrar cotización">×</button></div><p class="muted">Servicios que te interesan. Los importes son referenciales.</p><ul id="quote-items"></ul><div id="quote-summary"></div><a id="quote-send" class="button dark" target="_blank" rel="noopener">Consultar por WhatsApp ↗</a><p class="small muted">El mensaje se prepara en WhatsApp; no se envía automáticamente.</p></dialog>
+  <dialog id="quote-dialog" class="quote-modal" aria-labelledby="quote-title">
+    <div class="qm-container">
+      <!-- Modal Header -->
+      <div class="qm-header">
+        <div class="qm-header-info">
+          <span class="qm-badge">✦ Cotización Rápida &amp; Formal</span>
+          <h2 id="quote-title">Tu Propuesta a Medida</h2>
+          <p class="qm-sub">Personaliza tu solución educativa o elige uno de nuestros planes recomendados.</p>
+        </div>
+        <button type="button" id="close-quote" class="qm-close-btn" aria-label="Cerrar cotización">×</button>
+      </div>
+
+      <!-- Adviser Card (Ketfer Gianella) -->
+      <div class="qm-adviser-card">
+        <div class="qm-adviser-avatar">
+          <span>KS</span>
+          <span class="qm-status-online" title="En línea"></span>
+        </div>
+        <div class="qm-adviser-details">
+          <div class="qm-adviser-role-row">
+            <strong class="qm-adviser-name">Ketfer Gianella Salazar</strong>
+            <span class="qm-adviser-tag">Asesor Tecnológico</span>
+          </div>
+          <p class="qm-adviser-pitch">Te guiaré personalmente para definir el alcance exacto de tu proyecto sin ningún compromiso.</p>
+        </div>
+      </div>
+
+      <!-- Quick Plans / Combos Selector -->
+      <div class="qm-plans-section">
+        <span class="qm-section-label">O elige un paquete recomendado con 1 clic:</span>
+        <div class="qm-plans-grid">
+          <button type="button" class="qm-plan-btn" data-plan="esencial">
+            <span class="qm-plan-tier">🥉 Básico</span>
+            <strong class="qm-plan-name">Plan Esencial</strong>
+            <span class="qm-plan-price">Bs 2.500</span>
+            <small class="qm-plan-desc">Web Institucional + Soporte</small>
+          </button>
+          <button type="button" class="qm-plan-btn featured" data-plan="institucional">
+            <span class="qm-plan-tag">Recomendado</span>
+            <span class="qm-plan-tier">🥈 Institucional</span>
+            <strong class="qm-plan-name">Plan Gestión</strong>
+            <span class="qm-plan-price">Bs 8.000</span>
+            <small class="qm-plan-desc">Gestión Académica + Asistencia QR</small>
+          </button>
+          <button type="button" class="qm-plan-btn" data-plan="campus">
+            <span class="qm-plan-tier">🥇 Completo</span>
+            <strong class="qm-plan-name">Campus 360°</strong>
+            <span class="qm-plan-price">Bs 13.500</span>
+            <small class="qm-plan-desc">Gestión + Aulas + Trámites</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- Selected Services List -->
+      <div class="qm-services-section">
+        <div class="qm-services-header">
+          <span class="qm-section-label">Servicios incluidos en tu cotización:</span>
+          <span id="qm-count-badge" class="qm-count-badge">0 seleccionados</span>
+        </div>
+        <ul id="quote-items" class="qm-items-list"></ul>
+      </div>
+
+      <!-- Client Info Form Inputs -->
+      <div class="qm-client-inputs">
+        <span class="qm-section-label">¿A quién dirigimos la cotización?</span>
+        <div class="qm-inputs-row">
+          <div class="qm-input-group">
+            <label for="qm-client-name">Tu nombre y apellido</label>
+            <input type="text" id="qm-client-name" placeholder="Ej: Lic. Carlos Mendoza" maxlength="80">
+          </div>
+          <div class="qm-input-group">
+            <label for="qm-client-inst">Institución, colegio o empresa</label>
+            <input type="text" id="qm-client-inst" placeholder="Ej: Colegio San Agustín / Particular" maxlength="100">
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary & Guarantee Box -->
+      <div class="qm-summary-card">
+        <div class="qm-summary-row">
+          <span>Inversión referencial estimada:</span>
+          <strong id="quote-summary-total">Bs 0</strong>
+        </div>
+        <div id="quote-summary-monthly" class="qm-summary-monthly" style="display:none;"></div>
+        
+        <div class="qm-guarantees">
+          <span>🔒 100% Sin compromiso</span>
+          <span>⚡ Respuesta en minutos</span>
+          <span>🤝 Capacitación incluida</span>
+        </div>
+      </div>
+
+      <!-- Action Button (WhatsApp) -->
+      <div class="qm-action-wrap">
+        <a id="quote-send" class="qm-whatsapp-btn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8.5 8 9 9 0 0 1-3.6-.8L3 20l1.4-4.6A8 8 0 1 1 20 11.5Z"/></svg>
+          <span>Enviar cotización a Ketfer por WhatsApp</span>
+          <span class="qm-arrow">↗</span>
+        </a>
+        <p class="qm-disclaimer">El mensaje se preparará en tu WhatsApp con todos los datos ordenados para que lo revises antes de enviar.</p>
+      </div>
+    </div>
+  </dialog>
 </body>
 </html>

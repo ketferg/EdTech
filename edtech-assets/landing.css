@@ -410,3 +410,512 @@ section[tabindex="-1"]:focus,.service[tabindex="-1"]:focus { outline: none; }
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   REDESIGNED QUOTE MODAL (Mi Cotización)
+   ========================================================= */
+dialog.quote-modal {
+  width: min(620px, calc(100% - 24px));
+  max-height: 90vh;
+  padding: 0;
+  border-radius: 20px;
+  background: #0c182a;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e2ecf9;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.75);
+  overflow: hidden;
+}
+
+dialog.quote-modal::backdrop {
+  background: rgba(4, 9, 18, 0.82);
+  backdrop-filter: blur(8px);
+}
+
+.qm-container {
+  padding: 24px 26px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Modal Header */
+.qm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.qm-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.qm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ff9d24;
+  background: rgba(255, 157, 36, 0.12);
+  border: 1px solid rgba(255, 157, 36, 0.25);
+  padding: 3px 9px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.qm-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 2px 0 0;
+  letter-spacing: -0.02em;
+}
+
+.qm-sub {
+  font-size: 12px;
+  color: #9cb5d6;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.qm-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #c9dbf2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.qm-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+/* Adviser Card */
+.qm-adviser-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(21, 88, 214, 0.15) 0%, rgba(13, 30, 56, 0.6) 100%);
+  border: 1px solid rgba(88, 147, 245, 0.28);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.qm-adviser-avatar {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1558d6 0%, #ff951c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(21, 88, 214, 0.4);
+}
+
+.qm-status-online {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border: 2px solid #0c182a;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
+}
+
+.qm-adviser-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.qm-adviser-role-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.qm-adviser-name {
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.qm-adviser-tag {
+  font-size: 9px;
+  font-weight: 700;
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.15);
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  padding: 2px 7px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.qm-adviser-pitch {
+  font-size: 11px;
+  color: #a4c0e4;
+  margin: 3px 0 0;
+  line-height: 1.35;
+}
+
+/* Section Labels */
+.qm-section-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffb144;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+/* Recommended Packages Grid */
+.qm-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.qm-plan-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 11px;
+  padding: 10px 9px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+  transition: all 0.25s ease;
+  color: #e2ecf9;
+}
+
+.qm-plan-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: #60a5fa;
+  transform: translateY(-2px);
+}
+
+.qm-plan-btn.active-plan {
+  background: rgba(21, 88, 214, 0.2);
+  border-color: #3b82f6;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.3);
+}
+
+.qm-plan-btn.featured {
+  border-color: rgba(255, 149, 28, 0.4);
+  background: linear-gradient(135deg, rgba(255, 149, 28, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+.qm-plan-btn.featured.active-plan {
+  border-color: #ff951c;
+  box-shadow: 0 0 16px rgba(255, 149, 28, 0.35);
+}
+
+.qm-plan-tag {
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #ff951c;
+  color: #111d2e;
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+
+.qm-plan-tier {
+  font-size: 9px;
+  font-weight: 700;
+  color: #9cb5d6;
+}
+
+.qm-plan-name {
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.qm-plan-price {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffb144;
+}
+
+.qm-plan-desc {
+  font-size: 9px;
+  color: #8fa7c9;
+  line-height: 1.3;
+}
+
+/* Services List */
+.qm-services-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.qm-count-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.15);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.qm-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.qm-items-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: 12px;
+}
+
+.qm-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.qm-item-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qm-item-price {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffb144;
+}
+
+.qm-item-desc {
+  font-size: 10px;
+  color: #8da4c4;
+}
+
+.qm-remove-btn {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.qm-remove-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.qm-empty-note {
+  font-size: 11px;
+  color: #9cb5d6;
+  text-align: center;
+  padding: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+}
+
+/* Client Input Fields */
+.qm-client-inputs {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.qm-inputs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.qm-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.qm-input-group label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a4c0e4;
+  margin: 0;
+}
+
+.qm-input-group input {
+  background: rgba(10, 20, 35, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-size: 12px;
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.qm-input-group input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Summary Card */
+.qm-summary-card {
+  background: linear-gradient(145deg, rgba(7, 16, 29, 0.9) 0%, rgba(13, 27, 46, 0.8) 100%);
+  border: 1px solid rgba(255, 149, 28, 0.25);
+  border-radius: 12px;
+  padding: 13px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.qm-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.qm-summary-row span {
+  font-size: 12px;
+  color: #c5d7f0;
+}
+
+.qm-summary-row strong {
+  font-size: 19px;
+  font-weight: 800;
+  color: #ffb144;
+}
+
+.qm-summary-monthly {
+  font-size: 11px;
+  color: #8da6c7;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-top: 6px;
+}
+
+.qm-guarantees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #86efac;
+}
+
+/* Action button WhatsApp */
+.qm-action-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.qm-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #ffffff;
+  padding: 13px 20px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.qm-whatsapp-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+  filter: brightness(1.06);
+}
+
+.qm-whatsapp-btn .qm-arrow {
+  font-size: 16px;
+  transition: transform 0.25s ease;
+}
+
+.qm-whatsapp-btn:hover .qm-arrow {
+  transform: translate(3px, -3px);
+}
+
+.qm-disclaimer {
+  font-size: 10px;
+  color: #8da4c4;
+  text-align: center;
+  margin: 0;
+  line-height: 1.35;
+}
+
+@media(max-width: 540px) {
+  .qm-container {
+    padding: 18px 16px;
+  }
+  .qm-plans-grid {
+    grid-template-columns: 1fr;
+  }
+  .qm-inputs-row {
+    grid-template-columns: 1fr;
+  }
+}
