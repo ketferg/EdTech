@@ -919,3 +919,156 @@ dialog.quote-modal::backdrop {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   ENHANCED QUOTE BUTTON IN NAV (Live Cart & Badge)
+   ========================================================= */
+.quote-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #e2ecf9;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.quote-button:hover {
+  background: rgba(255, 149, 28, 0.1);
+  border-color: #ff951c;
+  transform: translateY(-1px);
+}
+
+.quote-btn-icon {
+  width: 15px;
+  height: 15px;
+  color: #ff951c;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.quote-button:hover .quote-btn-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.quote-button .quote-badge {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: #ff951c;
+  color: #0b1523;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  font-weight: 800;
+  margin-left: 2px;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.quote-amount-pill {
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffb144;
+  background: rgba(255, 149, 28, 0.18);
+  border: 1px solid rgba(255, 149, 28, 0.35);
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-block;
+  letter-spacing: -0.01em;
+}
+
+/* When the user has added at least 1 service: Active illuminated state */
+.quote-button.has-items {
+  border-color: #ff951c;
+  background: linear-gradient(135deg, rgba(255, 149, 28, 0.2) 0%, rgba(21, 88, 214, 0.16) 100%);
+  box-shadow: 0 0 18px rgba(255, 149, 28, 0.42), 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.quote-button.has-items .quote-badge {
+  background: linear-gradient(135deg, #ff951c 0%, #ff6b00 100%);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 149, 28, 0.75);
+}
+
+/* Bounce / Pop animation triggered every time a service is clicked */
+.quote-button.quote-pop {
+  animation: quoteButtonPop 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes quoteButtonPop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.18) translateY(-4px); box-shadow: 0 0 25px rgba(255, 149, 28, 0.85); }
+  65% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* Notification tag that pops up right below the button */
+.quote-added-toast {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  background: #0f1d33;
+  border: 1px solid #ff951c;
+  color: #ffffff;
+  padding: 6px 13px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 12px rgba(255, 149, 28, 0.3);
+  pointer-events: none;
+  animation: toastPop 2s ease forwards;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.quote-added-toast span:first-child {
+  color: #4ade80;
+  font-weight: 900;
+}
+
+@keyframes toastPop {
+  0% { opacity: 0; transform: translateY(-6px); }
+  12% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-6px); }
+}
+
+/* Item row checkmark & design */
+.qm-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.qm-item-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  font-size: 10px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.qm-item-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}

@@ -31,7 +31,12 @@
       <nav id="navigation" aria-label="Navegación principal">
         <a href="#servicios">Servicios</a><a href="#nosotros">Nosotros</a><a href="#proyectos">Proyectos</a><a href="#contacto">Contacto</a>
       </nav>
-      <button class="quote-button" type="button" data-open-quote>Mi cotización <span id="quote-count">0</span></button>
+      <button class="quote-button" type="button" data-open-quote aria-label="Abrir mi cotización">
+        <svg class="quote-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 12h6"></path><path d="M9 16h4"></path></svg>
+        <span class="quote-btn-text">Mi cotización</span>
+        <span id="quote-count" class="quote-badge">0</span>
+        <span id="quote-amount-pill" class="quote-amount-pill" style="display:none;"></span>
+      </button>
       <button class="intro-replay" type="button" data-replay-intro aria-label="Volver a ver la presentación de EdTech" title="Ver presentación">↻</button>
     </div>
   </header>
@@ -157,31 +162,6 @@
         </div>
       </div>
 
-      <!-- Quick Plans / Combos Selector -->
-      <div class="qm-plans-section">
-        <span class="qm-section-label">O elige un paquete recomendado con 1 clic:</span>
-        <div class="qm-plans-grid">
-          <button type="button" class="qm-plan-btn" data-plan="esencial">
-            <span class="qm-plan-tier">🥉 Básico</span>
-            <strong class="qm-plan-name">Plan Esencial</strong>
-            <span class="qm-plan-price">Bs 2.500</span>
-            <small class="qm-plan-desc">Web Institucional + Soporte</small>
-          </button>
-          <button type="button" class="qm-plan-btn featured" data-plan="institucional">
-            <span class="qm-plan-tag">Recomendado</span>
-            <span class="qm-plan-tier">🥈 Institucional</span>
-            <strong class="qm-plan-name">Plan Gestión</strong>
-            <span class="qm-plan-price">Bs 8.000</span>
-            <small class="qm-plan-desc">Gestión Académica + Asistencia QR</small>
-          </button>
-          <button type="button" class="qm-plan-btn" data-plan="campus">
-            <span class="qm-plan-tier">🥇 Completo</span>
-            <strong class="qm-plan-name">Campus 360°</strong>
-            <span class="qm-plan-price">Bs 13.500</span>
-            <small class="qm-plan-desc">Gestión + Aulas + Trámites</small>
-          </button>
-        </div>
-      </div>
 
       <!-- Selected Services List -->
       <div class="qm-services-section">
