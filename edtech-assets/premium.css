@@ -26,7 +26,7 @@ nav a:hover,nav a[aria-current] { color: #fff; }
 nav a:hover::after,nav a[aria-current]::after { right: 0; }
 .quote-button { border-color: #ffffff24; background: #ffffff05; transition: border-color .25s,background .25s; }
 .quote-button:hover { border-color: #ffa22d99; background: #ffa22d0c; }
-.quote-button span { color: #08101c; background: var(--orange); }
+.quote-button span#quote-count { color: #08101c; background: var(--orange); }
 .reading-progress { position: fixed; inset: 0 auto auto 0; width: 100%; height: 2px; z-index: 100; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg,#418cff,#ff9a20); pointer-events: none; }
 .hero { background: #07101d; isolation: isolate; }
 .hero-background { filter: brightness(.72) saturate(.9); transform-origin: 72% 55%; animation: scene-drift 22s ease-in-out infinite alternate; }
