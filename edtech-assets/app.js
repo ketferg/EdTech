@@ -647,6 +647,141 @@ positionSceneSun();
 
 
 /* =========================================================
+   HERO SUNSET PARTICLES ENGINE (Golden stardust & embers)
+   Active on all devices, high-DPI, 60fps canvas
+   ========================================================= */
+function initHeroParticles() {
+  const canvas = document.querySelector('#hero-particles-canvas');
+  if (!canvas) return;
+  const hero = canvas.closest('.hero') || canvas.parentElement;
+  if (!hero) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = 0;
+  let height = 0;
+  let animationId = 0;
+  const particles = [];
+  const count = 38;
+  const mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    const rect = hero.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = rect.width;
+    height = rect.height;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  const emberPalette = [
+    { r: 255, g: 180, b: 65 },   // Warm amber
+    { r: 255, g: 215, b: 110 },  // Twilight gold
+    { r: 255, g: 152, b: 32 },   // EdTech sunset orange
+    { r: 255, g: 245, b: 195 }   // Shimmering white-gold
+  ];
+
+  class HeroParticle {
+    constructor(randomY = false) {
+      this.reset(randomY);
+    }
+    reset(randomY = false) {
+      this.x = Math.random() * width;
+      // Focus particles across the sky and cityscape
+      this.y = randomY ? Math.random() * height * 0.85 : height * 0.85 + Math.random() * 25;
+      this.radius = Math.random() * 2.2 + 1.2;
+      this.baseAlpha = Math.random() * 0.55 + 0.35;
+      this.vy = -(Math.random() * 0.38 + 0.22); // upward drift
+      this.vx = (Math.random() - 0.46) * 0.32;  // gentle lateral breeze
+      this.pulseSpeed = Math.random() * 0.035 + 0.018;
+      this.pulsePhase = Math.random() * Math.PI * 2;
+      this.swayAmp = Math.random() * 0.4 + 0.2;
+      this.color = emberPalette[Math.floor(Math.random() * emberPalette.length)];
+    }
+    update() {
+      this.pulsePhase += this.pulseSpeed;
+      this.x += Math.sin(this.pulsePhase) * this.swayAmp + this.vx;
+      this.y += this.vy;
+
+      // Mouse gentle breeze repulsion
+      const dx = this.x - mouse.x;
+      const dy = this.y - mouse.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist < 120 && dist > 0) {
+        const force = ((120 - dist) / 120) * 0.5;
+        this.x += (dx / dist) * force;
+        this.y += (dy / dist) * force;
+      }
+
+      if (this.y < -15 || this.x < -25 || this.x > width + 25) {
+        this.reset(false);
+      }
+    }
+    draw() {
+      const alpha = Math.max(0.12, this.baseAlpha + Math.sin(this.pulsePhase) * 0.25);
+      const c = this.color;
+      const glowR = this.radius * 3.8;
+
+      // Outer soft glowing aura
+      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowR);
+      grad.addColorStop(0, 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', ' + (alpha * 0.95) + ')');
+      grad.addColorStop(0.35, 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', ' + (alpha * 0.45) + ')');
+      grad.addColorStop(1, 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', 0)');
+
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, glowR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sharp incandescent core
+      ctx.fillStyle = 'rgba(255, 255, 240, ' + Math.min(1, alpha * 1.35) + ')';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius * 0.65, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  resize();
+  for (let i = 0; i < count; i++) {
+    particles.push(new HeroParticle(true));
+  }
+
+  function loop() {
+    if (document.hidden) return;
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+    }
+    animationId = requestAnimationFrame(loop);
+  }
+
+  loop();
+
+  window.addEventListener('resize', resize, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(animationId);
+    else loop();
+  });
+
+  hero.addEventListener('pointermove', e => {
+    const rect = hero.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  }, { passive: true });
+
+  hero.addEventListener('pointerleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+}
+
+/* =========================================================
    FLOATING HEXAGON CANVAS (Nahuel-inspired ambient background)
    ========================================================= */
 function initHexagonParticles() {
@@ -852,18 +987,19 @@ function initContactTypewriter() {
 
     applyActiveColor(current.color, '18px');
 
-    let delay = isDeleting ? 45 : 95;
+    // Slightly slower and smoother for optimal legibility
+    let delay = isDeleting ? 65 : 125;
 
     // Finished typing full word -> pause before deleting
     if (!isDeleting && charIdx === fullText.length) {
-      delay = 1800;
+      delay = 2500;
       isDeleting = true;
     }
     // Finished deleting -> advance to next channel in order
     else if (isDeleting && charIdx === 0) {
       isDeleting = false;
       channelIdx = (channelIdx + 1) % channels.length;
-      delay = 350;
+      delay = 450;
     }
 
     typingTimer = setTimeout(step, delay);
@@ -906,10 +1042,12 @@ function initContactTypewriter() {
 // Ensure execution when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
+    initHeroParticles();
     initHexagonParticles();
     initContactTypewriter();
   });
 } else {
+  initHeroParticles();
   initHexagonParticles();
   initContactTypewriter();
 }

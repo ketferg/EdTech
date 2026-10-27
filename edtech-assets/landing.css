@@ -1388,3 +1388,11 @@ body {
     height: 60px !important;
   }
 }
+.hero-particles-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
