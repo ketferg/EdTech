@@ -1,0 +1,5 @@
+# Ignorar todo el contenido local excepto index.html y la documentación del repositorio
+/*
+!/index.html
+!/README.md
+!/.gitignore
