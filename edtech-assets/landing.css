@@ -1148,6 +1148,15 @@ dialog.quote-modal::backdrop {
   position: relative !important;
   z-index: 10 !important;
   background: #060b16 !important;
+  overflow: hidden !important;
+}
+
+.hero-layout,
+.hero-copy,
+.hero-scene-caption,
+.hero-bottom {
+  position: relative !important;
+  z-index: 10 !important;
 }
 
 /* ALL blue sections are transparent so the canvas shows through from 01 - Servicios down */
@@ -1394,5 +1403,5 @@ body {
   width: 100% !important;
   height: 100% !important;
   pointer-events: none !important;
-  z-index: 2 !important;
+  z-index: 1 !important;
 }
