@@ -154,275 +154,210 @@ section[tabindex="-1"]:focus,.service[tabindex="-1"]:focus { outline: none; }
 
 
 /* =========================================================
-   SOCIAL MEDIA CARDS SHOWCASE (Facebook & TikTok)
+   HORIZONTAL ENCLOSED SOCIAL MEDIA SHOWCASE
    ========================================================= */
-.social-showcase {
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
+.social-showcase-box {
+  margin-top: 20px;
+  max-width: 420px;
+  background: linear-gradient(145deg, rgba(16, 29, 49, 0.9) 0%, rgba(9, 17, 30, 0.96) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 13px 15px;
+  box-shadow: 0 10px 28px -8px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
 }
 
-.social-showcase-header {
+.social-box-header {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 11px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.social-showcase-badge {
+.social-box-title {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  width: fit-content;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #ff9a22;
-  background: rgba(255, 154, 34, 0.12);
-  border: 1px solid rgba(255, 154, 34, 0.28);
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.social-showcase-title {
-  font-size: 18px;
+  gap: 7px;
+  font-size: 11px;
   font-weight: 800;
-  color: #ffffff;
-  margin-top: 4px;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffb144;
 }
 
-.social-showcase-sub {
-  font-size: 12px;
-  color: #9ab3d5;
-  line-height: 1.5;
-  margin: 0;
+.social-box-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff951c;
+  box-shadow: 0 0 8px rgba(255, 149, 28, 0.85);
+  animation: pulseDot 2s infinite ease-in-out;
 }
 
-.social-cards-grid {
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.85); }
+}
+
+.social-box-sub {
+  font-size: 10px;
+  color: #8da4c4;
+  white-space: nowrap;
+}
+
+.social-cards-horizontal {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  margin-top: 6px;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.social-card {
-  position: relative;
+.social-card-h {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  border-radius: 16px;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 10px;
   text-decoration: none;
-  background: rgba(13, 27, 46, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
   overflow: hidden;
-  cursor: pointer;
-}
-
-.social-card-glow {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0.35;
-  pointer-events: none;
-  transition: opacity 0.35s, transform 0.35s;
 }
 
 /* Facebook Card */
-.social-card-facebook {
-  border-color: rgba(24, 119, 242, 0.28);
-  background: linear-gradient(135deg, rgba(24, 119, 242, 0.12) 0%, rgba(13, 27, 46, 0.85) 100%);
+.social-card-h.sc-facebook {
+  border-color: rgba(24, 119, 242, 0.25);
+  background: linear-gradient(135deg, rgba(24, 119, 242, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
 }
-.social-card-facebook .social-card-glow {
-  background: #1877f2;
-}
-.social-card-facebook:hover {
-  transform: translateY(-4px) scale(1.015);
+.social-card-h.sc-facebook:hover {
+  background: rgba(24, 119, 242, 0.16);
   border-color: #1877f2;
-  box-shadow: 0 16px 36px -8px rgba(24, 119, 242, 0.4), 0 0 20px rgba(24, 119, 242, 0.25);
-  background: linear-gradient(135deg, rgba(24, 119, 242, 0.2) 0%, rgba(16, 33, 58, 0.95) 100%);
-}
-.social-card-facebook:hover .social-card-glow {
-  opacity: 0.75;
-  transform: scale(1.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(24, 119, 242, 0.38);
 }
 
 /* TikTok Card */
-.social-card-tiktok {
-  border-color: rgba(254, 44, 85, 0.28);
-  background: linear-gradient(135deg, rgba(254, 44, 85, 0.1) 0%, rgba(0, 242, 254, 0.05) 50%, rgba(13, 27, 46, 0.85) 100%);
+.social-card-h.sc-tiktok {
+  border-color: rgba(254, 44, 85, 0.25);
+  background: linear-gradient(135deg, rgba(254, 44, 85, 0.08) 0%, rgba(0, 242, 254, 0.04) 50%, rgba(255, 255, 255, 0.02) 100%);
 }
-.social-card-tiktok .social-card-glow {
-  background: radial-gradient(circle, #fe2c55 0%, #00f2fe 100%);
-}
-.social-card-tiktok:hover {
-  transform: translateY(-4px) scale(1.015);
+.social-card-h.sc-tiktok:hover {
+  background: rgba(254, 44, 85, 0.14);
   border-color: rgba(254, 44, 85, 0.85);
-  box-shadow: 0 16px 36px -8px rgba(254, 44, 85, 0.35), 0 0 22px rgba(0, 242, 254, 0.25);
-  background: linear-gradient(135deg, rgba(254, 44, 85, 0.18) 0%, rgba(0, 242, 254, 0.1) 50%, rgba(16, 33, 58, 0.95) 100%);
-}
-.social-card-tiktok:hover .social-card-glow {
-  opacity: 0.85;
-  transform: scale(1.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(254, 44, 85, 0.35), 0 0 14px rgba(0, 242, 254, 0.22);
 }
 
-/* Icon Wrappers (Bigger & Eye-catching) */
-.social-card-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
+/* Icons */
+.sc-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.social-card:hover .social-card-icon {
-  transform: scale(1.1) rotate(2deg);
+.social-card-h:hover .sc-icon-wrap {
+  transform: scale(1.08);
 }
 
-.fb-icon-wrap {
+.sc-icon-wrap.fb-wrap {
   background: linear-gradient(135deg, #1877f2 0%, #0d5cbf 100%);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(24, 119, 242, 0.45);
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.4);
 }
 
-.tt-icon-wrap {
+.sc-icon-wrap.tt-wrap {
   background: #010101;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(254, 44, 85, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-.tiktok-icon-svg {
-  filter: drop-shadow(-2px -2px 0px rgba(0, 242, 254, 0.95)) drop-shadow(2px 2px 0px rgba(254, 44, 85, 0.95));
-  transition: filter 0.35s;
+.sc-icon-wrap .tiktok-icon-svg {
+  filter: drop-shadow(-1.5px -1.5px 0px rgba(0, 242, 254, 0.95)) drop-shadow(1.5px 1.5px 0px rgba(254, 44, 85, 0.95));
+  transition: filter 0.25s ease;
 }
 
-.social-card-tiktok:hover .tiktok-icon-svg {
-  filter: drop-shadow(-2.5px -2.5px 0px #00f2fe) drop-shadow(2.5px 2.5px 0px #fe2c55);
+.social-card-h.sc-tiktok:hover .tiktok-icon-svg {
+  filter: drop-shadow(-2px -2px 0px #00f2fe) drop-shadow(2px 2px 0px #fe2c55);
 }
 
-/* Content */
-.social-card-content {
+/* Info */
+.sc-info {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
-.social-card-top {
+.sc-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
 }
 
-.social-platform {
-  font-size: 11px;
+.sc-platform {
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8da6c7;
+  letter-spacing: 0.06em;
 }
 
-.social-card-facebook .social-platform {
-  color: #72a9f8;
-}
+.sc-platform.fb-text { color: #72a9f8; }
+.sc-platform.tt-text { color: #00f2fe; }
 
-.social-card-tiktok .social-platform {
-  color: #00f2fe;
-}
-
-.social-verified-badge {
-  font-size: 9px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 999px;
-  background: rgba(45, 106, 79, 0.3);
-  color: #52b788;
-  border: 1px solid rgba(82, 183, 136, 0.35);
-}
-
-.social-handle {
-  font-size: 15px;
+.sc-verified {
+  font-size: 8px;
   font-weight: 800;
+  color: #52b788;
+  background: rgba(82, 183, 136, 0.2);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sc-handle {
+  font-size: 12px;
+  font-weight: 700;
   color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.social-desc {
-  font-size: 11px;
-  color: #9cb5d6;
-  margin: 0;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Action button inside card */
-.social-card-action {
+/* Arrow */
+.sc-arrow {
+  color: #6d86a8;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-  transition: all 0.3s ease;
+  justify-content: center;
   flex-shrink: 0;
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 
-.social-card-facebook .social-card-action {
-  background: rgba(24, 119, 242, 0.2);
-  color: #7bb0fc;
-  border: 1px solid rgba(24, 119, 242, 0.4);
+.social-card-h.sc-facebook:hover .sc-arrow {
+  color: #1877f2;
+  transform: translate(2px, -2px);
 }
 
-.social-card-facebook:hover .social-card-action {
-  background: #1877f2;
-  color: #ffffff;
-  border-color: #1877f2;
-  box-shadow: 0 4px 14px rgba(24, 119, 242, 0.45);
+.social-card-h.sc-tiktok:hover .sc-arrow {
+  color: #fe2c55;
+  transform: translate(2px, -2px);
 }
 
-.social-card-tiktok .social-card-action {
-  background: rgba(254, 44, 85, 0.16);
-  color: #ff859d;
-  border: 1px solid rgba(254, 44, 85, 0.38);
-}
-
-.social-card-tiktok:hover .social-card-action {
-  background: linear-gradient(135deg, #fe2c55 0%, #ff0050 100%);
-  color: #ffffff;
-  border-color: #fe2c55;
-  box-shadow: 0 4px 14px rgba(254, 44, 85, 0.45);
-}
-
-.social-card:hover .action-arrow {
-  transform: translate(3px, -3px);
-}
-
-.action-arrow {
-  transition: transform 0.3s ease;
-}
-
-/* Footer Social Enhancements */
+/* Footer Social */
 .footer-social {
   display: flex;
   align-items: center;
@@ -470,15 +405,8 @@ section[tabindex="-1"]:focus,.service[tabindex="-1"]:focus { outline: none; }
   transform: translate(2px, -2px);
 }
 
-@media(max-width: 600px) {
-  .social-card {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 16px;
-  }
-  .social-card-action {
-    width: 100%;
-    justify-content: center;
-    margin-top: 6px;
+@media(max-width: 440px) {
+  .social-cards-horizontal {
+    grid-template-columns: 1fr;
   }
 }
