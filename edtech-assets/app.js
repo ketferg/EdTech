@@ -841,7 +841,7 @@ function initContactTypewriter() {
     }
 
     target.style.color = current.color;
-    target.style.textShadow =   0 16px 99;
+    target.style.textShadow = '0 0 16px ' + current.color;
 
     let delay = isDeleting ? 45 : 95;
 
@@ -874,7 +874,7 @@ function initContactTypewriter() {
       if (matched) {
         target.textContent = matched.name;
         target.style.color = matched.color;
-        target.style.textShadow =   0 20px ;
+        target.style.textShadow = '0 0 20px ' + matched.color;
       }
     };
 
