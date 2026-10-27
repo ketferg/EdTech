@@ -808,6 +808,7 @@ function initHexagonParticles() {
    ========================================================= */
 function initContactTypewriter() {
   const target = document.querySelector('#c3d-typed-target');
+  const cursor = document.querySelector('.c3d-cursor');
   if (!target) return;
 
   // Exact order of icons on screen:
@@ -826,6 +827,15 @@ function initContactTypewriter() {
   let isUserHovering = false;
   let typingTimer = null;
 
+  function applyActiveColor(color, glowPx) {
+    target.style.setProperty('color', color, 'important');
+    target.style.setProperty('text-shadow', '0 0 ' + glowPx + ' ' + color, 'important');
+    if (cursor) {
+      cursor.style.setProperty('color', color, 'important');
+      cursor.style.setProperty('text-shadow', '0 0 14px ' + color, 'important');
+    }
+  }
+
   function step() {
     if (isUserHovering) return; // Pauses when user touches or hovers an icon!
 
@@ -840,8 +850,7 @@ function initContactTypewriter() {
       target.textContent = fullText.substring(0, charIdx);
     }
 
-    target.style.color = current.color;
-    target.style.textShadow = '0 0 16px ' + current.color;
+    applyActiveColor(current.color, '18px');
 
     let delay = isDeleting ? 45 : 95;
 
@@ -873,8 +882,7 @@ function initContactTypewriter() {
       clearTimeout(typingTimer);
       if (matched) {
         target.textContent = matched.name;
-        target.style.color = matched.color;
-        target.style.textShadow = '0 0 20px ' + matched.color;
+        applyActiveColor(matched.color, '22px');
       }
     };
 

@@ -1147,7 +1147,7 @@ dialog.quote-modal::backdrop {
 .hero {
   position: relative !important;
   z-index: 10 !important;
-  background: #07101d !important;
+  background: #060b16 !important;
 }
 
 /* ALL blue sections are transparent so the canvas shows through from 01 - Servicios down */
@@ -1156,14 +1156,15 @@ dialog.quote-modal::backdrop {
 .product-section,
 .faq-section,
 .contact-section,
-.c3d-contact-section {
+.c3d-contact-section,
+footer {
   position: relative !important;
   z-index: 2 !important;
   background: transparent !important;
 }
 
 body {
-  background: #080f1d !important;
+  background: #040711 !important;
 }
 
 /* =========================================================
@@ -1205,20 +1206,21 @@ body {
 
 .c3d-typed-badge {
   font-weight: 800 !important;
-  color: #ff0000 !important;
-  text-shadow: 0 0 16px rgba(255, 51, 68, 0.6) !important;
+  color: #ff3344;
+  text-shadow: 0 0 18px rgba(255, 51, 68, 0.7);
   display: inline-block !important;
-  min-width: 125px !important;
+  min-width: 140px !important;
   text-align: left !important;
-  transition: color 0.2s ease, text-shadow 0.2s ease !important;
+  transition: color 0.25s ease, text-shadow 0.25s ease !important;
 }
 
 .c3d-cursor {
   display: inline-block !important;
   font-weight: 300 !important;
-  color: #ff951c !important;
+  color: #ff3344;
   animation: c3dCursorBlink 0.75s infinite !important;
   margin-left: 2px !important;
+  transition: color 0.25s ease, text-shadow 0.25s ease !important;
 }
 
 @keyframes c3dCursorBlink {
