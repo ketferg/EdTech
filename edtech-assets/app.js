@@ -645,6 +645,7 @@ scenePhoto.addEventListener('load', positionSceneSun);
 window.addEventListener('resize', positionSceneSun, { passive: true });
 positionSceneSun();
 
+
 /* =========================================================
    FLOATING HEXAGON CANVAS (Nahuel-inspired ambient background)
    ========================================================= */
@@ -658,7 +659,6 @@ function initHexagonParticles() {
   let height = 0;
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
   let animationId = null;
-  let isRunning = false;
   let mouse = { x: -9999, y: -9999 };
 
   function resize() {
@@ -671,7 +671,8 @@ function initHexagonParticles() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  const count = Math.max(7, Math.min(14, Math.floor(window.innerWidth / 130)));
+  // Count adapted to screen width
+  const count = Math.max(9, Math.min(18, Math.floor(window.innerWidth / 100)));
   const hexagons = [];
 
   class Hexagon {
@@ -679,17 +680,17 @@ function initHexagonParticles() {
       this.reset(initialRandom);
     }
     reset(initialRandom = false) {
-      this.radius = 45 + Math.random() * 80;
+      this.radius = 60 + Math.random() * 105; // 60px to 165px
       this.x = Math.random() * (width || window.innerWidth);
-      this.y = initialRandom ? Math.random() * (height || window.innerHeight) : (height || window.innerHeight) + this.radius + 30;
-      this.speedX = (Math.random() - 0.5) * 0.35;
-      this.speedY = -0.22 - Math.random() * 0.38;
+      this.y = initialRandom ? Math.random() * (height || window.innerHeight) : (height || window.innerHeight) + this.radius + 40;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = -0.25 - Math.random() * 0.45; // gentle upward drift
       this.rotation = Math.random() * Math.PI * 2;
       this.rotSpeed = (Math.random() - 0.5) * 0.0035;
-      this.opacity = 0.08 + Math.random() * 0.16;
+      this.opacity = 0.22 + Math.random() * 0.26; // 22% to 48% opacity (clear & noticeable!)
       this.pulsePhase = Math.random() * Math.PI * 2;
       this.pulseSpeed = 0.008 + Math.random() * 0.012;
-      this.hue = 212 + Math.random() * 24;
+      this.hue = 212 + Math.random() * 24; // Tech electric navy / cyan tint
     }
     update() {
       this.x += this.speedX;
@@ -697,21 +698,22 @@ function initHexagonParticles() {
       this.rotation += this.rotSpeed;
       this.pulsePhase += this.pulseSpeed;
 
+      // Mouse repulsion
       const dx = this.x - mouse.x;
       const dy = this.y - mouse.y;
       const dist = Math.hypot(dx, dy);
-      if (dist < 180 && dist > 0) {
-        const force = ((180 - dist) / 180) * 0.35;
+      if (dist < 200 && dist > 0) {
+        const force = ((200 - dist) / 200) * 0.45;
         this.x += (dx / dist) * force;
         this.y += (dy / dist) * force;
       }
 
-      if (this.y < -this.radius - 60 || this.x < -this.radius - 60 || this.x > width + this.radius + 60) {
+      if (this.y < -this.radius - 80 || this.x < -this.radius - 80 || this.x > width + this.radius + 80) {
         this.reset(false);
       }
     }
     draw() {
-      const currentOpacity = Math.max(0.04, this.opacity + Math.sin(this.pulsePhase) * 0.04);
+      const currentOpacity = Math.max(0.12, this.opacity + Math.sin(this.pulsePhase) * 0.06);
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.rotation);
@@ -725,11 +727,13 @@ function initHexagonParticles() {
       }
       ctx.closePath();
 
-      ctx.fillStyle = `hsla(${this.hue}, 48%, 24%, ${currentOpacity * 0.6})`;
+      // Translucent deep fill
+      ctx.fillStyle = hsla(, 55%, 26%, );
       ctx.fill();
 
-      ctx.lineWidth = 1.4;
-      ctx.strokeStyle = `hsla(${this.hue}, 65%, 48%, ${currentOpacity * 0.9})`;
+      // Crisp luminous border
+      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = hsla(, 80%, 55%, );
       ctx.stroke();
 
       ctx.restore();
@@ -741,9 +745,34 @@ function initHexagonParticles() {
     hexagons.push(new Hexagon(true));
   }
 
+  // Draw connecting constellation lines between nearby hexagons
+  function drawLinks() {
+    for (let i = 0; i < hexagons.length; i++) {
+      for (let j = i + 1; j < hexagons.length; j++) {
+        const dx = hexagons[i].x - hexagons[j].x;
+        const dy = hexagons[i].y - hexagons[j].y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 220) {
+          const lineAlpha = (1 - dist / 220) * 0.22;
+          ctx.beginPath();
+          ctx.moveTo(hexagons[i].x, hexagons[i].y);
+          ctx.lineTo(hexagons[j].x, hexagons[j].y);
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = gba(65, 140, 255, );
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
   function loop() {
-    if (!isRunning) return;
+    if (document.hidden) return;
     ctx.clearRect(0, 0, width, height);
+
+    // Draw connecting lines first
+    drawLinks();
+
+    // Draw each hexagon
     for (let i = 0; i < hexagons.length; i++) {
       hexagons[i].update();
       hexagons[i].draw();
@@ -751,34 +780,15 @@ function initHexagonParticles() {
     animationId = requestAnimationFrame(loop);
   }
 
-  function checkVisibility() {
-    const heroEl = document.querySelector('.hero');
-    const heroBottom = heroEl ? heroEl.getBoundingClientRect().bottom : 0;
-    const shouldShow = heroBottom <= 180;
-
-    if (shouldShow) {
-      canvas.classList.add('is-active');
-      if (!isRunning && !document.hidden) {
-        isRunning = true;
-        loop();
-      }
-    } else {
-      canvas.classList.remove('is-active');
-      if (isRunning) {
-        isRunning = false;
-        cancelAnimationFrame(animationId);
-      }
-    }
-  }
+  // Always running
+  loop();
 
   window.addEventListener('resize', resize, { passive: true });
-  window.addEventListener('scroll', checkVisibility, { passive: true });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden && isRunning) {
-      isRunning = false;
+    if (document.hidden) {
       cancelAnimationFrame(animationId);
-    } else if (!document.hidden) {
-      checkVisibility();
+    } else {
+      loop();
     }
   });
 
@@ -791,8 +801,6 @@ function initHexagonParticles() {
     mouse.x = -9999;
     mouse.y = -9999;
   });
-
-  checkVisibility();
 }
 
 /* =========================================================
@@ -802,75 +810,98 @@ function initContactTypewriter() {
   const target = document.querySelector('#c3d-typed-target');
   if (!target) return;
 
-  const words = [
-    { text: 'Gmail', color: '#ff3344' },
-    { text: 'WhatsApp', color: '#25D366' },
-    { text: 'Instagram', color: '#E1306C' },
-    { text: 'Telegram', color: '#0088cc' },
-    { text: 'Facebook', color: '#1877F2' },
-    { text: 'TikTok', color: '#25F4EE' }
+  // Exact order of icons on screen:
+  const channels = [
+    { name: 'Gmail', color: '#ff3344' },
+    { name: 'WhatsApp', color: '#25D366' },
+    { name: 'Instagram', color: '#E1306C' },
+    { name: 'Telegram', color: '#1DA1F2' },
+    { name: 'Facebook', color: '#1877F2' },
+    { name: 'TikTok', color: '#25F4EE' }
   ];
 
-  let wordIndex = 0;
-  let charIndex = 0;
+  let channelIdx = 0;
+  let charIdx = 0;
   let isDeleting = false;
-  let lockHover = false;
-  let timer = null;
+  let isUserHovering = false;
+  let typingTimer = null;
 
-  function type() {
-    if (lockHover) return;
-    const current = words[wordIndex];
-    const fullText = current.text;
+  function step() {
+    if (isUserHovering) return; // Pauses when user touches or hovers an icon!
+
+    const current = channels[channelIdx];
+    const fullText = current.name;
 
     if (isDeleting) {
-      charIndex--;
-      target.textContent = fullText.substring(0, charIndex);
+      charIdx--;
+      target.textContent = fullText.substring(0, charIdx);
     } else {
-      charIndex++;
-      target.textContent = fullText.substring(0, charIndex);
+      charIdx++;
+      target.textContent = fullText.substring(0, charIdx);
     }
 
     target.style.color = current.color;
-    target.style.textShadow = `0 0 14px ${current.color}80`;
+    target.style.textShadow =   0 16px 99;
 
-    let speed = isDeleting ? 45 : 95;
+    let delay = isDeleting ? 45 : 95;
 
-    if (!isDeleting && charIndex === fullText.length) {
-      speed = 1800;
+    // Finished typing full word -> pause before deleting
+    if (!isDeleting && charIdx === fullText.length) {
+      delay = 1800;
       isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
+    }
+    // Finished deleting -> advance to next channel in order
+    else if (isDeleting && charIdx === 0) {
       isDeleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-      speed = 350;
+      channelIdx = (channelIdx + 1) % channels.length;
+      delay = 350;
     }
 
-    timer = setTimeout(type, speed);
+    typingTimer = setTimeout(step, delay);
   }
 
-  type();
+  // Start typewriter loop
+  step();
 
+  // If user touches or hovers an icon:
   document.querySelectorAll('.c3d-item').forEach(item => {
-    item.addEventListener('mouseenter', () => {
-      const channel = item.dataset.channel;
-      const found = words.find(w => w.text.toLowerCase() === channel.toLowerCase());
-      if (found) {
-        lockHover = true;
-        clearTimeout(timer);
-        target.textContent = found.text;
-        target.style.color = found.color;
-        target.style.textShadow = `0 0 18px ${found.color}`;
-      }
-    });
+    const channelName = item.dataset.channel;
+    const matched = channels.find(c => c.name.toLowerCase() === (channelName || '').toLowerCase());
 
-    item.addEventListener('mouseleave', () => {
-      lockHover = false;
-      clearTimeout(timer);
+    const onEnter = () => {
+      isUserHovering = true;
+      clearTimeout(typingTimer);
+      if (matched) {
+        target.textContent = matched.name;
+        target.style.color = matched.color;
+        target.style.textShadow =   0 20px ;
+      }
+    };
+
+    const onLeave = () => {
+      isUserHovering = false;
+      clearTimeout(typingTimer);
+      // Resume cycling from the next channel after a brief pause
       isDeleting = true;
-      charIndex = target.textContent.length;
-      timer = setTimeout(type, 1100);
-    });
+      charIdx = target.textContent.length;
+      typingTimer = setTimeout(step, 1000);
+    };
+
+    item.addEventListener('mouseenter', onEnter);
+    item.addEventListener('focus', onEnter);
+    item.addEventListener('mouseleave', onLeave);
+    item.addEventListener('blur', onLeave);
+    item.addEventListener('touchstart', onEnter, { passive: true });
   });
 }
 
-initHexagonParticles();
-initContactTypewriter();
+// Ensure execution when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initHexagonParticles();
+    initContactTypewriter();
+  });
+} else {
+  initHexagonParticles();
+  initContactTypewriter();
+}

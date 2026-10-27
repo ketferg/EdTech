@@ -1127,282 +1127,262 @@ dialog.quote-modal::backdrop {
   }
 }
 
+
 /* =========================================================
-   FLOATING HEXAGON CANVAS (Nahuel-inspired ambient background)
+   FLOATING HEXAGON CANVAS (Visible from 01 - Servicios to footer)
    ========================================================= */
 #edtech-hex-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+  opacity: 1 !important;
+  display: block !important;
 }
 
-#edtech-hex-canvas.is-active {
-  opacity: 1;
+/* Hero sits ON TOP of canvas so sunset photo remains pristine at the top */
+.hero {
+  position: relative !important;
+  z-index: 10 !important;
+  background: #07101d !important;
 }
 
-/* Let ambient hexagons drift behind content in the blue sections */
+/* ALL blue sections are transparent so the canvas shows through from 01 - Servicios down */
 .services-section,
 .about-section,
 .product-section,
 .faq-section,
 .contact-section,
 .c3d-contact-section {
-  position: relative;
-  z-index: 1;
+  position: relative !important;
+  z-index: 2 !important;
+  background: transparent !important;
 }
 
-.services-section {
-  background: radial-gradient(ellipse at 15% 0%, rgba(24, 53, 104, 0.35) 0%, transparent 60%), rgba(12, 20, 35, 0.88) !important;
-}
-
-.about-section {
-  background: radial-gradient(ellipse at 100% 40%, rgba(21, 49, 96, 0.35) 0%, transparent 65%), rgba(8, 15, 28, 0.88) !important;
-}
-
-.product-section {
-  background: radial-gradient(ellipse at 0% 20%, rgba(36, 90, 164, 0.28) 0%, transparent 60%), rgba(12, 22, 38, 0.88) !important;
-}
-
-.contact-section {
-  background: radial-gradient(ellipse at 10% 10%, rgba(24, 56, 105, 0.45) 0%, transparent 65%), rgba(12, 22, 38, 0.88) !important;
+body {
+  background: #080f1d !important;
 }
 
 /* =========================================================
-   3D ISOMETRIC CONTACT SHOWCASE (Nahuel style)
+   3D ISOMETRIC CONTACT SHOWCASE (Exact Nahuel 6-layer style)
    ========================================================= */
 .c3d-contact-section {
-  padding: 85px 0 95px;
-  background: radial-gradient(ellipse at 50% 25%, rgba(20, 50, 96, 0.5) 0%, transparent 75%), #070e1c;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  position: relative;
-  overflow: hidden;
-  text-align: center;
+  padding: 85px 0 95px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  text-align: center !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 .c3d-heading-block {
-  margin-bottom: 50px;
+  margin-bottom: 50px !important;
 }
 
 .c3d-heading {
-  font-family: var(--heading, 'Outfit', sans-serif);
-  font-size: clamp(38px, 5.5vw, 56px);
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.03em;
-  margin: 0 0 14px;
+  font-family: var(--heading, 'Outfit', sans-serif) !important;
+  font-size: clamp(38px, 5.5vw, 56px) !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.03em !important;
+  margin: 0 0 14px !important;
 }
 
 .c3d-sub {
-  font-size: clamp(17px, 2.2vw, 23px);
-  font-weight: 500;
-  color: #b0c4de;
-  letter-spacing: -0.01em;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  font-size: clamp(18px, 2.3vw, 24px) !important;
+  font-weight: 500 !important;
+  color: #b0c4de !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
 }
 
 .c3d-typed-badge {
-  font-weight: 800;
-  color: #25D366;
-  text-shadow: 0 0 14px rgba(37, 211, 102, 0.6);
-  display: inline-block;
-  min-width: 120px;
-  text-align: left;
-  transition: color 0.25s ease, text-shadow 0.25s ease;
+  font-weight: 800 !important;
+  color: #ff0000 !important;
+  text-shadow: 0 0 16px rgba(255, 51, 68, 0.6) !important;
+  display: inline-block !important;
+  min-width: 125px !important;
+  text-align: left !important;
+  transition: color 0.2s ease, text-shadow 0.2s ease !important;
+}
+
+.c3d-cursor {
+  display: inline-block !important;
+  font-weight: 300 !important;
+  color: #ff951c !important;
+  animation: c3dCursorBlink 0.75s infinite !important;
+  margin-left: 2px !important;
+}
+
+@keyframes c3dCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .c3d-icons-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 38px 45px;
-  padding: 30px 15px 40px;
-  max-width: 950px;
-  margin: 0 auto;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 40px 48px !important;
+  padding: 30px 15px 45px !important;
+  max-width: 950px !important;
+  margin: 0 auto !important;
 }
 
 .c3d-item {
-  position: relative;
-  text-decoration: none;
-  display: block;
-  outline: none;
-  perspective: 1000px;
-  margin: 15px 8px;
+  position: relative !important;
+  text-decoration: none !important;
+  display: block !important;
+  outline: none !important;
+  margin: 20px 14px !important;
 }
 
 .c3d-item .layer {
-  width: 70px;
-  height: 70px;
-  position: relative;
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transform-style: preserve-3d;
+  width: 72px !important;
+  height: 72px !important;
+  position: relative !important;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
 
 .c3d-item:hover .layer,
 .c3d-item:focus-visible .layer {
-  transform: rotate(-35deg) skew(20deg);
+  transform: rotate(-35deg) skew(20deg) !important;
 }
 
 .c3d-item .layer span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 2.5px solid currentColor;
-  border-radius: 12px;
-  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-  background: rgba(8, 16, 28, 0.85);
-  box-sizing: border-box;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 2.8px solid currentColor !important;
+  border-radius: 8px !important;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
 }
 
 .c3d-item .layer span.c3d-icon-surface {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(14, 25, 43, 0.95);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(8, 16, 28, 0.3) !important;
 }
 
 .c3d-item:hover .layer span:nth-child(1),
 .c3d-item:focus-visible .layer span:nth-child(1) {
-  opacity: 0.2;
+  opacity: 0.2 !important;
 }
 
 .c3d-item:hover .layer span:nth-child(2),
 .c3d-item:focus-visible .layer span:nth-child(2) {
-  opacity: 0.4;
-  transform: translate(6px, -6px);
+  opacity: 0.4 !important;
+  transform: translate(6px, -6px) !important;
 }
 
 .c3d-item:hover .layer span:nth-child(3),
 .c3d-item:focus-visible .layer span:nth-child(3) {
-  opacity: 0.6;
-  transform: translate(12px, -12px);
+  opacity: 0.6 !important;
+  transform: translate(12px, -12px) !important;
 }
 
 .c3d-item:hover .layer span:nth-child(4),
 .c3d-item:focus-visible .layer span:nth-child(4) {
-  opacity: 0.8;
-  transform: translate(18px, -18px);
+  opacity: 0.8 !important;
+  transform: translate(18px, -18px) !important;
 }
 
 .c3d-item:hover .layer span:nth-child(5),
 .c3d-item:focus-visible .layer span:nth-child(5) {
-  opacity: 1;
-  transform: translate(24px, -24px);
+  opacity: 1 !important;
+  transform: translate(24px, -24px) !important;
 }
 
-/* Individual Channel Color & Glows */
-.c3d-gmail {
-  color: #ff3344;
-}
+/* Individual Channel Colors and Luminous Glows */
+.c3d-gmail { color: #ff0000 !important; }
 .c3d-gmail:hover .layer span,
 .c3d-gmail:focus-visible .layer span {
-  border-color: #ff3344;
-  box-shadow: -2px 2px 18px rgba(255, 51, 68, 0.75);
+  box-shadow: -2px 2px 14px #ff0000 !important;
+  border-color: #ff0000 !important;
 }
 
-.c3d-whatsapp {
-  color: #25D366;
-}
+.c3d-whatsapp { color: #25D366 !important; }
 .c3d-whatsapp:hover .layer span,
 .c3d-whatsapp:focus-visible .layer span {
-  border-color: #25D366;
-  box-shadow: -2px 2px 18px rgba(37, 211, 102, 0.75);
+  box-shadow: -2px 2px 14px #25D366 !important;
+  border-color: #25D366 !important;
 }
 
-.c3d-instagram {
-  color: #E1306C;
-}
+.c3d-instagram { color: #E1306C !important; }
 .c3d-instagram:hover .layer span,
 .c3d-instagram:focus-visible .layer span {
-  border-color: #E1306C;
-  box-shadow: -2px 2px 18px rgba(225, 48, 108, 0.8);
+  box-shadow: -2px 2px 14px #E1306C !important;
+  border-color: #E1306C !important;
 }
 
-.c3d-telegram {
-  color: #0088cc;
-}
+.c3d-telegram { color: #1DA1F2 !important; }
 .c3d-telegram:hover .layer span,
 .c3d-telegram:focus-visible .layer span {
-  border-color: #0088cc;
-  box-shadow: -2px 2px 18px rgba(0, 136, 204, 0.8);
+  box-shadow: -2px 2px 14px #1DA1F2 !important;
+  border-color: #1DA1F2 !important;
 }
 
-.c3d-facebook {
-  color: #1877F2;
-}
+.c3d-facebook { color: #1877F2 !important; }
 .c3d-facebook:hover .layer span,
 .c3d-facebook:focus-visible .layer span {
-  border-color: #1877F2;
-  box-shadow: -2px 2px 18px rgba(24, 119, 242, 0.8);
+  box-shadow: -2px 2px 14px #1877F2 !important;
+  border-color: #1877F2 !important;
 }
 
-.c3d-tiktok {
-  color: #25F4EE;
-}
+.c3d-tiktok { color: #25F4EE !important; }
 .c3d-tiktok:hover .layer span,
 .c3d-tiktok:focus-visible .layer span {
-  border-color: #25F4EE;
-  box-shadow: -2px 2px 18px rgba(37, 244, 238, 0.85), 2px -2px 16px rgba(254, 44, 85, 0.65);
+  box-shadow: -2px 2px 14px #25F4EE, 2px -2px 14px #FE2C55 !important;
+  border-color: #25F4EE !important;
 }
 
-/* Slide-up text label below each 3D box */
+/* Label below */
 .c3d-item .text {
-  position: absolute;
-  left: 50%;
-  bottom: -8px;
-  opacity: 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  transform: translateX(-50%);
-  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-  white-space: nowrap;
-  pointer-events: none;
-  color: #ffffff;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: -5px !important;
+  opacity: 0 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  transform: translateX(-50%) !important;
+  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  color: inherit !important;
 }
 
 .c3d-item:hover .text,
 .c3d-item:focus-visible .text {
-  bottom: -32px;
-  opacity: 1;
+  bottom: -34px !important;
+  opacity: 1 !important;
 }
 
-/* Mobile responsive adjustments */
-@media (max-width: 680px) {
-  .c3d-icons-row {
-    gap: 36px 24px;
-    padding: 20px 10px 30px;
+/* On mobile / tablets: label always visible below */
+@media (max-width: 760px) {
+  .c3d-item .text {
+    bottom: -32px !important;
+    opacity: 1 !important;
+    font-size: 12px !important;
   }
-  .c3d-item {
-    margin: 10px 4px;
+  .c3d-icons-row {
+    gap: 38px 24px !important;
   }
   .c3d-item .layer {
-    width: 60px;
-    height: 60px;
+    width: 60px !important;
+    height: 60px !important;
   }
-  .c3d-item .layer span.c3d-icon-surface svg {
-    width: 25px;
-    height: 25px;
-  }
-  .c3d-item .text {
-    font-size: 11px;
-  }
-  .c3d-item:hover .layer span:nth-child(2) { transform: translate(4px, -4px); }
-  .c3d-item:hover .layer span:nth-child(3) { transform: translate(8px, -8px); }
-  .c3d-item:hover .layer span:nth-child(4) { transform: translate(12px, -12px); }
-  .c3d-item:hover .layer span:nth-child(5) { transform: translate(16px, -16px); }
 }
