@@ -644,3 +644,233 @@ function positionSceneSun() {
 scenePhoto.addEventListener('load', positionSceneSun);
 window.addEventListener('resize', positionSceneSun, { passive: true });
 positionSceneSun();
+
+/* =========================================================
+   FLOATING HEXAGON CANVAS (Nahuel-inspired ambient background)
+   ========================================================= */
+function initHexagonParticles() {
+  const canvas = document.querySelector('#edtech-hex-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = 0;
+  let height = 0;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let animationId = null;
+  let isRunning = false;
+  let mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  const count = Math.max(7, Math.min(14, Math.floor(window.innerWidth / 130)));
+  const hexagons = [];
+
+  class Hexagon {
+    constructor(initialRandom = true) {
+      this.reset(initialRandom);
+    }
+    reset(initialRandom = false) {
+      this.radius = 45 + Math.random() * 80;
+      this.x = Math.random() * (width || window.innerWidth);
+      this.y = initialRandom ? Math.random() * (height || window.innerHeight) : (height || window.innerHeight) + this.radius + 30;
+      this.speedX = (Math.random() - 0.5) * 0.35;
+      this.speedY = -0.22 - Math.random() * 0.38;
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotSpeed = (Math.random() - 0.5) * 0.0035;
+      this.opacity = 0.08 + Math.random() * 0.16;
+      this.pulsePhase = Math.random() * Math.PI * 2;
+      this.pulseSpeed = 0.008 + Math.random() * 0.012;
+      this.hue = 212 + Math.random() * 24;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.rotation += this.rotSpeed;
+      this.pulsePhase += this.pulseSpeed;
+
+      const dx = this.x - mouse.x;
+      const dy = this.y - mouse.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist < 180 && dist > 0) {
+        const force = ((180 - dist) / 180) * 0.35;
+        this.x += (dx / dist) * force;
+        this.y += (dy / dist) * force;
+      }
+
+      if (this.y < -this.radius - 60 || this.x < -this.radius - 60 || this.x > width + this.radius + 60) {
+        this.reset(false);
+      }
+    }
+    draw() {
+      const currentOpacity = Math.max(0.04, this.opacity + Math.sin(this.pulsePhase) * 0.04);
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (i * Math.PI) / 3;
+        const hx = this.radius * Math.cos(angle);
+        const hy = this.radius * Math.sin(angle);
+        if (i === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
+
+      ctx.fillStyle = `hsla(${this.hue}, 48%, 24%, ${currentOpacity * 0.6})`;
+      ctx.fill();
+
+      ctx.lineWidth = 1.4;
+      ctx.strokeStyle = `hsla(${this.hue}, 65%, 48%, ${currentOpacity * 0.9})`;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  }
+
+  resize();
+  for (let i = 0; i < count; i++) {
+    hexagons.push(new Hexagon(true));
+  }
+
+  function loop() {
+    if (!isRunning) return;
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < hexagons.length; i++) {
+      hexagons[i].update();
+      hexagons[i].draw();
+    }
+    animationId = requestAnimationFrame(loop);
+  }
+
+  function checkVisibility() {
+    const heroEl = document.querySelector('.hero');
+    const heroBottom = heroEl ? heroEl.getBoundingClientRect().bottom : 0;
+    const shouldShow = heroBottom <= 180;
+
+    if (shouldShow) {
+      canvas.classList.add('is-active');
+      if (!isRunning && !document.hidden) {
+        isRunning = true;
+        loop();
+      }
+    } else {
+      canvas.classList.remove('is-active');
+      if (isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animationId);
+      }
+    }
+  }
+
+  window.addEventListener('resize', resize, { passive: true });
+  window.addEventListener('scroll', checkVisibility, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && isRunning) {
+      isRunning = false;
+      cancelAnimationFrame(animationId);
+    } else if (!document.hidden) {
+      checkVisibility();
+    }
+  });
+
+  window.addEventListener('pointermove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }, { passive: true });
+
+  window.addEventListener('pointerleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  checkVisibility();
+}
+
+/* =========================================================
+   CONTACT TYPEWRITER & INTERACTION (Nahuel style)
+   ========================================================= */
+function initContactTypewriter() {
+  const target = document.querySelector('#c3d-typed-target');
+  if (!target) return;
+
+  const words = [
+    { text: 'Gmail', color: '#ff3344' },
+    { text: 'WhatsApp', color: '#25D366' },
+    { text: 'Instagram', color: '#E1306C' },
+    { text: 'Telegram', color: '#0088cc' },
+    { text: 'Facebook', color: '#1877F2' },
+    { text: 'TikTok', color: '#25F4EE' }
+  ];
+
+  let wordIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let lockHover = false;
+  let timer = null;
+
+  function type() {
+    if (lockHover) return;
+    const current = words[wordIndex];
+    const fullText = current.text;
+
+    if (isDeleting) {
+      charIndex--;
+      target.textContent = fullText.substring(0, charIndex);
+    } else {
+      charIndex++;
+      target.textContent = fullText.substring(0, charIndex);
+    }
+
+    target.style.color = current.color;
+    target.style.textShadow = `0 0 14px ${current.color}80`;
+
+    let speed = isDeleting ? 45 : 95;
+
+    if (!isDeleting && charIndex === fullText.length) {
+      speed = 1800;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      speed = 350;
+    }
+
+    timer = setTimeout(type, speed);
+  }
+
+  type();
+
+  document.querySelectorAll('.c3d-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      const channel = item.dataset.channel;
+      const found = words.find(w => w.text.toLowerCase() === channel.toLowerCase());
+      if (found) {
+        lockHover = true;
+        clearTimeout(timer);
+        target.textContent = found.text;
+        target.style.color = found.color;
+        target.style.textShadow = `0 0 18px ${found.color}`;
+      }
+    });
+
+    item.addEventListener('mouseleave', () => {
+      lockHover = false;
+      clearTimeout(timer);
+      isDeleting = true;
+      charIndex = target.textContent.length;
+      timer = setTimeout(type, 1100);
+    });
+  });
+}
+
+initHexagonParticles();
+initContactTypewriter();

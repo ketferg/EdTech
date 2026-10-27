@@ -1126,3 +1126,283 @@ dialog.quote-modal::backdrop {
     display: none !important;
   }
 }
+
+/* =========================================================
+   FLOATING HEXAGON CANVAS (Nahuel-inspired ambient background)
+   ========================================================= */
+#edtech-hex-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#edtech-hex-canvas.is-active {
+  opacity: 1;
+}
+
+/* Let ambient hexagons drift behind content in the blue sections */
+.services-section,
+.about-section,
+.product-section,
+.faq-section,
+.contact-section,
+.c3d-contact-section {
+  position: relative;
+  z-index: 1;
+}
+
+.services-section {
+  background: radial-gradient(ellipse at 15% 0%, rgba(24, 53, 104, 0.35) 0%, transparent 60%), rgba(12, 20, 35, 0.88) !important;
+}
+
+.about-section {
+  background: radial-gradient(ellipse at 100% 40%, rgba(21, 49, 96, 0.35) 0%, transparent 65%), rgba(8, 15, 28, 0.88) !important;
+}
+
+.product-section {
+  background: radial-gradient(ellipse at 0% 20%, rgba(36, 90, 164, 0.28) 0%, transparent 60%), rgba(12, 22, 38, 0.88) !important;
+}
+
+.contact-section {
+  background: radial-gradient(ellipse at 10% 10%, rgba(24, 56, 105, 0.45) 0%, transparent 65%), rgba(12, 22, 38, 0.88) !important;
+}
+
+/* =========================================================
+   3D ISOMETRIC CONTACT SHOWCASE (Nahuel style)
+   ========================================================= */
+.c3d-contact-section {
+  padding: 85px 0 95px;
+  background: radial-gradient(ellipse at 50% 25%, rgba(20, 50, 96, 0.5) 0%, transparent 75%), #070e1c;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.c3d-heading-block {
+  margin-bottom: 50px;
+}
+
+.c3d-heading {
+  font-family: var(--heading, 'Outfit', sans-serif);
+  font-size: clamp(38px, 5.5vw, 56px);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+}
+
+.c3d-sub {
+  font-size: clamp(17px, 2.2vw, 23px);
+  font-weight: 500;
+  color: #b0c4de;
+  letter-spacing: -0.01em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.c3d-typed-badge {
+  font-weight: 800;
+  color: #25D366;
+  text-shadow: 0 0 14px rgba(37, 211, 102, 0.6);
+  display: inline-block;
+  min-width: 120px;
+  text-align: left;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.c3d-icons-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 38px 45px;
+  padding: 30px 15px 40px;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.c3d-item {
+  position: relative;
+  text-decoration: none;
+  display: block;
+  outline: none;
+  perspective: 1000px;
+  margin: 15px 8px;
+}
+
+.c3d-item .layer {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.c3d-item:hover .layer,
+.c3d-item:focus-visible .layer {
+  transform: rotate(-35deg) skew(20deg);
+}
+
+.c3d-item .layer span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2.5px solid currentColor;
+  border-radius: 12px;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: rgba(8, 16, 28, 0.85);
+  box-sizing: border-box;
+}
+
+.c3d-item .layer span.c3d-icon-surface {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 25, 43, 0.95);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.c3d-item:hover .layer span:nth-child(1),
+.c3d-item:focus-visible .layer span:nth-child(1) {
+  opacity: 0.2;
+}
+
+.c3d-item:hover .layer span:nth-child(2),
+.c3d-item:focus-visible .layer span:nth-child(2) {
+  opacity: 0.4;
+  transform: translate(6px, -6px);
+}
+
+.c3d-item:hover .layer span:nth-child(3),
+.c3d-item:focus-visible .layer span:nth-child(3) {
+  opacity: 0.6;
+  transform: translate(12px, -12px);
+}
+
+.c3d-item:hover .layer span:nth-child(4),
+.c3d-item:focus-visible .layer span:nth-child(4) {
+  opacity: 0.8;
+  transform: translate(18px, -18px);
+}
+
+.c3d-item:hover .layer span:nth-child(5),
+.c3d-item:focus-visible .layer span:nth-child(5) {
+  opacity: 1;
+  transform: translate(24px, -24px);
+}
+
+/* Individual Channel Color & Glows */
+.c3d-gmail {
+  color: #ff3344;
+}
+.c3d-gmail:hover .layer span,
+.c3d-gmail:focus-visible .layer span {
+  border-color: #ff3344;
+  box-shadow: -2px 2px 18px rgba(255, 51, 68, 0.75);
+}
+
+.c3d-whatsapp {
+  color: #25D366;
+}
+.c3d-whatsapp:hover .layer span,
+.c3d-whatsapp:focus-visible .layer span {
+  border-color: #25D366;
+  box-shadow: -2px 2px 18px rgba(37, 211, 102, 0.75);
+}
+
+.c3d-instagram {
+  color: #E1306C;
+}
+.c3d-instagram:hover .layer span,
+.c3d-instagram:focus-visible .layer span {
+  border-color: #E1306C;
+  box-shadow: -2px 2px 18px rgba(225, 48, 108, 0.8);
+}
+
+.c3d-telegram {
+  color: #0088cc;
+}
+.c3d-telegram:hover .layer span,
+.c3d-telegram:focus-visible .layer span {
+  border-color: #0088cc;
+  box-shadow: -2px 2px 18px rgba(0, 136, 204, 0.8);
+}
+
+.c3d-facebook {
+  color: #1877F2;
+}
+.c3d-facebook:hover .layer span,
+.c3d-facebook:focus-visible .layer span {
+  border-color: #1877F2;
+  box-shadow: -2px 2px 18px rgba(24, 119, 242, 0.8);
+}
+
+.c3d-tiktok {
+  color: #25F4EE;
+}
+.c3d-tiktok:hover .layer span,
+.c3d-tiktok:focus-visible .layer span {
+  border-color: #25F4EE;
+  box-shadow: -2px 2px 18px rgba(37, 244, 238, 0.85), 2px -2px 16px rgba(254, 44, 85, 0.65);
+}
+
+/* Slide-up text label below each 3D box */
+.c3d-item .text {
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  opacity: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transform: translateX(-50%);
+  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  white-space: nowrap;
+  pointer-events: none;
+  color: #ffffff;
+}
+
+.c3d-item:hover .text,
+.c3d-item:focus-visible .text {
+  bottom: -32px;
+  opacity: 1;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 680px) {
+  .c3d-icons-row {
+    gap: 36px 24px;
+    padding: 20px 10px 30px;
+  }
+  .c3d-item {
+    margin: 10px 4px;
+  }
+  .c3d-item .layer {
+    width: 60px;
+    height: 60px;
+  }
+  .c3d-item .layer span.c3d-icon-surface svg {
+    width: 25px;
+    height: 25px;
+  }
+  .c3d-item .text {
+    font-size: 11px;
+  }
+  .c3d-item:hover .layer span:nth-child(2) { transform: translate(4px, -4px); }
+  .c3d-item:hover .layer span:nth-child(3) { transform: translate(8px, -8px); }
+  .c3d-item:hover .layer span:nth-child(4) { transform: translate(12px, -12px); }
+  .c3d-item:hover .layer span:nth-child(5) { transform: translate(16px, -16px); }
+}

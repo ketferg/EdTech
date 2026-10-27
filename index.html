@@ -61,7 +61,9 @@
       <div class="hero-bottom container"><span class="hero-bottom-label">DISEÑAMOS LO QUE SIGUE</span><div class="hero-bottom-controls"><a class="scroll-cue" href="#servicios" aria-label="Ir a nuestros servicios">↓</a></div></div>
     </section>
 
-    <section class="section services-section" id="servicios">
+        <!-- Fondo interactivo de hexágonos inspirado en Nahuel61920 -->
+    <canvas id="edtech-hex-canvas" aria-hidden="true"></canvas>
+<section class="section services-section" id="servicios">
       <div class="container"><div class="section-heading"><div><p class="eyebrow blue">01 — NUESTROS SERVICIOS</p><h2>Tecnología que se adapta<br>a tu <span class="blue">organización.</span></h2></div><p class="muted">Tu necesidad es el punto de partida.<br>Selecciona los servicios que te interesen y solicita una cotización a medida.</p></div>
         <div class="service-grid">
           <article id="servicio-web" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">↗</span><span>01</span></div><h3>Páginas web institucionales</h3><p>Una presencia digital clara para presentar tu institución, sus noticias y su oferta educativa.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 2.500</strong></p><button type="button" data-service="web" aria-label="Añadir páginas web institucionales a la cotización">+</button></div></article>
@@ -131,7 +133,86 @@
           </a>
         </div>
       </div></div><form id="contact-form"><h3>Hablemos de tu proyecto</h3><label for="name">Tu nombre</label><input id="name" name="name" autocomplete="name" placeholder="¿Cómo te llamas?" required maxlength="100"><label for="institution">Empresa u organización <span>(opcional)</span></label><input id="institution" name="institution" autocomplete="organization" placeholder="Nombre de tu empresa, organización o proyecto" maxlength="150"><label for="message">¿Qué te gustaría mejorar?</label><textarea id="message" name="message" rows="4" placeholder="Cuéntanos sobre tu idea…" required maxlength="2000"></textarea><button class="button dark" type="submit">Continuar en WhatsApp <span aria-hidden="true">↗</span></button><p class="small muted">Se abrirá WhatsApp con tu mensaje preparado. Tú decides cuándo enviarlo.</p></form></div></section>
-  </main>
+      <!-- SECCIÓN 3D ISOMÉTRICA DE CONTACTO DIRECTO (Diseño Nahuel61920) -->
+    <section class="c3d-contact-section" id="canales-contacto" aria-label="Canales directos de contacto">
+      <div class="container c3d-contact-inner">
+        <div class="c3d-heading-block">
+          <h2 class="c3d-heading">Contacto</h2>
+          <h3 class="c3d-sub">
+            Contáctame por: <span id="c3d-typed-target" class="c3d-typed-badge">Gmail</span>
+          </h3>
+        </div>
+
+        <div class="c3d-icons-row">
+          <!-- 1. Gmail -->
+          <a href="mailto:ketferghotmail.com@gmail.com" class="c3d-item c3d-gmail" target="_blank" rel="noopener noreferrer" data-channel="Gmail" aria-label="Escribir por Gmail a Ketfer">
+            <div class="layer">
+              <span></span><span></span><span></span><span></span>
+              <span class="c3d-icon-surface">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3,6 12,13 21,6"></polyline></svg>
+              </span>
+            </div>
+            <div class="text">Gmail</div>
+          </a>
+
+          <!-- 2. WhatsApp -->
+          <a href="https://wa.me/59162143492?text=Hola%20Ketfer%2C%20me%20gustar%C3%ADa%20conversar%20sobre%20los%20servicios%20de%20EdTech." class="c3d-item c3d-whatsapp" target="_blank" rel="noopener noreferrer" data-channel="WhatsApp" aria-label="Conversar por WhatsApp con Ketfer (+591 62143492)">
+            <div class="layer">
+              <span></span><span></span><span></span><span></span>
+              <span class="c3d-icon-surface">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.27-2.42 5.82a8.19 8.19 0 0 1-5.82 2.42c-1.46 0-2.89-.39-4.15-1.13l-.3-.18-3.08.81.82-3-.2-.31a8.19 8.19 0 0 1-1.25-4.43c0-4.54 3.7-8.24 8.24-8.24zm4.51 11.66c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.12.17 1.78 2.71 4.3 3.8 2.53 1.08 2.53.72 2.99.68.46-.05 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29z"/></svg>
+              </span>
+            </div>
+            <div class="text">WhatsApp</div>
+          </a>
+
+          <!-- 3. Instagram -->
+          <a href="https://www.instagram.com/" class="c3d-item c3d-instagram" target="_blank" rel="noopener noreferrer" data-channel="Instagram" aria-label="Visitar perfil de Instagram">
+            <div class="layer">
+              <span></span><span></span><span></span><span></span>
+              <span class="c3d-icon-surface">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              </span>
+            </div>
+            <div class="text">Instagram</div>
+          </a>
+
+          <!-- 4. Telegram -->
+          <a href="https://t.me/+59162143492" class="c3d-item c3d-telegram" target="_blank" rel="noopener noreferrer" data-channel="Telegram" aria-label="Escribir por Telegram a Ketfer">
+            <div class="layer">
+              <span></span><span></span><span></span><span></span>
+              <span class="c3d-icon-surface">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+              </span>
+            </div>
+            <div class="text">Telegram</div>
+          </a>
+
+          <!-- 5. Facebook (reemplaza LinkedIn) -->
+          <a href="https://www.facebook.com/share/1Lw34AXMSt/" class="c3d-item c3d-facebook" target="_blank" rel="noopener noreferrer" data-channel="Facebook" aria-label="Visitar página oficial de Facebook de EdTech">
+            <div class="layer">
+              <span></span><span></span><span></span><span></span>
+              <span class="c3d-icon-surface">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </span>
+            </div>
+            <div class="text">Facebook</div>
+          </a>
+
+          <!-- 6. TikTok (reemplaza GitHub) -->
+          <a href="https://www.tiktok.com/@edtech.tecnologa?is_from_webapp=1&amp;sender_device=pc" class="c3d-item c3d-tiktok" target="_blank" rel="noopener noreferrer" data-channel="TikTok" aria-label="Visitar perfil oficial de TikTok de EdTech">
+            <div class="layer">
+              <span></span><span></span><span></span><span></span>
+              <span class="c3d-icon-surface">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.883 2.896 2.896 2.896 0 0 1-2.896-2.896 2.896 2.896 0 0 1 2.896-2.896c.488 0 .944.119 1.345.328V9.61a6.34 6.34 0 0 0-1.345-.145A6.342 6.342 0 0 0 3.149 15.8a6.342 6.342 0 0 0 6.342 6.342 6.342 6.342 0 0 0 6.342-6.342V9.082a8.232 8.232 0 0 0 4.956 1.625V7.262a4.79 4.79 0 0 1-1.2-.576z"/></svg>
+              </span>
+            </div>
+            <div class="text">TikTok</div>
+          </a>
+        </div>
+      </div>
+    </section>
+</main>
   <footer><div class="container footer-inner"><a class="brand" href="#inicio">Ed<span class="orange">Tech</span></a><p>Ideas de hoy. Oportunidades de mañana.</p><div class="footer-social"><a href="https://www.facebook.com/share/1Lw34AXMSt/" class="footer-social-link fb-footer" target="_blank" rel="noopener noreferrer" aria-label="Página de Facebook de EdTech"><svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>Facebook</span><span class="f-arrow">↗</span></a><a href="https://www.tiktok.com/@edtech.tecnologa?is_from_webapp=1&amp;sender_device=pc" class="footer-social-link tt-footer" target="_blank" rel="noopener noreferrer" aria-label="Perfil de TikTok de EdTech"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.883 2.896 2.896 2.896 0 0 1-2.896-2.896 2.896 2.896 0 0 1 2.896-2.896c.488 0 .944.119 1.345.328V9.61a6.34 6.34 0 0 0-1.345-.145A6.342 6.342 0 0 0 3.149 15.8a6.342 6.342 0 0 0 6.342 6.342 6.342 6.342 0 0 0 6.342-6.342V9.082a8.232 8.232 0 0 0 4.956 1.625V7.262a4.79 4.79 0 0 1-1.2-.576z"/></svg><span>TikTok</span><span class="f-arrow">↗</span></a></div><span>© 2026 EdTech · Proyecto académico</span></div></footer>
   <a class="whatsapp" href="https://wa.me/59162143492?text=Hola%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20EdTech." target="_blank" rel="noopener" aria-label="Contactar a EdTech por WhatsApp (abre otra pestaña)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8.5 8 9 9 0 0 1-3.6-.8L3 20l1.4-4.6A8 8 0 1 1 20 11.5Z"/></svg></a>
   <div id="toast" role="status" class="toast"></div>
