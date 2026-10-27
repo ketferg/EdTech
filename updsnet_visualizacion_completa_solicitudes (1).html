@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPDS.NET - Simulación Solicita UPDS</title>
+<style>
+:root {
+  --blue:#005096;
+  --blue2:#005699;
+  --magenta:#d700a5;
+  --cyan:#41c3c7;
+  --green:#52be80;
+  --research:#00a038;
+  --lightblue:#59afe0;
+  --purple:#a36ac5;
+  --brown:#947568;
+  --orange:#ff5638;
+  --softorange:#ffad9b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#f3f3f3;font-family:"Segoe UI",Arial,sans-serif;color:#444}
+.topbar {
+  position:sticky;top:0;z-index:15;
+  height:60px;background:#005398;color:white;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px 0 48px;
+  box-shadow:0 2px 6px rgba(0,0,0,.25)
+}
+.nav{display:flex;gap:34px;align-items:center;height:100%;font-size:14px}
+.nav span.active{height:100%;display:flex;align-items:center;border-bottom:3px solid white;font-weight:600}
+.account{display:flex;align-items:center;gap:10px;font-size:13px;text-align:right}
+.avatar{width:42px;height:42px;border-radius:50%;border:2px solid #ddd;background:#7b8799}
+.main{width:1220px;margin:0 auto;padding:0 0 35px}
+.career{background:white;border-left:1px solid #ddd;border-right:1px solid #ddd;position:relative;min-height:1770px}
+.career-title{text-align:center;font-size:26px;padding:8px 0 22px;color:#333}
+.career-title em{font-weight:300;color:#666;margin-right:8px}
+.cols{display:grid;grid-template-columns:repeat(9,1fr);padding:0 20px}
+.col{height:1680px;border-left:1px solid #ddd;position:relative}
+.col:first-child{border-left:none}
+.sem{text-align:center;font-size:15px;color:#353535;padding-top:24px}
+.course{
+  position:absolute;left:7px;right:7px;
+  min-height:76px;border-radius:9px;color:white;text-align:center;
+  padding:6px 6px 7px;box-shadow:0 3px 8px rgba(0,0,0,.10);
+  line-height:1.05
+}
+.code{font-size:10px;margin-bottom:2px}
+.name{font-size:15px;white-space:pre-line;text-shadow:0 1px 2px rgba(0,0,0,.24)}
+.grade{font-size:12px;margin-top:5px}
+.corner{position:absolute;right:0;top:0;width:31px;height:31px;clip-path:polygon(100% 0,100% 100%,0 0);background:#058e1c}
+.corner span{position:absolute;right:3px;top:1px;font-size:15px;color:white;font-weight:700}
+.corner.fail{background:#e82020} .corner.warn{background:#e5b700}
+.magenta{background:var(--magenta)} .cyan{background:var(--cyan)} .green{background:var(--green)} .research{background:var(--research)} .blue{background:var(--lightblue)} .purple{background:var(--purple)} .brown{background:var(--brown)} .orange{background:var(--orange)} .softorange{background:var(--softorange);color:#d98575}
+.fabs{position:fixed;right:28px;bottom:22px;display:flex;flex-direction:column;gap:15px;z-index:16}
+.fab{width:72px;height:72px;border-radius:50%;background:#00539a;color:white;border:0;box-shadow:0 11px 20px rgba(0,0,0,.33);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px}
+.fab svg{width:34px;height:34px;margin-bottom:2px;stroke:white;fill:none;stroke-width:1.8}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;z-index:25} .overlay.show{display:block}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1080px,92vw);max-height:88vh;overflow:auto;background:white;border-radius:4px;box-shadow:0 20px 55px rgba(0,0,0,.34);display:none;z-index:26} .modal.show{display:block}
+.modal-head{text-align:center;padding:14px;border-bottom:1px solid #ddd;color:#5a5a5a;font-size:17px;position:sticky;top:0;background:white;z-index:2}
+.close{position:absolute;right:13px;top:8px;width:29px;height:29px;border-radius:50%;border:0;background:#ccc;color:white;font-size:19px;cursor:pointer}
+.tabs{display:grid;grid-template-columns:1fr 1fr}
+.tab{border:0;background:#f0f0f0;padding:12px;color:#666;font-size:13px;cursor:pointer} .tab.active{background:#4197c4;color:white}
+.pane{display:none;padding:17px} .pane.active{display:block}
+.reggrid{display:grid;grid-template-columns:37% 63%;min-height:530px}
+.left{padding:2px 18px 16px;border-right:1px solid #ddd} .right{padding:2px 18px 16px}
+.label{text-align:right;font-size:14px;margin:5px 0 7px;color:#555}
+.select{border:1px solid #ccd7e0;padding:9px 11px;font-size:13px;color:#666;margin-bottom:14px;border-radius:3px;background:white}
+.meta{font-size:12px;line-height:1.45;margin-bottom:18px}
+.choices{display:flex;flex-wrap:wrap;margin-bottom:19px} .choice{border:1px solid #ddd;background:white;color:#666;padding:8px 10px;font-size:11px;cursor:pointer} .choice.active{background:#4197c4;color:white;border-color:#4197c4}
+.notice{border:1px solid #ddd;border-top:3px solid #f0a000;padding:10px;font-size:11px;line-height:1.35;margin-bottom:12px} .notice.red{border-top-color:#e63d34}
+.board-title{text-align:right;font-size:14px;margin:4px 0 11px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{border:1px solid #ddd;padding:10px;background:#fff}
+.cardtop{display:flex;justify-content:space-between;gap:8px} .rcode{font-size:10px;color:#7c6192} .rname{font-size:14px;font-weight:600;color:#444;margin-top:2px} .badge{font-size:10px;background:#eef4f7;color:#526e81;padding:5px 7px;height:max-content}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:10px} .stat strong{display:block;font-size:18px} .stat span{font-size:9px;color:#777}
+.grow{display:grid;grid-template-columns:54px 1fr 36px;gap:5px;align-items:center;font-size:10px;margin-top:5px} .barbg{height:7px;background:#eee;border-radius:10px;overflow:hidden} .bar{height:100%;background:#4197c4}
+.status{margin-top:8px;padding:7px;background:#eef6fa;font-size:10px;color:#527187}
+.actions{display:flex;gap:6px;margin-top:9px} .btn{border:1px solid #ddd;background:white;color:#4d6b80;padding:7px 9px;font-size:10px;cursor:pointer} .btn.primary{background:#4197c4;color:white;border-color:#4197c4} .btn.lock{background:#eee;color:#aaa}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:11px} .box{border:1px solid #ddd;padding:11px} .box h3{font-size:13px;margin:0 0 9px}
+.mini{border:1px solid #ddd;padding:9px;margin-bottom:8px} .mini h4{font-size:13px;margin:0 0 2px} .mini small{color:#777} .ok{color:#37845a;font-size:10px;margin:7px 0} .bad{background:#fff1f1;color:#9b4a4a;font-size:10px;padding:7px;margin:7px 0;line-height:1.35}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(10px);background:#333;color:white;padding:9px 12px;border-radius:3px;font-size:11px;opacity:0;transition:.2s;z-index:40} .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.demo{position:fixed;left:12px;bottom:10px;z-index:18;background:#fff7cf;border:1px solid #e4d683;color:#746820;font-size:10px;padding:6px 8px;border-radius:3px}
+@media(max-width:950px){.main{width:1200px;margin-left:0}.cards,.split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="nav">
+    <span>Inicio</span><span>Histórico Registro</span><span>Evaluación Docente</span><span class="active">Seguimiento & Registro</span><span>Comunicación ▾</span>
+  </div>
+  <div class="account"><div>Estudiante Demo<br><small>usuario@upds.net.bo</small></div><div class="avatar"></div><span>Salir ↪</span></div>
+</div>
+
+<div class="main">
+  <div class="career">
+    <div class="career-title"><em>Licenciatura en</em> Ingeniería en Redes y Telecomunicaciones (350-02)</div>
+    <div class="cols" id="cols"></div>
+  </div>
+</div>
+
+<div class="fabs">
+  <button class="fab">
+    <svg viewBox="0 0 32 32"><path d="M6 10h16l4 4-4 4H6z"/><path d="M11 6L6 10l5 4"/><path d="M21 18l5 4-5 4"/><path d="M10 22h16"/></svg>
+    Pagos
+  </button>
+  <button class="fab">
+    <svg viewBox="0 0 32 32"><rect x="7" y="5" width="18" height="22" rx="2"/><path d="M11 10h10M11 15h10M11 20h6"/><path d="M9 8l1 1 2-3"/></svg>
+    Registro
+  </button>
+  <button class="fab" id="open">
+    <svg viewBox="0 0 32 32"><rect x="7" y="6" width="18" height="20" rx="2"/><path d="M11 11h10M11 16h10M11 21h7"/><path d="M24 22h5M26.5 19.5v5"/></svg>
+    Solicitudes
+  </button>
+</div>
+
+<div class="demo">SIMULACIÓN VISUAL · PROTOTIPO NO OFICIAL</div>
+<div class="overlay" id="overlay"></div>
+
+<div class="modal" id="modal">
+  <div class="modal-head">REGISTRO DE SOLICITUD DE MATERIA <button class="close" id="close">×</button></div>
+  <div class="tabs">
+    <button class="tab active" data-pane="requested">MATERIAS SOLICITADAS</button>
+    <button class="tab" data-pane="create">CREAR SOLICITUD</button>
+  </div>
+
+  <div class="pane active" id="requested">
+    <div class="reggrid">
+      <div class="left">
+        <div class="label">CARRERA</div>
+        <div class="select">Ingeniería en Redes y Telecomunicaciones (350-02)</div>
+        <div class="meta">MODELO DE ESTUDIO : MEC<br>SISTEMA DE ESTUDIO : PRESENCIAL<br>TURNO : <span id="turntxt">TODOS</span></div>
+        <div class="label">MÓDULO</div>
+        <div class="select">2026/II/III</div>
+        <div class="label">TURNO</div>
+        <div class="choices" id="turnChoices">
+          <button class="choice active" data-turn="Todos">TODOS</button><button class="choice" data-turn="Mañana">MAÑANA</button><button class="choice" data-turn="Tarde">TARDE</button><button class="choice" data-turn="Noche">NOCHE</button><button class="choice" data-turn="Medio día">MEDIO DIA</button><button class="choice" data-turn="Madrugada">MADRUGADA</button>
+        </div>
+        <div class="notice"><b>INFORMACIÓN</b><br>La solicitud comienza como interés. Para evaluar apertura se priorizan estudiantes confirmados.</div>
+        <div class="notice red"><b>REGLA DE TURNO</b><br>No puedes unirte a dos solicitudes activas del mismo turno.</div>
+      </div>
+      <div class="right">
+        <div class="board-title">MATERIAS SOLICITADAS</div>
+        <div class="cards" id="cards"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane" id="create">
+    <div class="reggrid">
+      <div class="left">
+        <div class="label">CARRERA</div>
+        <div class="select">Ingeniería en Redes y Telecomunicaciones (350-02)</div>
+        <div class="label">SISTEMA DE ESTUDIO</div>
+        <div class="choices" id="studyChoices"><button class="choice active">PRESENCIAL</button><button class="choice">HORARIO DE TRABAJO</button><button class="choice">SEMI PRESENCIAL</button></div>
+        <div class="label">TURNO</div>
+        <div class="choices" id="shiftChoices"><button class="choice">MAÑANA</button><button class="choice">TARDE</button><button class="choice active">NOCHE</button><button class="choice">MEDIO DIA</button><button class="choice">MADRUGADA</button></div>
+        <div class="notice"><b>IMPORTANTE</b><br>El turno es una preferencia de solicitud. El horario exacto se define después si el grupo es aprobado.</div>
+      </div>
+      <div class="right">
+        <div class="board-title">MATERIAS PARA SOLICITAR</div>
+        <div class="split"><div class="box"><h3>PUEDES SOLICITAR</h3><div id="available"></div></div><div class="box"><h3>AÚN NO PUEDES SOLICITAR</h3><div id="blocked"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const cardData = [[1, "MAT-0125", "Estructuras\nDiscretas", "52", "magenta", 48, "ok"], [1, "ELC-0100", "Hardware y\nSoftware", "71", "cyan", 300, "ok"], [1, "SIS-0120", "Programación\nBásica", "71", "green", 390, "ok"], [1, "LIN-0200", "Inglés I", "61", "blue", 585, "ok"], [1, "MAT-0100", "Fundamentos\nde\nMatemáticas", "82", "purple", 665, "ok"], [1, "INV-0100", "Técnicas de\nInvestigación", "70", "research", 955, "ok"], [2, "ELC-0110", "Sistemas\nDigitales I", "77", "magenta", 48, "ok"], [2, "SIS-0121", "Programación\nI", "79", "green", 390, "ok"], [2, "SIS-0200", "Sistemas\nOperativos I", "74", "green", 480, "ok"], [2, "LIN-0201", "Inglés II", "81", "blue", 585, "ok"], [2, "MAT-0110", "Álgebra Lineal", "53", "purple", 665, "ok"], [2, "FIS-0100", "Física I", "69", "purple", 755, "ok"], [3, "ELC-0120", "Sistemas\nDigitales II", "52", "magenta", 48, "ok"], [3, "SIS-0122", "Programación\nII", "86", "green", 390, "ok"], [3, "SIS-0210", "Taller de\nSistemas\nOperativos I", "78", "green", 480, "ok"], [3, "FIS-0200", "Física II", "52", "purple", 665, "ok"], [3, "MAT-0120", "Cálculo I", "59", "purple", 755, "ok"], [3, "LIN-0110", "Deontología y\nProsocialidad", "97", "cyan", 1035, "ok"], [4, "RED-0100", "Redes I", "82", "magenta", 48, "ok"], [4, "ELC-0200", "Circuitos\nEléctricos I", "60", "magenta", 138, "ok"], [4, "SIS-0125", "Base de Datos\nI", "73", "green", 390, "ok"], [4, "MAT-0200", "Estadística\nDescriptiva", "68", "purple", 665, "ok"], [4, "TEL-0100", "Campos\nElectromagnéticos", "56", "purple", 755, "ok"], [4, "TEL-0200", "Análisis de\nSistemas y\nSeñales", "91", "purple", 845, "ok"], [5, "ELC-0201", "Circuitos\nEléctricos II", "63", "magenta", 48, "ok"], [5, "ELC-0210", "Electrónica I", "85", "magenta", 138, "ok"], [5, "RED-0120", "Instalación y\nCertificación\nde Redes", "94", "magenta", 228, "ok"], [5, "SIS-0211", "Sistemas\nOperativos II", "69", "green", 390, "ok"], [5, "SIS-0310", "Administración\nde Base de\nDatos I", "65", "green", 480, "ok"], [5, "TEL-0210", "Fundamentos\nde los Sistemas de\nComunicación", "54", "purple", 665, "ok"], [6, "RED-0130", "Redes II", "99", "magenta", 48, "ok"], [6, "ELC-0215", "Electrónica II", "98", "magenta", 138, "ok"], [6, "SIS-0230", "Taller de\nSistemas\nOperativos II", "100", "green", 390, "ok"], [6, "MAT-0210", "Estadística\nInferencial", "78", "purple", 665, "ok"], [6, "TEL-0300", "Medios de\nTransmisión", "82", "purple", 755, "ok"], [6, "RED-0310", "Comunicaciones\nDigitales I", "93", "purple", 845, "ok"], [7, "RED-0210", "Tecnologías\nInalámbricas", "92", "magenta", 48, "ok"], [7, "RED-0220", "Seguridad en\nRedes", "88", "magenta", 138, "ok"], [7, "RED-0140", "Redes III", "67", "magenta", 228, "ok"], [7, "TEL-0320", "Antenas y\nPropagación", "86", "purple", 665, "ok"], [7, "ELE-0001", "Liderazgo y\nDinámica de Grupos\n(Electiva 1)", "84", "brown", 1115, "ok"], [7, "ELE-0002", "Comportamiento\nOrganizacional\n(Electiva 2)", "52", "brown", 1215, "ok"], [8, "SIS-0360", "Seguridad\nInformática I", "97", "magenta", 48, "ok"], [8, "RED-0150", "Redes IV", "90", "magenta", 138, "ok"], [8, "TEL-0330", "Sistemas de\nComunicaciones\nÓpticas", "86", "purple", 665, "ok"], [8, "TEL-0325", "Sistemas de\nRadiocomunicaciones\nI", "72", "purple", 755, "ok"], [8, "TEL-0340", "Telefonía\nDigital I", "84", "purple", 845, "ok"], [8, "ELE-0003", "Métodos y\nTécnicas de\nInvestigación\nAplicada\n(Electiva 3)", "77", "brown", 1115, "ok"], [9, "RED-0240", "Taller de\nRedes", "87", "magenta", 48, "ok"], [9, "TEL-0350", "Redes\nInalámbricas y\nMóviles", "100", "purple", 665, "ok"], [9, "TEL-0360", "Sistemas de\nRadiocomunicaciones\nII", "100", "purple", 755, "ok"], [9, "ADM-0420", "Emprendedurismo", "", "cyan", 1035, "warn"], [9, "ELE-0004", "Gestión de\nRecursos Humanos\n(Electiva 4)", "84", "brown", 1115, "ok"], [9, "ELE-0005", "Diseño Web I\n(Electiva 5)", "42", "brown", 1215, "fail"], [9, "PPC-01", "Práctica\nProfesional I", "100", "orange", 1360, "ok"], [9, "PPC-02", "Práctica\nProfesional II", "100", "orange", 1450, "ok"], [9, "MDG-01", "Modalidad de\nGrado I", "", "softorange", 1540, "none"], [9, "MDG-02", "Modalidad de\nGrado II", "", "softorange", 1630, "none"]];
+const requests = [{"code": "RED-0210", "name": "Tecnologías Inalámbricas", "turno": "Noche", "interesados": 73, "confirmados": 61, "finales": 54}, {"code": "SIS-0360", "name": "Seguridad Informática I", "turno": "Noche", "interesados": 18, "confirmados": 14, "finales": 12}, {"code": "RED-0140", "name": "Redes III", "turno": "Mañana", "interesados": 42, "confirmados": 35, "finales": 31}, {"code": "TEL-0330", "name": "Sistemas de Comunicaciones Ópticas", "turno": "Medio día", "interesados": 27, "confirmados": 21, "finales": 18}, {"code": "TEL-0320", "name": "Antenas y Propagación", "turno": "Tarde", "interesados": 31, "confirmados": 24, "finales": 20}, {"code": "TEL-0350", "name": "Redes Inalámbricas y Móviles", "turno": "Noche", "interesados": 58, "confirmados": 52, "finales": 49}];
+const availableData = [["TEL-0320", "Antenas y Propagación", "Cumples los requisitos académicos simulados."], ["TEL-0330", "Sistemas de Comunicaciones Ópticas", "Puedes solicitar la apertura para el próximo módulo."], ["RED-0210", "Tecnologías Inalámbricas", "Materia habilitada para tu situación académica simulada."]];
+const blockedData = [["RED-0240", "Taller de Redes", ["Debes aprobar Redes IV", "Debes esperar al siguiente periodo habilitado"]], ["TEL-0360", "Sistemas de Radiocomunicaciones II", ["Debes aprobar Sistemas de Radiocomunicaciones I"]]];
+const roman = ["I","II","III","IV","V","VI","VII","VIII","IX"];
+let currentTurn="Todos";
+const joinedTurns=new Set(["Noche"]);
+
+function renderMalla(){
+  const root=document.getElementById("cols");
+  root.innerHTML="";
+  for(let s=1;s<=9;s++){
+    const col=document.createElement("div"); col.className="col";
+    col.innerHTML=`<div class="sem">${roman[s-1]}</div>`;
+    cardData.filter(c=>c[0]===s).forEach(c=>{
+      const el=document.createElement("div");
+      el.className=`course ${c[4]}`;
+      el.style.top=c[5]+"px";
+      let corner="";
+      if(c[6]==="ok") corner='<div class="corner"><span>✓</span></div>';
+      if(c[6]==="fail") corner='<div class="corner fail"><span>×</span></div>';
+      if(c[6]==="warn") corner='<div class="corner warn"><span>?</span></div>';
+      el.innerHTML=`${corner}<div class="code">(${c[1]})</div><div class="name">${c[2]}</div><div class="grade">${c[3]||""}</div>`;
+      col.appendChild(el);
+    });
+    root.appendChild(col);
+  }
+}
+
+function groupsFor(n){let arr=[],rest=n,l=65;while(rest>0){let x=Math.min(50,rest);arr.push({name:"Grupo "+String.fromCharCode(l++),count:x});rest-=x;}return arr;}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
+
+function renderRequests(){
+  const root=document.getElementById("cards");
+  const data=requests.filter(r=>currentTurn==="Todos"||r.turno===currentTurn);
+  if(!data.length){root.innerHTML='<div class="notice" style="grid-column:1/-1">No hay materias solicitadas para este turno.</div>';return;}
+  root.innerHTML=data.map((r,i)=>{
+    const gs=groupsFor(r.interesados); const conflict=joinedTurns.has(r.turno);
+    const gr=gs.map(g=>`<div class="grow"><b>${g.name}</b><div class="barbg"><div class="bar" style="width:${Math.round(g.count/50*100)}%"></div></div><span>${g.count}/50</span></div>`).join("");
+    return `<div class="card"><div class="cardtop"><div><div class="rcode">(${r.code})</div><div class="rname">${r.name}</div></div><div class="badge">${r.turno}</div></div>
+    <div class="stats"><div class="stat"><strong>${r.interesados}</strong><span>INTERESADOS</span></div><div class="stat"><strong>${r.confirmados}</strong><span>CONFIRMADOS</span></div><div class="stat"><strong>${r.finales}</strong><span>CONF. FINAL</span></div></div>
+    <div>${gr}</div><div class="status">${gs.length>1?gs.length+" grupos estimados por demanda.":(50-gs[0].count)+" cupos estimados para completar el grupo."}</div>
+    <div class="actions"><button class="btn" onclick="toast('Detalle de ${r.name}')">VER DATOS</button><button class="btn ${conflict?'lock':'primary'}" ${conflict?'disabled':''} onclick="joinReq(${i})">${conflict?'CONFLICTO DE TURNO':'UNIRME'}</button></div></div>`;
+  }).join("");
+}
+function joinReq(i){const data=requests.filter(r=>currentTurn==="Todos"||r.turno===currentTurn);const r=data[i];if(!r)return;if(joinedTurns.has(r.turno)){toast("Ya tienes una solicitud activa en "+r.turno);return;}joinedTurns.add(r.turno);r.interesados++;toast("Te uniste a "+r.name);renderRequests();}
+function renderCreate(){
+  document.getElementById("available").innerHTML=availableData.map(m=>`<div class="mini"><h4>${m[1]}</h4><small>${m[0]}</small><div class="ok">✓ ${m[2]}</div><div class="actions"><button class="btn">VER REQUISITOS</button><button class="btn primary" onclick="toast('Solicitud creada: ${m[1]}')">SOLICITAR</button></div></div>`).join("");
+  document.getElementById("blocked").innerHTML=blockedData.map(m=>`<div class="mini"><h4>${m[1]}</h4><small>${m[0]}</small><div class="bad"><b>No disponible:</b><br>${m[2].map(x=>'• '+x).join('<br>')}</div><div class="actions"><button class="btn">VER DETALLES</button><button class="btn lock" disabled>NO DISPONIBLE</button></div></div>`).join("");
+}
+
+document.getElementById("open").onclick=()=>{document.getElementById("overlay").classList.add("show");document.getElementById("modal").classList.add("show")};
+function closeAll(){document.getElementById("overlay").classList.remove("show");document.getElementById("modal").classList.remove("show")}
+document.getElementById("close").onclick=closeAll;document.getElementById("overlay").onclick=closeAll;
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".pane").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.pane).classList.add("active")});
+document.querySelectorAll("[data-turn]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-turn]").forEach(x=>x.classList.remove("active"));b.classList.add("active");currentTurn=b.dataset.turn;document.getElementById("turntxt").textContent=currentTurn.toUpperCase();renderRequests()});
+document.querySelectorAll("#studyChoices .choice").forEach(b=>b.onclick=()=>{document.querySelectorAll("#studyChoices .choice").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+document.querySelectorAll("#shiftChoices .choice").forEach(b=>b.onclick=()=>{document.querySelectorAll("#shiftChoices .choice").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+renderMalla();renderRequests();renderCreate();
+</script>
+</body>
+</html>

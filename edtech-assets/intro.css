@@ -1,0 +1,76 @@
+/* Adaptación del splash de HidroVida: burbujas, partículas, anillos,
+   entrada del logotipo, barra y salida vertical; identidad de EdTech. */
+.brand-intro {
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 65%,#26334c 0%,#0b1930 42%,#050c18 100%);
+  transition: transform .85s cubic-bezier(.77,0,.175,1),opacity .8s ease;
+}
+.brand-intro[open] { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.brand-intro.is-leaving { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+.sp-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.sp-bubble { position: absolute; border-radius: 50%; background: radial-gradient(circle,#4a84dd25 0%,transparent 70%); animation: spFloatBubble var(--dur,8s) ease-in-out infinite; }
+.sp-bubble-one { width: 500px; height: 500px; top: -100px; left: -120px; --dur: 8s; }
+.sp-bubble-two { width: 450px; height: 450px; bottom: -100px; right: -90px; --dur: 10s; background: radial-gradient(circle,#ff961e20 0%,transparent 70%); }
+.sp-bubble-three { width: 260px; height: 260px; top: 25%; right: 13%; --dur: 7s; }
+.sp-particle { position: absolute; bottom: 17%; left: var(--left); color: #ffbd67; font-size: 20px; opacity: 0; animation: spParticle var(--pdur,4s) ease-out var(--pdelay,0s) infinite; text-shadow: 0 0 20px #ffaf40aa; }
+.sp-sun { position: absolute; width: min(42vw,430px); aspect-ratio: 1; top: 52%; left: 50%; border-radius: 50%; background: linear-gradient(#ffe2a7,#ffa336 65%,#f0651920); box-shadow: 0 0 90px #ff981a44,0 0 180px #ff981a30; opacity: .32; transform: translate(-50%,-50%); animation: spSunrise 5s cubic-bezier(.16,.65,.2,1) both; }
+.sp-sun-halo { position: absolute; width: min(95vw,1000px); aspect-ratio: 1; top: 53%; left: 50%; transform: translate(-50%,-50%); background: radial-gradient(circle,#ffac3224 0%,#ff8b1810 32%,transparent 65%); animation: spDawnGlow 7.6s ease both; }
+.sp-horizon { position: absolute; top: 65%; left: 0; width: 100%; height: 35%; background: linear-gradient(#091326a6,#060d1a 60%); border-top: 1px solid #ffb75028; }
+.sp-horizon::before { content: ''; position: absolute; left: 15%; right: 15%; top: -1px; height: 1px; background: linear-gradient(90deg,transparent,#ffd192,transparent); box-shadow: 0 0 30px 5px #ffaf4030; }
+.sp-rings { position: absolute; width: 0; height: 0; top: 43%; left: 50%; pointer-events: none; }
+.sp-ring { position: absolute; width: 360px; height: 360px; left: -180px; top: -180px; border: 1.5px solid #ffba6440; border-radius: 50%; animation: spRingPulse 3s ease-in-out infinite; }
+.sp-ring-two { width: 550px; height: 550px; left: -275px; top: -275px; border-color: #74aaff29; animation-delay: .65s; }
+.sp-ring-three { width: 760px; height: 760px; left: -380px; top: -380px; border-color: #ffb34a1c; animation-delay: 1.3s; }
+.sp-logo-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; width: min(760px,100%); animation: spLogoIn 1s cubic-bezier(.22,1,.36,1) both; margin-top: -20px; }
+.sp-kicker { color: #adbed8; font-size: 9px; letter-spacing: .25em; margin-bottom: 24px; }
+.sp-picture { width: clamp(210px,28vw,340px); padding: 5px; border: 1px solid #efc17a50; border-radius: 14px; background: #0b1a30c9; box-shadow: 0 14px 70px #0007,0 0 50px #ffb34712; }
+.sp-picture img { display: block; width: 100%; height: auto; border-radius: 9px; filter: brightness(.88); }
+.sp-brand { margin-top: 20px; font-family: var(--heading); font-weight: 700; font-size: clamp(44px,6vw,74px); letter-spacing: -.055em; line-height: 1; text-shadow: 0 4px 24px #0007; }
+.sp-brand>span { color: #ffab38; }
+.sp-tagline { color: #b9c8de; font-size: 9px; font-weight: 700; letter-spacing: .4em; margin-top: 12px; }
+.sp-divider { width: 80px; height: 2px; background: linear-gradient(90deg,transparent,#ffd38b,transparent); margin: 22px 0; }
+.sp-phrase { font-size: clamp(30px,4vw,49px); font-weight: 500; line-height: 1.15; letter-spacing: -.035em; margin: 0; min-height: 2.3em; color: #f4f7ff; }
+.sp-phrase>span { color: #ffb452; }
+.sp-subphrase { color: #b2c1d7; font-size: 12px; margin-top: 16px; max-width: 420px; min-height: 3.4em; line-height: 1.7; }
+.sp-phrase.is-changing,.sp-subphrase.is-changing { animation: spWordsIn .7s ease both; }
+.sp-progress-wrap { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: min(540px,calc(100% - 48px)); z-index: 3; }
+.sp-progress-label { display: flex; justify-content: space-between; gap: 18px; font-size: 7px; font-weight: 600; color: #abbdd7; letter-spacing: .13em; margin-bottom: 12px; }
+.sp-progress-label>span:first-child { color: #ffb452; }
+.sp-progress-track { height: 3px; background: #ffffff12; border-radius: 99px; overflow: hidden; }
+.sp-progress-bar { width: 0; height: 100%; background: linear-gradient(90deg,#437fd4,#ffb044,#ffe5b5); border-radius: inherit; animation: spBarFill 7.6s linear forwards; }
+.sp-controls { position: absolute; z-index: 4; top: 24px; right: 24px; display: flex; gap: 10px; }
+.sp-controls button { font-family: var(--body); background: #ffffff08; color: #d8e4f5; border: 1px solid #ffffff24; border-radius: 99px; padding: 9px 16px; font-size: 10px; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s,border-color .2s; }
+.sp-controls #skip-intro { margin: 0; padding: 9px 16px; background: #ffffff12; font-size: 10px; }
+.sp-controls button:hover { background: #ffae3820; border-color: #ffb34f80; }
+.sp-controls #skip-intro span { margin-left: 9px; }
+@keyframes spFloatBubble { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.12); } }
+@keyframes spParticle { 0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; } 15% { opacity: .8; } 100% { transform: translateY(-230px) translateX(var(--dx)) scale(.2); opacity: 0; } }
+@keyframes spRingPulse { 0%,100% { transform: scale(.85); opacity: .6; } 50% { transform: scale(1.17); opacity: .15; } }
+@keyframes spLogoIn { from { opacity: 0; transform: scale(.85) translateY(30px); } to { opacity: 1; transform: none; } }
+@keyframes spSunrise { from { opacity: 0; transform: translate(-50%,20%) scale(.8); } to { opacity: .32; transform: translate(-50%,-50%) scale(1); } }
+@keyframes spDawnGlow { 0% { opacity: 0; } 50%,100% { opacity: 1; } }
+@keyframes spWordsIn { from { opacity: 0; transform: translateY(15px); filter: blur(4px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes spBarFill { from { width: 0; } to { width: 100%; } }
+/* El usuario solicita expresamente esta presentación con movimiento.
+   La opción de pausa actúa solo sobre la intro; el resto respeta el sistema. */
+.brand-intro.sp-motion .sp-bubble { animation: spFloatBubble var(--dur,8s) ease-in-out infinite!important; }
+.brand-intro.sp-motion .sp-particle { animation: spParticle var(--pdur,4s) ease-out var(--pdelay,0s) infinite!important; }
+.brand-intro.sp-motion .sp-ring { animation: spRingPulse 3s ease-in-out infinite!important; }
+.brand-intro.sp-motion .sp-ring-two { animation-delay: .65s!important; }
+.brand-intro.sp-motion .sp-ring-three { animation-delay: 1.3s!important; }
+.brand-intro.sp-motion .sp-logo-wrap { animation: spLogoIn 1s cubic-bezier(.22,1,.36,1) both!important; }
+.brand-intro.sp-motion .sp-sun { animation: spSunrise 5s cubic-bezier(.16,.65,.2,1) both!important; }
+.brand-intro.sp-motion .sp-sun-halo { animation: spDawnGlow 7.6s ease both!important; }
+.brand-intro.sp-motion .sp-progress-bar { animation: spBarFill 7.6s linear forwards!important; }
+.brand-intro.sp-motion .is-changing { animation: spWordsIn .7s ease both!important; }
+.brand-intro.sp-motion.is-leaving { transition: transform .85s cubic-bezier(.77,0,.175,1),opacity .8s ease!important; transform: translateY(-100%)!important; }
+.brand-intro.sp-paused * { animation-play-state: paused!important; }
+.brand-intro.sp-motion.sp-paused .sp-bg *,
+.brand-intro.sp-motion.sp-paused .sp-logo-wrap,
+.brand-intro.sp-motion.sp-paused .sp-logo-wrap *,
+.brand-intro.sp-motion.sp-paused .sp-ring,
+.brand-intro.sp-motion.sp-paused .sp-progress-bar { animation-play-state: paused!important; }
+.brand-intro.sp-paused.is-leaving { transition: opacity .25s!important; transform: none!important; }
+@media(max-height:780px) and (min-width:761px) { .sp-picture { width: 240px; } .sp-logo-wrap { margin-top: 15px; } .sp-kicker { margin-bottom: 14px; } .sp-brand { font-size: 53px; margin-top: 15px; } .sp-divider { margin: 15px 0; } .sp-phrase { font-size: 36px; } .sp-progress-wrap { bottom: 24px; } }
+@media(max-width:760px) { .brand-intro { padding: 24px; } .sp-controls { top: 17px; right: 17px; gap: 7px; } .sp-controls button,.sp-controls #skip-intro { font-size: 9px; padding: 8px 12px; } .sp-logo-wrap { margin-top: 0; } .sp-kicker { font-size: 7px; letter-spacing: .15em; margin-bottom: 20px; } .sp-picture { width: min(270px,75vw); } .sp-brand { font-size: 53px; margin-top: 18px; } .sp-tagline { font-size: 8px; } .sp-phrase { font-size: 32px; } .sp-subphrase { font-size: 11px; max-width: 290px; } .sp-sun { width: 280px; } .sp-progress-label { font-size: 6px; gap: 10px; } .sp-progress-wrap { bottom: 30px; } .sp-controls #intro-motion { min-width: 110px; } }
+@media(max-height:650px) { .sp-picture { width: 170px; } .sp-kicker { margin-bottom: 12px; } .sp-brand { font-size: 42px; margin-top: 13px; } .sp-divider { margin: 12px 0; } .sp-phrase { font-size: 26px; } .sp-subphrase { margin-top: 9px; font-size: 10px; } .sp-logo-wrap { margin-top: 10px; } .sp-progress-wrap { bottom: 17px; } }

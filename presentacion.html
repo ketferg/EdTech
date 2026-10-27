@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EdTech Bolivia • SOLICITA UPDS — Plataforma Oficial y Presentación Ejecutiva</title>
+  <!-- Google Fonts & Chart.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Georgia:italic&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #005096;
+      --primary-dark: #003366;
+      --primary-light: #e8f1fa;
+      --accent: #2d6a4f;
+      --accent-light: #d8f3dc;
+      --dark: #0f172a;
+      --gray: #64748b;
+      --light-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --danger: #e11d48;
+      --warning: #f59e0b;
+      --shadow: 0 10px 25px -5px rgba(0, 80, 150, 0.08), 0 8px 10px -6px rgba(0, 80, 150, 0.04);
+      --shadow-lg: 0 20px 30px -10px rgba(0, 80, 150, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-sub {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.2;
+    }
+    .brand-sub strong { color: var(--primary); display: block; }
+
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--light-bg);
+      padding: 0.3rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-btn {
+      padding: 0.5rem 1.1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--gray);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-btn:hover { color: var(--primary); background: rgba(0, 80, 150, 0.05); }
+    .nav-btn.active {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .btn-slides {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.55rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .btn-slides:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 80, 150, 0.25);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 5rem;
+    }
+
+    .tab-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-content.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #003366 0%, #005096 60%, #1e5a42 100%);
+      color: white;
+      padding: 3.5rem 3rem;
+      border-radius: 24px;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(45, 106, 79, 0.35) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      max-width: 900px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #e2e8f0;
+      max-width: 780px;
+      line-height: 1.6;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 1.8rem;
+    }
+
+    .stat-item h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #d8f3dc;
+    }
+    .stat-item p {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 0;
+    }
+
+    /* Grid Layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-primary { background: var(--primary-light); color: var(--primary); }
+    .badge-accent { background: var(--accent-light); color: var(--accent); }
+    .badge-danger { background: #ffe4e6; color: var(--danger); }
+    .badge-warning { background: #fef3c7; color: var(--warning); }
+
+    /* Team Grid */
+    .team-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+    .team-avatar {
+      width: 75px;
+      height: 75px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 800;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      box-shadow: 0 6px 15px rgba(0, 80, 150, 0.2);
+    }
+    .team-card h4 { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.2rem; }
+    .team-card .role { font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; }
+    .team-card .career { font-size: 0.8rem; color: var(--gray); }
+
+    /* Simulator Interactive Box */
+    .sim-box {
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .sim-header {
+      background: #005398;
+      color: white;
+      padding: 1rem 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sim-body { padding: 2rem; background: #f8fafc; }
+    
+    .slot-row {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .slot-info h5 { font-size: 1.05rem; font-weight: 700; color: var(--dark); margin-bottom: 0.2rem; }
+    .slot-info p { font-size: 0.82rem; color: var(--gray); }
+
+    .counter-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .cupo-bar {
+      width: 140px;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .cupo-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #10b981);
+      border-radius: 6px;
+      transition: width 0.3s;
+    }
+    .cupo-number {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+      min-width: 48px;
+    }
+
+    .btn-action {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-action:hover { background: var(--primary-dark); }
+    .btn-action.joined { background: var(--accent); }
+
+    /* Financial Table */
+    .fin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .fin-table th, .fin-table td {
+      padding: 0.9rem 1.2rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .fin-table th {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+    }
+    .fin-table tr:hover { background: #f1f5f9; }
+    .fin-table .highlight {
+      font-weight: 800;
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+    .fin-table .highlight-green {
+      font-weight: 800;
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* Modal / Slide Deck Overlay */
+    .slides-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+    .slides-overlay.open { display: flex; }
+
+    .slide-viewer {
+      background: white;
+      width: 100%;
+      max-width: 1100px;
+      height: 650px;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide-top {
+      background: var(--primary);
+      color: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slide-content-area {
+      flex: 1;
+      padding: 2.5rem 3rem;
+      overflow-y: auto;
+    }
+    .slide-bottom {
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-slide-nav {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: var(--dark);
+      transition: all 0.2s;
+    }
+    .btn-slide-nav:hover { background: var(--light-bg); border-color: var(--primary); color: var(--primary); }
+    .close-slides {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .close-slides:hover { background: rgba(255, 255, 255, 0.4); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      nav { display: none; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header>
+    <div class="brand-group">
+      <div class="brand-badge">
+        <span>EDTECH</span>
+      </div>
+      <div class="brand-sub">
+        <strong>EdTech — Tecnología Educativa S.R.L.</strong>
+        <span>Startup de Innovación Universitaria • UPDS Santa Cruz</span>
+      </div>
+    </div>
+
+    <nav>
+      <button class="nav-btn active" onclick="switchTab('empresa')">🏢 Empresa EdTech</button>
+      <button class="nav-btn" onclick="switchTab('solicita')">🚀 Producto SOLICITA</button>
+      <button class="nav-btn" onclick="switchTab('mercado')">📊 Estudio de Mercado</button>
+      <button class="nav-btn" onclick="switchTab('finanzas')">💰 Finanzas & POA</button>
+      <button class="nav-btn" onclick="switchTab('sostenibilidad')">🌱 Economía Circular</button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-slides" onclick="openSlides()">
+        🖥️ Modo Exposición (14 Diapositivas)
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ============================================== -->
+    <!-- TAB 1: LA EMPRESA EDTECH S.R.L. -->
+    <!-- ============================================== -->
+    <div id="tab-empresa" class="tab-content active">
+      <div class="hero">
+        <div class="hero-badge">EMPRESA MATRIZ • GESTIÓN DE INNOVACIÓN ACADÉMICA</div>
+        <h1>EdTech — Tecnología Educativa S.R.L.</h1>
+        <p>
+          Somos una startup de base tecnológica conformada por estudiantes y profesionales de Ingeniería de Sistemas y Administración de Empresas de la UPDS. Desarrollamos soluciones B2B SaaS de alto impacto para modernizar los procesos universitarios en Bolivia mediante arquitecturas serverless en la nube, gobernanza de datos y cultura Cero Papel.
+        </p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h3>4 Fundadores</h3>
+            <p>Ingeniería de Sistemas & Administración</p>
+          </div>
+          <div class="stat-item">
+            <h3>Bs. 2.764.800</h3>
+            <p>Ingresos anuales recuperables para la UPDS</p>
+          </div>
+          <div class="stat-item">
+            <h3>100% Cero Papel</h3>
+            <p>Desmaterialización y Economía Circular</p>
+          </div>
+          <div class="stat-item">
+            <h3>$us 230 / mes</h3>
+            <p>Costo operativo eficiente de infraestructura cloud</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Equipo Emprendedor -->
+      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 1.2rem;">
+        Equipo Fundador & Gobernanza Organizacional
+      </h2>
+      <div class="grid-4" style="margin-bottom: 2.5rem;">
+        <div class="card team-card">
+          <div class="team-avatar">KG</div>
+          <h4>Ketfer Gianella Salazar</h4>
+          <div class="role">Coordinador General & CTO</div>
+          <div class="career">Ingeniería de Sistemas</div>
+          <p style="font-size: 0.8rem; color: var(--gray); margin-top: 0.5rem;">
+            Arquitectura Cloud Serverless, base de datos en Supabase y dirección tecnológica del software.
+          </p>
+        </div>
+        <div class="card team-card">
+          <div class="team-avatar">JA</div>
+          <h4>José Andrés Salame</h4>
+          <div class="role">Director de Validación & Datos</div>
+          <div class="career">Ingeniería de Sistemas</div>
+          <p style="font-size: 0.8rem; color: var(--gray); margin-top: 0.5rem;">
+            Ciencia de datos, analítica predictiva de demanda, diseño muestral de encuestas y QA.
+          </p>
+        </div>
+        <div class="card team-card">
+          <div class="team-avatar">JR</div>
+          <h4>José René Huebe Taique</h4>
+          <div class="role">Director de Enlace Institucional</div>
+          <div class="career">Administración de Empresas</div>
+          <p style="font-size: 0.8rem; color: var(--gray); margin-top: 0.5rem;">
+            Relacionamiento B2B con la UPDS, presupuesto POA, talento humano y modelo comercial.
+          </p>
+        </div>
+        <div class="card team-card">
+          <div class="team-avatar">JQ</div>
+          <h4>Joel Richard Quispe</h4>
+          <div class="role">Director de Sostenibilidad & RSE</div>
+          <div class="career">Ingeniería de Sistemas</div>
+          <p style="font-size: 0.8rem; color: var(--gray); margin-top: 0.5rem;">
+            Alineación ODS 8, 9 y 12, economía circular, auditoría ética y cumplimiento de privacidad.
+          </p>
+        </div>
+      </div>
+
+      <!-- Misión, Visión y Dualidad -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🎯 Misión y Visión de EdTech</div>
+            <span class="badge badge-primary">Propósito</span>
+          </div>
+          <p style="margin-bottom: 1rem;">
+            <strong>Misión:</strong> Desarrollar soluciones tecnológicas accesibles, sostenibles e intuitivas que modernicen la experiencia académica y administrativa universitaria en Bolivia, democratizando el acceso a materias mediante datos en tiempo real.
+          </p>
+          <p>
+            <strong>Visión al 2030:</strong> Consolidarnos como la plataforma líder en gobernanza de demanda e inteligencia universitaria en el sistema de educación superior boliviano e internacional.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">💡 La Relación: EdTech vs. SOLICITA</div>
+            <span class="badge badge-accent">Modelo B2B</span>
+          </div>
+          <p style="margin-bottom: 0.8rem;">
+            <strong>EdTech Bolivia</strong> es la empresa proveedora de software y servicios tecnológicos. 
+          </p>
+          <p style="margin-bottom: 0.8rem;">
+            <strong>SOLICITA</strong> es nuestro primer producto estrella, diseñado específicamente como una oportunidad de venta a la <strong>UPDS</strong> para resolver su cuello de botella de materias no abiertas.
+          </p>
+          <p style="font-size: 0.85rem; color: var(--gray);">
+            La UPDS contrata el software a EdTech incorporándolo en su <strong>POA (Plan Operativo Anual)</strong> con dos desembolsos semestrales sin crear plantilla adicional.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 2: EL PRODUCTO SOLICITA & SIMULADOR -->
+    <!-- ============================================== -->
+    <div id="tab-solicita" class="tab-content">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary-dark);">
+          SOLICITA: El Producto Estrella que vendemos a la UPDS
+        </h2>
+        <p style="color: var(--gray); font-size: 1.05rem;">
+          Módulo de gestión de demanda estudiantil embebido nativamente dentro del portal <strong>UPDS.NET</strong>.
+        </p>
+      </div>
+
+      <!-- Roadmap Box: Fase 1 vs Fase 2 -->
+      <div class="card" style="margin-bottom: 2rem; border-left: 6px solid var(--primary);">
+        <div class="card-header">
+          <div class="card-title">🗺️ Roadmap de Entrega y Evolución del Producto</div>
+          <span class="badge badge-primary">Estrategia Comercial</span>
+        </div>
+        <div class="grid-2">
+          <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <h4 style="color: var(--primary); font-weight:800;">FASE 1: LANZAMIENTO INMEDIATO (MVP)</h4>
+              <span class="badge badge-primary">Actual</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--dark); font-weight:600; margin-bottom:0.5rem;">
+              Módulo Estudiantil con Contador en Vivo en UPDS.NET
+            </p>
+            <ul style="font-size: 0.85rem; color: var(--gray); padding-left: 1.2rem;">
+              <li>Registro de solicitud de materias sin cupo con 1 clic.</li>
+              <li>Contador transparente visible de 0 a 10 estudiantes en tiempo real.</li>
+              <li>Verificación automática de prerrequisitos y choque de horarios.</li>
+              <li>Alertas SMS y WhatsApp automáticas al completarse el grupo.</li>
+            </ul>
+          </div>
+
+          <div style="background: var(--light-bg); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <h4 style="color: var(--accent); font-weight:800;">FASE 2: PRÓXIMA MEJORA PLANIFICADA</h4>
+              <span class="badge badge-accent">A Futuro</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--dark); font-weight:600; margin-bottom:0.5rem;">
+              Dashboard Directivo Avanzado para Decanos
+            </p>
+            <ul style="font-size: 0.85rem; color: var(--gray); padding-left: 1.2rem;">
+              <li>Panel de analítica predictiva de demanda acumulada por carrera.</li>
+              <li>Aprobación institucional de apertura de paralelos en 1 clic.</li>
+              <li>Asignación inteligente de aulas y docentes disponibles.</li>
+              <li>Proyecto mediano de actualización (2 a 3 meses) facturable a la universidad.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulador Interactivo de UPDS.NET -->
+      <div class="sim-box">
+        <div class="sim-header">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="font-size: 1.3rem;">🎓</span>
+            <div>
+              <strong>UPDS.NET — Simulación Interactiva en Vivo</strong>
+              <div style="font-size: 0.78rem; opacity: 0.85;">Módulo: Solicitudes Académicas (Materia Modular)</div>
+            </div>
+          </div>
+          <span class="badge" style="background: rgba(255,255,255,0.2); color:white;">Simulador Funcional</span>
+        </div>
+
+        <div class="sim-body">
+          <p style="font-size: 0.95rem; color: var(--dark); margin-bottom: 1.5rem;">
+            <em>Prueba en tiempo real cómo interactúa el estudiante: haz clic en <strong>"Solicitar Apertura"</strong> para unirte a un grupo y observa cómo el contador se actualiza instantáneamente hasta alcanzar la meta de 10 estudiantes.</em>
+          </p>
+
+          <!-- Slot 1 -->
+          <div class="slot-row">
+            <div class="slot-info">
+              <h5>Programación Web II (INF-310)</h5>
+              <p>Carrera: Ingeniería de Sistemas | Turno Noche (19:00 - 22:00) | Aula Virtual / Presencial</p>
+            </div>
+            <div class="counter-badge">
+              <div class="cupo-bar">
+                <div id="fill-1" class="cupo-fill" style="width: 80%;"></div>
+              </div>
+              <div id="text-1" class="cupo-number">8 / 10</div>
+              <button id="btn-1" class="btn-action" onclick="toggleJoin(1, 8)">Solicitar Apertura</button>
+            </div>
+          </div>
+
+          <!-- Slot 2 -->
+          <div class="slot-row">
+            <div class="slot-info">
+              <h5>Formulación y Evaluación de Proyectos (ADM-420)</h5>
+              <p>Carrera: Administración de Empresas | Turno Noche (19:00 - 22:00) | Sede Central</p>
+            </div>
+            <div class="counter-badge">
+              <div class="cupo-bar">
+                <div id="fill-2" class="cupo-fill" style="width: 90%;"></div>
+              </div>
+              <div id="text-2" class="cupo-number">9 / 10</div>
+              <button id="btn-2" class="btn-action" onclick="toggleJoin(2, 9)">Solicitar Apertura</button>
+            </div>
+          </div>
+
+          <!-- Slot 3 -->
+          <div class="slot-row">
+            <div class="slot-info">
+              <h5>Redes y Telecomunicaciones II (TEL-320)</h5>
+              <p>Carrera: Ingeniería en Redes | Turno Mañana (07:30 - 11:30) | Laboratorio Especializado</p>
+            </div>
+            <div class="counter-badge">
+              <div class="cupo-bar">
+                <div id="fill-3" class="cupo-fill" style="width: 60%;"></div>
+              </div>
+              <div id="text-3" class="cupo-number">6 / 10</div>
+              <button id="btn-3" class="btn-action" onclick="toggleJoin(3, 6)">Solicitar Apertura</button>
+            </div>
+          </div>
+
+          <!-- Alert box result -->
+          <div id="sim-alert" style="display:none; margin-top: 1.5rem; background: #ecfdf5; border: 1px solid #10b981; padding: 1rem; border-radius: 12px; color: #065f46; font-size: 0.9rem;">
+            <strong>🎉 ¡PARALELO CONSOLIDADO (10/10)!</strong> Se disparó la alerta automática al Director de Carrera para habilitar el aula y asignar al docente disponible. Notificación enviada a tu WhatsApp.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 3: ESTUDIO DE MERCADO INTERACTIVO -->
+    <!-- ============================================== -->
+    <div id="tab-mercado" class="tab-content">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary-dark);">
+          Estudio de Mercado Cuantitativo (N = 50 Estudiantes - Muestra Oficial Google Drive / Excel)
+        </h2>
+        <p style="color: var(--gray); font-size: 1.05rem;">
+          Resultados empíricos obtenidos en el campus central de la UPDS Santa Cruz (10 carreras no médicas representadas).
+        </p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 2.5rem;">
+        <!-- Chart 1 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🚨 Meses Perdidos sin Materia</div>
+            <span class="badge badge-danger">96% Afectados</span>
+          </div>
+          <div style="height: 220px; position: relative;">
+            <canvas id="chartProblemas"></canvas>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--gray); margin-top: 1rem; text-align: center;">
+            El <strong>96.0%</strong> de los encuestados (48 de 50) reportó haber perdido entre 1 y más de 6 meses por materias no abiertas.
+          </p>
+        </div>
+
+        <!-- Chart 2 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📱 Utilidad en UPDS.NET ($0 Bs)</div>
+            <span class="badge badge-primary">92% Aceptación</span>
+          </div>
+          <div style="height: 220px; position: relative;">
+            <canvas id="chartModalidad"></canvas>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--gray); margin-top: 1rem; text-align: center;">
+            El <strong>92.0%</strong> considera la opción digital como Extremadamente o Muy Útil, frente al 82% que hoy usa papel o WhatsApp.
+          </p>
+        </div>
+
+        <!-- Chart 3 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🌙 Demanda por Turnos</div>
+            <span class="badge badge-accent">Noche y Mañana</span>
+          </div>
+          <div style="height: 220px; position: relative;">
+            <canvas id="chartTurnos"></canvas>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--gray); margin-top: 1rem; text-align: center;">
+            El <strong>38.0%</strong> se concentra en Turno Noche, <strong>28.0%</strong> en Mañana y <strong>22.0%</strong> en Tarde (3.8 materias/año por alumno).
+          </p>
+        </div>
+      </div>
+
+      <!-- Conclusiones de Mercado -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📌 Matriz de Perfil Competitivo (MPC)</div>
+          <span class="badge badge-primary">Diferenciación</span>
+        </div>
+        <table class="fin-table">
+          <thead>
+            <tr>
+              <th>Criterio Evaluado</th>
+              <th>Listas en Fotocopiadora</th>
+              <th>Grupos de WhatsApp</th>
+              <th>Cartas a Decanatura</th>
+              <th style="background:#2d6a4f;">SOLICITA (EdTech)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Tiempo de Respuesta</strong></td>
+              <td>3 a 7 días (Lento)</td>
+              <td>Incierto / Caótico</td>
+              <td>5 a 10 días hábiles</td>
+              <td class="highlight-green">Inmediato (24 horas)</td>
+            </tr>
+            <tr>
+              <td><strong>Uso de Papel Físico</strong></td>
+              <td>100% (Desperdicio)</td>
+              <td>0%</td>
+              <td>100% (Cartas físicas)</td>
+              <td class="highlight-green">0% (100% Cero Papel)</td>
+            </tr>
+            <tr>
+              <td><strong>Validación de Requisitos</strong></td>
+              <td>Nula (Firmas falsas)</td>
+              <td>Nula</td>
+              <td>Manual (Tarda días)</td>
+              <td class="highlight-green">Automática en UPDS.NET</td>
+            </tr>
+            <tr>
+              <td><strong>Puntuación Ponderada MPC</strong></td>
+              <td><strong>1.8 / 4.0</strong></td>
+              <td><strong>2.2 / 4.0</strong></td>
+              <td><strong>2.0 / 4.0</strong></td>
+              <td class="highlight-green"><strong>3.8 / 4.0 (Líder)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 4: FINANZAS & MODELO POA -->
+    <!-- ============================================== -->
+    <div id="tab-finanzas" class="tab-content">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary-dark);">
+          Estructura Financiera Oficial & Modelo de Cobro POA
+        </h2>
+        <p style="color: var(--gray); font-size: 1.05rem;">
+          Determinación de ingresos, costos directos, gastos operativos y viabilidad presupuestaria con la universidad.
+        </p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 2rem;">
+        <!-- Diapositiva de la Licen Adaptada -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📋 Estado de Resultados Oficial (Fórmula Cátedra)</div>
+            <span class="badge badge-primary">Anual</span>
+          </div>
+          <table class="fin-table">
+            <tbody>
+              <tr>
+                <td><strong>Ventas de Servicios (Facturado con IVA)</strong></td>
+                <td style="text-align: right; font-weight: 700;">Bs. 60.000</td>
+              </tr>
+              <tr>
+                <td style="color: var(--danger);"><strong>(-) IVA Débito Fiscal (13%)</strong></td>
+                <td style="text-align: right; color: var(--danger);">Bs. 7.800</td>
+              </tr>
+              <tr class="highlight">
+                <td><strong>(=) INGRESOS TOTALES (Venta Neta)</strong></td>
+                <td style="text-align: right;"><strong>Bs. 52.200</strong></td>
+              </tr>
+              <tr>
+                <td><strong>(-) Costos Directos (Servidores Cloud Supabase/AWS)</strong></td>
+                <td style="text-align: right; color: var(--gray);">Bs. 16.000</td>
+              </tr>
+              <tr class="highlight">
+                <td><strong>(=) UTILIDAD BRUTA (Margen 69.3%)</strong></td>
+                <td style="text-align: right;"><strong>Bs. 36.200</strong></td>
+              </tr>
+              <tr>
+                <td><strong>(-) Gastos Operativos (Marketing, Oficina y Soporte)</strong></td>
+                <td style="text-align: right; color: var(--gray);">Bs. 14.000</td>
+              </tr>
+              <tr class="highlight-green">
+                <td><strong>(=) UTILIDAD OPERATIVA (Ganancia Neta)</strong></td>
+                <td style="text-align: right; font-size: 1.15rem;"><strong>Bs. 22.200</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size: 0.82rem; color: var(--gray); margin-top: 0.8rem;">
+            *Punto de Equilibrio: Con solo <strong>2 contratos activos</strong> la empresa cubre la totalidad de sus costos fijos (Bs. 2.873/mes).
+          </p>
+        </div>
+
+        <!-- Estrategia POA en 2 Semestres -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🏛️ Financiamiento en el POA de la UPDS</div>
+            <span class="badge badge-accent">2 Semestres</span>
+          </div>
+          <p style="margin-bottom: 1rem; font-size: 0.95rem;">
+            Para que la universidad adquiera SOLICITA sin trabas burocráticas, se presupuesta dentro del <strong>Plan Operativo Anual (POA)</strong> en dos desembolsos:
+          </p>
+          <div style="background: var(--light-bg); padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid var(--primary);">
+            <strong style="color: var(--primary);">Semestre 1 (Desembolso Inicial 50%):</strong>
+            <p style="font-size: 0.85rem; color: var(--gray); margin-top: 0.3rem;">
+              Financia la arquitectura técnica en Supabase, la integración en UPDS.NET y la prueba piloto controlada.
+            </p>
+          </div>
+          <div style="background: var(--light-bg); padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid var(--accent);">
+            <strong style="color: var(--accent);">Semestre 2 (Liquidación Final 50%):</strong>
+            <p style="font-size: 0.85rem; color: var(--gray); margin-top: 0.3rem;">
+              Desembolsado contra acta de entrega del sistema funcionando, capacitación a directores y puesta en producción.
+            </p>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--dark);">
+            <strong>Régimen Tributario Aplicable:</strong> Se ejecuta bajo la modalidad legal de <em>Consultoría por Producto con Retenciones de Ley (12.5% IUE + 3% IT = 15.5%)</em> o como partida de <em>Innovación y Desarrollo (I+D) interno</em>, optimizando el IVA de forma 100% legal.
+          </p>
+        </div>
+      </div>
+
+      <!-- Los 3 Horizontes de Venta -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📈 Estrategia de Flujo de Caja en 3 Horizontes</div>
+          <span class="badge badge-primary">Control de Liquidez</span>
+        </div>
+        <div class="grid-3">
+          <div style="border-top: 3px solid var(--primary); padding-top: 0.8rem;">
+            <h4 style="color: var(--primary); font-size: 1rem;">1. Ventas Mensuales Recurrentes</h4>
+            <p style="font-size: 0.85rem; color: var(--gray); margin: 0.4rem 0;">
+              1 a 2 servicios al mes (soporte técnico, consultoría por horas y mantenimiento).
+            </p>
+            <strong style="color: var(--dark);">Bs. 1.500 - 3.500 / mes</strong>
+            <div style="font-size: 0.78rem; color: var(--accent); margin-top: 0.2rem;">Paga servidores e internet.</div>
+          </div>
+          <div style="border-top: 3px solid var(--accent); padding-top: 0.8rem;">
+            <h4 style="color: var(--accent); font-size: 1rem;">2. Proyectos Medianos (2-3 Meses)</h4>
+            <p style="font-size: 0.85rem; color: var(--gray); margin: 0.4rem 0;">
+              Adaptación de facultades y módulos nuevos (ej. Dashboard de Decanatura). Cobro 40% anticipo y 60% entrega.
+            </p>
+            <strong style="color: var(--dark);">Bs. 10.000 - 25.000 / proyecto</strong>
+            <div style="font-size: 0.78rem; color: var(--primary); margin-top: 0.2rem;">Financia mejoras y equipos.</div>
+          </div>
+          <div style="border-top: 3px solid #7c3aed; padding-top: 0.8rem;">
+            <h4 style="color: #7c3aed; font-size: 1rem;">3. Proyectos Grandes (6-8 Meses)</h4>
+            <p style="font-size: 0.85rem; color: var(--gray); margin: 0.4rem 0;">
+              Licitación nacional para 6 sedes UPDS con hitos (30% inicio, 30% avance, 40% cierre).
+            </p>
+            <strong style="color: var(--dark);">Bs. 50.000 - 120.000 / contrato</strong>
+            <div style="font-size: 0.78rem; color: #7c3aed; margin-top: 0.2rem;">Gran ganancia anual de socios.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 5: SOSTENIBILIDAD & ECONOMÍA CIRCULAR -->
+    <!-- ============================================== -->
+    <div id="tab-sostenibilidad" class="tab-content">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary-dark);">
+          Sostenibilidad, Economía Circular y ODS
+        </h2>
+        <p style="color: var(--gray); font-size: 1.05rem;">
+          Cómo SOLICITA desmaterializa la burocracia universitaria y reduce el impacto ambiental institucional.
+        </p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 2rem;">
+        <div class="card" style="border-top: 4px solid #ef4444;">
+          <div class="card-header">
+            <div class="card-title">ODS 8: Trabajo Decente</div>
+            <span class="badge" style="background:#fee2e2; color:#ef4444;">Económico</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--gray);">
+            • Acelera la graduación a tiempo de profesionales en Bolivia.<br>
+            • Evita la deserción estudiantil por materias varadas.<br>
+            • Genera empleo digno para docentes al abrir paralelos que antes se cancelaban.
+          </p>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--primary);">
+          <div class="card-header">
+            <div class="card-title">ODS 9: Innovación Digital</div>
+            <span class="badge badge-primary">Tecnología</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--gray);">
+            • Modernización digital del sistema modular de 12 meses.<br>
+            • Infraestructura Cloud Serverless segura y escalable.<br>
+            • Toma de decisiones de decanatura respaldada por datos en tiempo real.
+          </p>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--accent);">
+          <div class="card-header">
+            <div class="card-title">ODS 12: Consumo Circular</div>
+            <span class="badge badge-accent">Ambiental</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--gray);">
+            • Desmaterialización total: 100% Cero Papel y cero químicos de tóner.<br>
+            • Reducción de traslados físicos innecesarios (menos emisiones CO2).<br>
+            • Aulas universitarias con aforo óptimo comprobado (eficiencia eléctrica).
+          </p>
+        </div>
+      </div>
+
+      <!-- Métricas Ecológicas Calculadas -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🌱 Métricas del Impacto Ecológico Estimado en UPDS (Anual)</div>
+          <span class="badge badge-accent">Cero Papel</span>
+        </div>
+        <div class="grid-4" style="text-align: center; margin-top: 1rem;">
+          <div>
+            <h3 style="font-size: 2rem; color: var(--accent); font-weight: 800;">43.200</h3>
+            <p style="font-size: 0.85rem; color: var(--gray);">Hojas de Papel Ahorradas al Año</p>
+          </div>
+          <div>
+            <h3 style="font-size: 2rem; color: var(--accent); font-weight: 800;">5.2 Árboles</h3>
+            <p style="font-size: 0.85rem; color: var(--gray);">Árboles Adultos Salvados de Tala</p>
+          </div>
+          <div>
+            <h3 style="font-size: 2rem; color: var(--accent); font-weight: 800;">1.840 kg</h3>
+            <p style="font-size: 0.85rem; color: var(--accent); font-weight: 800;">CO2 Evitado por Transporte</p>
+          </div>
+          <div>
+            <h3 style="font-size: 2rem; color: var(--primary); font-weight: 800;">100% Digital</h3>
+            <p style="font-size: 0.85rem; color: var(--gray);">Trazabilidad en la Nube</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /container -->
+
+  <!-- ============================================== -->
+  <!-- MODAL / SLIDE DECK VIEWER (14 SLIDES) -->
+  <!-- ============================================== -->
+  <div id="slides-overlay" class="slides-overlay">
+    <div class="slide-viewer">
+      <div class="slide-top">
+        <div>
+          <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">PRESENTACIÓN EJECUTIVA UPDS • 20 MINUTOS</span>
+          <h3 id="slide-title" style="font-size: 1.3rem; font-weight: 800;">1. Portada del Proyecto</h3>
+        </div>
+        <div style="display:flex; align-items:center; gap: 1rem;">
+          <span id="slide-counter" style="font-size: 0.95rem; font-weight: 700;">1 / 14</span>
+          <button class="close-slides" onclick="closeSlides()">✕</button>
+        </div>
+      </div>
+
+      <div id="slide-content" class="slide-content-area">
+        <!-- Dynamic Slide Content rendered by JS -->
+      </div>
+
+      <div class="slide-bottom">
+        <button class="btn-slide-nav" onclick="prevSlide()">◀ Anterior</button>
+        <span style="font-size: 0.85rem; color: var(--gray);">Usa las flechas del teclado ◄ ► para navegar</span>
+        <button class="btn-slide-nav" onclick="nextSlide()" style="background: var(--primary); color: white;">Siguiente ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Simulator Interactive Logic
+    let joined = { 1: false, 2: false, 3: false };
+    function toggleJoin(slotId, initialVal) {
+      const btn = document.getElementById('btn-' + slotId);
+      const text = document.getElementById('text-' + slotId);
+      const fill = document.getElementById('fill-' + slotId);
+      const alertBox = document.getElementById('sim-alert');
+
+      if (!joined[slotId]) {
+        joined[slotId] = true;
+        const newVal = initialVal + 1;
+        text.innerText = newVal + ' / 10';
+        fill.style.width = (newVal * 10) + '%';
+        btn.innerText = '✓ Solicitud Registrada';
+        btn.classList.add('joined');
+
+        if (newVal >= 10) {
+          alertBox.style.display = 'block';
+        }
+      } else {
+        joined[slotId] = false;
+        text.innerText = initialVal + ' / 10';
+        fill.style.width = (initialVal * 10) + '%';
+        btn.innerText = 'Solicitar Apertura';
+        btn.classList.remove('joined');
+        alertBox.style.display = 'none';
+      }
+    }
+
+    // Initialize Charts on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      // Chart 1: Problemas de Apertura / Meses Perdidos (N=50)
+      const ctx1 = document.getElementById('chartProblemas').getContext('2d');
+      new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: ['Meses Perdidos sin Materia (96%)', 'Sin Retrasos (4%)'],
+          datasets: [{
+            data: [96, 4],
+            backgroundColor: ['#e11d48', '#e2e8f0'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+        }
+      });
+
+      // Chart 2: Preferencia Modalidad / Utilidad ($0 Bs) (N=50)
+      const ctx2 = document.getElementById('chartModalidad').getContext('2d');
+      new Chart(ctx2, {
+        type: 'pie',
+        data: {
+          labels: ['Alta Utilidad en UPDS.NET (92%)', 'Poco Útil (8%)'],
+          datasets: [{
+            data: [92, 8],
+            backgroundColor: ['#005096', '#cbd5e1'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+        }
+      });
+
+      // Chart 3: Turnos (N=50)
+      const ctx3 = document.getElementById('chartTurnos').getContext('2d');
+      new Chart(ctx3, {
+        type: 'bar',
+        data: {
+          labels: ['Noche (38%)', 'Mañana (28%)', 'Tarde (22%)', 'Mixto (12%)'],
+          datasets: [{
+            label: '% de Demanda',
+            data: [38, 28, 22, 12],
+            backgroundColor: ['#2d6a4f', '#005096', '#f59e0b', '#64748b'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { beginAtZero: true, max: 50 } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    });
+
+    // 14 Slides Data
+    const slidesData = [
+      {
+        title: "1. Portada del Proyecto Socioformativo",
+        content: `
+          <div style="text-align:center; padding: 1.5rem 0;">
+            <div style="font-size:0.9rem; font-weight:800; color:#005096; letter-spacing:1px; margin-bottom:0.5rem;">UNIVERSIDAD PRIVADA DOMINGO SAVIO • EMPRENDEDURISMO</div>
+            <h1 style="font-size:1.8rem; font-weight:800; color:#0f172a; margin-bottom:1rem; max-width:850px; margin-left:auto; margin-right:auto;">
+              "Sistema Web de Gestión de Demanda Académica para Optimización de Apertura de Materias en UPDS"
+            </h1>
+            <div style="display:inline-block; background:#e8f1fa; color:#005096; font-weight:700; padding:0.4rem 1.2rem; border-radius:20px; font-size:0.9rem; margin-bottom:1.5rem;">
+              Startup: EdTech — Tecnología Educativa S.R.L. • Producto: SOLICITA
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:1rem; max-width:700px; margin:0 auto; text-align:left; background:#f8fafc; padding:1.2rem; border-radius:12px; border:1px solid #e2e8f0;">
+              <div><strong>Ketfer Gianella Salazar</strong> (Coordinador & CTO - Ing. Sistemas)</div>
+              <div><strong>José Andrés Salame</strong> (Validación & Datos - Ing. Sistemas)</div>
+              <div><strong>José René Huebe</strong> (Enlace & Talento - Adm. Empresas)</div>
+              <div><strong>Joel Richard Quispe</strong> (Sostenibilidad & RSE - Ing. Sistemas)</div>
+            </div>
+            <div style="font-size:0.85rem; color:#64748b; margin-top:1rem;">Docente: Lic. Sheila Geraldine Franco Montero • 28 de Octubre de 2026</div>
+          </div>
+        `
+      },
+      {
+        title: "2. Planteamiento del Problema y Justificación",
+        content: `
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem;">
+            <div style="background:#fff1f2; padding:1.5rem; border-radius:12px; border-left:4px solid #e11d48;">
+              <h3 style="color:#e11d48; margin-bottom:0.8rem;">🚨 El Problema Central</h3>
+              <ul style="font-size:0.95rem; line-height:1.7; padding-left:1.2rem; color:#334155;">
+                <li><strong>Materias cerradas:</strong> Alumnos no pueden avanzar por no alcanzar 10 cupos en el módulo.</li>
+                <li><strong>Listas físicas en papel:</strong> Recolección manual en fotocopiadoras y pasillos con firmas ilegibles.</li>
+                <li><strong>Caos en WhatsApp:</strong> Grupos autogestionados sin validación académica ni seguridad.</li>
+                <li><strong>Pérdida para la UPDS:</strong> Se pierden <strong>Bs. 2.764.800 al año</strong> en matrículas no devengadas.</li>
+              </ul>
+            </div>
+            <div style="background:#f0fdf4; padding:1.5rem; border-radius:12px; border-left:4px solid #2d6a4f;">
+              <h3 style="color:#2d6a4f; margin-bottom:0.8rem;">💡 Justificación y Necesidad</h3>
+              <ul style="font-size:0.95rem; line-height:1.7; padding-left:1.2rem; color:#334155;">
+                <li><strong>Certeza para el estudiante:</strong> Asegura graduación a tiempo sin meses perdidos.</li>
+                <li><strong>Gobernanza basada en datos:</strong> Decanatura visualiza demanda latente en tiempo real.</li>
+                <li><strong>100% Cero Papel:</strong> Desmaterialización total, reduciendo emisiones y residuos (Economía Circular).</li>
+                <li><strong>Retorno institucional:</strong> Recupera ingresos y optimiza el uso de aulas y docentes.</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "3. Solución: Plataforma SOLICITA & Roadmap",
+        content: `
+          <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:1.8rem; align-items:center;">
+            <div>
+              <h3 style="color:#005096; margin-bottom:0.6rem;">Arquitectura del Software</h3>
+              <p style="font-size:0.95rem; color:#475569; margin-bottom:1rem;">
+                SOLICITA opera como un módulo integrado dentro de <strong>UPDS.NET</strong>, democratizando el proceso de solicitud académica con datos en vivo.
+              </p>
+              <div style="background:#e8f1fa; padding:1rem; border-radius:10px; margin-bottom:0.8rem;">
+                <strong style="color:#005096;">FASE 1 ACTUAL (MVP): Módulo Estudiantil</strong>
+                <p style="font-size:0.85rem; color:#334155; margin-top:0.2rem;">
+                  Contador en vivo (0 a 10 cupos), verificación algorítmica de cruces y alertas push al completarse.
+                </p>
+              </div>
+              <div style="background:#d8f3dc; padding:1rem; border-radius:10px;">
+                <strong style="color:#2d6a4f;">FASE 2 FUTURA: Dashboard Directivo para Decanos</strong>
+                <p style="font-size:0.85rem; color:#334155; margin-top:0.2rem;">
+                  Próxima mejora planificada: analítica predictiva de demanda y aprobación de paralelos en 1 clic.
+                </p>
+              </div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:1.2rem; border-radius:12px; text-align:center;">
+              <div style="font-size:2.5rem; margin-bottom:0.5rem;">⚡</div>
+              <h4 style="color:#0f172a; margin-bottom:0.4rem;">Disponibilidad 99.8%</h4>
+              <p style="font-size:0.82rem; color:#64748b;">
+                Infraestructura Cloud Serverless en Supabase PostgreSQL y hosting Edge en Vercel por solo <strong>$us 230 al mes</strong>.
+              </p>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "4. Nombre, Misión, Visión y Objetivos",
+        content: `
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem; margin-bottom:1.2rem;">
+            <div style="background:#f8fafc; padding:1.2rem; border-radius:10px; border:1px solid #e2e8f0;">
+              <h4 style="color:#005096; margin-bottom:0.4rem;">MISIÓN</h4>
+              <p style="font-size:0.88rem; color:#475569;">
+                Democratizar el acceso oportuno y transparente a materias universitarias mediante plataformas intuitivas de datos en tiempo real, eliminando la burocracia analógica y facilitando la titulación a tiempo.
+              </p>
+            </div>
+            <div style="background:#f8fafc; padding:1.2rem; border-radius:10px; border:1px solid #e2e8f0;">
+              <h4 style="color:#2d6a4f; margin-bottom:0.4rem;">VISIÓN AL 2030</h4>
+              <p style="font-size:0.88rem; color:#475569;">
+                Consolidarnos como la plataforma líder en gobernanza de demanda curricular e inteligencia de gestión académica en el sistema de educación superior de Bolivia y Latinoamérica.
+              </p>
+            </div>
+          </div>
+          <div style="background:#e8f1fa; padding:1.2rem; border-radius:12px; border:1px solid #cbd5e1;">
+            <h4 style="color:#003366; margin-bottom:0.5rem;">OBJETIVOS DE PRODUCCIÓN DEL SERVICIO</h4>
+            <div style="font-size:0.85rem; line-height:1.6; color:#334155;">
+              • <strong>Corto Plazo (Año 1):</strong> Abrir 36 paralelos/mes en UPDS Santa Cruz (360 alumnos/mes) recuperando Bs. 2.764.800/año.<br>
+              • <strong>Mediano Plazo (Años 2-3):</strong> Escalar a 3 sedes (Santa Cruz, La Paz, Cochabamba) con 120 paralelos/mes gestionados.<br>
+              • <strong>Largo Plazo (Años 4-5):</strong> Cobertura nacional en las 6 sedes UPDS y 2 universidades privadas adicionales (> 450 paralelos/mes).
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "5. Modelo de Negocios (Business Model Canvas)",
+        content: `
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; font-size:0.85rem;">
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0;">
+              <strong style="color:#005096;">Propuesta de Valor</strong>
+              <p style="color:#64748b; margin-top:0.3rem;">Alumnos: Cero filas, contador en vivo 0-10. UPDS: Bs. 2,7M recuperados y gobernanza de aulas.</p>
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0;">
+              <strong style="color:#005096;">Segmentos de Clientes</strong>
+              <p style="color:#64748b; margin-top:0.3rem;">B2C: Estudiantes regulares 3ro-9no semestre. B2B: Decanaturas y Direcciones de Carrera.</p>
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0;">
+              <strong style="color:#005096;">Canales & Relación</strong>
+              <p style="color:#64748b; margin-top:0.3rem;">Acceso nativo en UPDS.NET, soporte en vivo, alertas SMS/WhatsApp y mesas de ayuda.</p>
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0;">
+              <strong style="color:#005096;">Recursos & Actividades</strong>
+              <p style="color:#64748b; margin-top:0.3rem;">PostgreSQL Supabase, Vercel Edge, APIs y equipo de desarrollo por competencias.</p>
+            </div>
+            <div style="background:#d8f3dc; padding:1rem; border-radius:8px; border:1px solid #bbf7d0;">
+              <strong style="color:#2d6a4f;">Fuentes de Ingresos</strong>
+              <p style="color:#14532d; margin-top:0.3rem;">Contratación B2B en POA ($us 1.200 setup + $us 250/mes soporte institucional).</p>
+            </div>
+            <div style="background:#fee2e2; padding:1rem; border-radius:8px; border:1px solid #fecaca;">
+              <strong style="color:#b91c1c;">Estructura de Costos</strong>
+              <p style="color:#7f1d1d; margin-top:0.3rem;">Infraestructura Cloud ($us 230/mes), hosting, soporte técnico y marketing digital.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "6. Diagnóstico Estratégico: Matriz FODA",
+        content: `
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.2rem; font-size:0.88rem;">
+            <div style="background:#f0fdf4; padding:1rem; border-radius:10px; border-left:3px solid #2d6a4f;">
+              <strong style="color:#2d6a4f;">FORTALEZAS</strong>
+              <p style="color:#334155; margin-top:0.3rem;">• Integración nativa en UPDS.NET.<br>• Costo cloud marginal mínimo ($us 230/mes).<br>• Equipo multidisciplinario (Sistemas y Administración).</p>
+            </div>
+            <div style="background:#e8f1fa; padding:1rem; border-radius:10px; border-left:3px solid #005096;">
+              <strong style="color:#005096;">OPORTUNIDADES</strong>
+              <p style="color:#334155; margin-top:0.3rem;">• 82% de alumnos usa papel/WhatsApp y 96% ha perdido materias.<br>• Políticas Cero Papel y Economía Circular.<br>• Escalabilidad nacional a 6 sedes UPDS.</p>
+            </div>
+            <div style="background:#fffbeb; padding:1rem; border-radius:10px; border-left:3px solid #f59e0b;">
+              <strong style="color:#b45309;">DEBILIDADES</strong>
+              <p style="color:#334155; margin-top:0.3rem;">• Dependencia de aprobación inicial del POA.<br>• Resistencia cultural docente al cambio digital.<br>• Startup emergente en fase de homologación.</p>
+            </div>
+            <div style="background:#fff1f2; padding:1rem; border-radius:10px; border-left:3px solid #e11d48;">
+              <strong style="color:#e11d48;">AMENAZAS</strong>
+              <p style="color:#334155; margin-top:0.3rem;">• Inestabilidad de conexión de alumnos en áreas periféricas.<br>• Burocracia institucional de desembolsos.<br>• Cupo mínimo docente en horarios poco habituales.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "7. Análisis de la Competencia (Matriz MPC)",
+        content: `
+          <div style="margin-bottom:1rem;">
+            <p style="font-size:0.95rem; color:#475569;">
+              Comparativa objetiva de SOLICITA frente a los métodos alternativos actuales:
+            </p>
+          </div>
+          <table class="fin-table" style="font-size:0.85rem;">
+            <thead>
+              <tr>
+                <th>Factor Crítico</th>
+                <th>Listas en Fotocopiadora</th>
+                <th>Grupos de WhatsApp</th>
+                <th style="background:#2d6a4f;">SOLICITA (EdTech)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tiempo de Gestión</td>
+                <td>3 a 7 días hábiles</td>
+                <td>Desorganizado / Incierto</td>
+                <td class="highlight-green">Inmediato (24 horas)</td>
+              </tr>
+              <tr>
+                <td>Consumo de Papel</td>
+                <td>Alto (Hojas bond y fotocopias)</td>
+                <td>0%</td>
+                <td class="highlight-green">0% (100% Cero Papel)</td>
+              </tr>
+              <tr>
+                <td>Verificación de Cupo</td>
+                <td>Manual e insegura</td>
+                <td>Nula (Conversaciones sueltas)</td>
+                <td class="highlight-green">Contador 0-10 en tiempo real</td>
+              </tr>
+              <tr>
+                <td>Puntuación MPC</td>
+                <td><strong>1.8 / 4.0</strong></td>
+                <td><strong>2.2 / 4.0</strong></td>
+                <td class="highlight-green"><strong>3.8 / 4.0 (Líder)</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        `
+      },
+      {
+        title: "8. Estudio de Mercado: Gráficos de Encuesta (N=50)",
+        content: `
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1.2rem; text-align:center;">
+            <div style="background:#f8fafc; padding:1.2rem; border-radius:12px; border:1px solid #e2e8f0;">
+              <h2 style="font-size:2.2rem; color:#e11d48; font-weight:800;">96.0%</h2>
+              <h5 style="color:#0f172a; margin:0.4rem 0;">Meses Perdidos</h5>
+              <p style="font-size:0.82rem; color:#64748b;">48 de 50 alumnos se quedaron sin cursar materias por falta de cupo (el 80% afirmó retrasos en su egreso).</p>
+            </div>
+            <div style="background:#f8fafc; padding:1.2rem; border-radius:12px; border:1px solid #e2e8f0;">
+              <h2 style="font-size:2.2rem; color:#005096; font-weight:800;">92.0%</h2>
+              <h5 style="color:#0f172a; margin:0.4rem 0;">Utilidad Digital ($0)</h5>
+              <p style="font-size:0.82rem; color:#64748b;">46 de 50 alumnos consideran SOLICITA en UPDS.NET como Extremadamente o Muy Útil frente al papel.</p>
+            </div>
+            <div style="background:#f8fafc; padding:1.2rem; border-radius:12px; border:1px solid #e2e8f0;">
+              <h2 style="font-size:2.2rem; color:#2d6a4f; font-weight:800;">38.0%</h2>
+              <h5 style="color:#0f172a; margin:0.4rem 0;">Turno Noche Lidera</h5>
+              <p style="font-size:0.82rem; color:#64748b;">19 alumnos de noche (38%), 14 de mañana (28%), 11 de tarde (22%) y 6 rotativos (12%).</p>
+            </div>
+          </div>
+          <div style="background:#ecfdf5; padding:1rem; border-radius:10px; margin-top:1.5rem; text-align:center; font-size:0.88rem; color:#065f46;">
+            <strong>Muestra representativa:</strong> 50 estudiantes regulares de 10 carreras no médicas de la UPDS Sede Santa Cruz (Procesada en la matriz oficial de Google Drive / Excel Estudio_de_Mercado_Tabla_Respuestas_Piloto_UPDS.xlsx).
+          </div>
+        `
+      },
+      {
+        title: "9. Estrategias de Marketing (4P) y Finanzas",
+        content: `
+          <div style="display:grid; grid-template-columns: 1fr 1.1fr; gap:1.5rem;">
+            <div style="font-size:0.85rem; color:#334155;">
+              <h4 style="color:#005096; margin-bottom:0.5rem;">Mezcla de Marketing (4P)</h4>
+              <p>• <strong>Producto:</strong> Módulo SOLICITA (Fase 1 estudiantil) y Dashboard Decanatura (Fase 2 futura).<br>
+              • <strong>Precio:</strong> 0 Bs para estudiantes. Cobro B2B en POA a UPDS ($us 1.200 setup + $us 250/mes).<br>
+              • <strong>Plaza:</strong> 100% web en la nube embebida en UPDS.NET.<br>
+              • <strong>Promoción:</strong> Campaña omnicanal 'Ideas de hoy, oportunidades de mañana'.</p>
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-radius:10px; border:1px solid #e2e8f0; font-size:0.82rem;">
+              <h4 style="color:#2d6a4f; margin-bottom:0.4rem;">Estado de Resultados (Fórmula de la Pizarra)</h4>
+              <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;"><span>Ventas Brutas de Servicios:</span><strong>Bs. 60.000</strong></div>
+              <div style="display:flex; justify-content:space-between; color:#e11d48; margin-bottom:0.2rem;"><span>(-) IVA (13%):</span><strong>Bs. 7.800</strong></div>
+              <div style="display:flex; justify-content:space-between; font-weight:700; color:#005096; margin-bottom:0.2rem;"><span>(=) Ingresos Totales (Venta Neta):</span><strong>Bs. 52.200</strong></div>
+              <div style="display:flex; justify-content:space-between; color:#64748b; margin-bottom:0.2rem;"><span>(-) Costos Directos (Cloud APIs):</span><strong>Bs. 16.000</strong></div>
+              <div style="display:flex; justify-content:space-between; font-weight:700; color:#005096; margin-bottom:0.2rem;"><span>(=) Utilidad Bruta (69.3%):</span><strong>Bs. 36.200</strong></div>
+              <div style="display:flex; justify-content:space-between; color:#64748b; margin-bottom:0.2rem;"><span>(-) Gastos Operativos (Admin/Mkt):</span><strong>Bs. 14.000</strong></div>
+              <div style="display:flex; justify-content:space-between; font-weight:800; color:#2d6a4f; font-size:0.9rem;"><span>(=) Utilidad Operativa:</span><strong>Bs. 22.200</strong></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "10. Conclusiones del Proyecto Socioformativo",
+        content: `
+          <div style="display:grid; grid-template-columns: 1fr; gap:0.9rem; font-size:0.92rem; color:#334155;">
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border-left:4px solid #005096;">
+              <strong>1. Integración Plena del Proceso Administrativo:</strong> Se aplicó con éxito la planificación, organización ágil, manual de reclutamiento por competencias y control de calidad.
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border-left:4px solid #2d6a4f;">
+              <strong>2. Alta Viabilidad y Validación de Mercado:</strong> 94% de aceptación estudiantil y validación con directores de carrera respaldan su implementación inmediata.
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border-left:4px solid #005096;">
+              <strong>3. Impacto Financiero Comprobado:</strong> Resuelve una pérdida anual de más de 2,7 millones de Bs para la UPDS con solo $us 230 mensuales de costo operativo.
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-radius:8px; border-left:4px solid #2d6a4f;">
+              <strong>4. Fortalecimiento de Competencias:</strong> El equipo consolidó capacidades reales de trabajo colaborativo, investigación empírica y liderazgo emprendedor responsable.
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "11. Aporte a la Sociedad: Economía Circular y ODS",
+        content: `
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1.2rem; font-size:0.85rem;">
+            <div style="background:#fee2e2; padding:1.2rem; border-radius:10px; border:1px solid #fecaca;">
+              <h4 style="color:#b91c1c; margin-bottom:0.5rem;">ODS 8: Trabajo Decente</h4>
+              <p style="color:#7f1d1d;">
+                • Garantiza la graduación a tiempo de profesionales.<br>
+                • Reduce la deserción por materias trabadas.<br>
+                • Genera empleo digno para docentes al abrir paralelos.
+              </p>
+            </div>
+            <div style="background:#e8f1fa; padding:1.2rem; border-radius:10px; border:1px solid #bfdbfe;">
+              <h4 style="color:#1d4ed8; margin-bottom:0.5rem;">ODS 9: Innovación</h4>
+              <p style="color:#1e40af;">
+                • Modernización del sistema modular de 12 meses.<br>
+                • Adopción de arquitecturas Cloud Serverless.<br>
+                • Gestión de cupos orientada a datos transparentes.
+              </p>
+            </div>
+            <div style="background:#d8f3dc; padding:1.2rem; border-radius:10px; border:1px solid #bbf7d0;">
+              <h4 style="color:#15803d; margin-bottom:0.5rem;">ODS 12: Economía Circular</h4>
+              <p style="color:#14532d;">
+                • 100% Cero Papel (43.200 hojas ahorradas/año).<br>
+                • Menos traslados físicos (1.840 kg CO2 evitados).<br>
+                • Aulas optimizadas con aforo real (eficiencia energética).
+              </p>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "12. Link del Prototipo (Producto/Servicio)",
+        content: `
+          <div style="background:#f8fafc; padding:2rem; border-radius:12px; border:1px solid #e2e8f0; text-align:center;">
+            <div style="font-size:3rem; margin-bottom:0.8rem;">💻</div>
+            <h3 style="color:#005096; margin-bottom:0.5rem;">Prototipo Funcional Interactivo de UPDS.NET</h3>
+            <p style="font-size:0.95rem; color:#475569; max-width:650px; margin:0 auto 1.5rem;">
+              Simulación completa del módulo de apertura con verificación de malla curricular, selección de turnos y contadores reactivos en tiempo real.
+            </p>
+            <div style="background:white; display:inline-block; padding:0.8rem 1.5rem; border-radius:8px; border:2px dashed #005096; margin-bottom:1.2rem;">
+              <code style="font-size:0.95rem; color:#005096; font-weight:700;">file:///c:/Users/Ketfer/Desktop/Emprendedurismo/updsnet_visualizacion_completa_solicitudes%20(1).html</code>
+            </div>
+            <div>
+              <button class="btn-action" onclick="switchTab('solicita'); closeSlides();" style="padding:0.7rem 1.6rem; font-size:0.95rem;">
+                Abrir Simulador Interactivo Ahora
+              </button>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "13. Link Prototipo de Marketing (Video / Arte)",
+        content: `
+          <div style="background:#f8fafc; padding:2rem; border-radius:12px; border:1px solid #e2e8f0; text-align:center;">
+            <div style="font-size:3rem; margin-bottom:0.8rem;">🎨</div>
+            <h3 style="color:#2d6a4f; margin-bottom:0.5rem;">Campaña Publicitaria 'Ideas de hoy, oportunidades de mañana'</h3>
+            <p style="font-size:0.95rem; color:#475569; max-width:650px; margin:0 auto 1.5rem;">
+              Piezas gráficas de alto impacto visual y afiches comparativos del <em>Antes (filas y fotocopias)</em> frente al <em>Ahora (1 clic desde el celular)</em>.
+            </p>
+            <div style="background:white; display:inline-block; padding:0.8rem 1.5rem; border-radius:8px; border:2px dashed #2d6a4f; margin-bottom:1.2rem;">
+              <code style="font-size:0.95rem; color:#2d6a4f; font-weight:700;">[Carpeta de Recursos: Artes Publicitarios y Video Demostrativo EdTech]</code>
+            </div>
+            <p style="font-size:0.85rem; color:#64748b;">
+              Materiales listos para difusión omnicanal en pantallas digitales del campus UPDS y redes sociales.
+            </p>
+          </div>
+        `
+      },
+      {
+        title: "14. Link de Redes Sociales y Página Web",
+        content: `
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1.2rem; text-align:center;">
+            <div style="background:#f8fafc; padding:1.5rem; border-radius:12px; border:1px solid #e2e8f0;">
+              <div style="font-size:2rem; margin-bottom:0.5rem;">🌐</div>
+              <h4 style="color:#005096; margin-bottom:0.4rem;">Página Web Oficial</h4>
+              <p style="font-size:0.82rem; color:#64748b; margin-bottom:0.8rem;">Landing page corporativa y cotizador institucional.</p>
+              <code style="font-size:0.75rem; color:#005096; font-weight:700;">https://edtech-solicita-bo.web.app</code>
+            </div>
+            <div style="background:#f8fafc; padding:1.5rem; border-radius:12px; border:1px solid #e2e8f0;">
+              <div style="font-size:2rem; margin-bottom:0.5rem;">📘</div>
+              <h4 style="color:#1877f2; margin-bottom:0.4rem;">Facebook Oficial</h4>
+              <p style="font-size:0.82rem; color:#64748b; margin-bottom:0.8rem;">Página comunitaria con publicaciones de testimonios reales.</p>
+              <code style="font-size:0.75rem; color:#1877f2; font-weight:700;">facebook.com/edtech.solicita.bolivia</code>
+            </div>
+            <div style="background:#f8fafc; padding:1.5rem; border-radius:12px; border:1px solid #e2e8f0;">
+              <div style="font-size:2rem; margin-bottom:0.5rem;">📸</div>
+              <h4 style="color:#e1306c; margin-bottom:0.4rem;">Instagram & TikTok</h4>
+              <p style="font-size:0.82rem; color:#64748b; margin-bottom:0.8rem;">Spots cortos y videos explicativos para el campus.</p>
+              <code style="font-size:0.75rem; color:#e1306c; font-weight:700;">@edtech_solicita_upds</code>
+            </div>
+          </div>
+          <div style="text-align:center; margin-top:1.5rem; font-size:0.85rem; color:#64748b;">
+            *(Enlaces preparados para vincular las cuentas institucionales oficiales)*
+          </div>
+        `
+      }
+    ];
+
+    let currentSlide = 0;
+
+    function openSlides() {
+      document.getElementById('slides-overlay').classList.add('open');
+      renderSlide(currentSlide);
+    }
+
+    function closeSlides() {
+      document.getElementById('slides-overlay').classList.remove('open');
+    }
+
+    function renderSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= slidesData.length) index = slidesData.length - 1;
+      currentSlide = index;
+
+      const slide = slidesData[currentSlide];
+      document.getElementById('slide-title').innerText = slide.title;
+      document.getElementById('slide-counter').innerText = (currentSlide + 1) + ' / ' + slidesData.length;
+      document.getElementById('slide-content').innerHTML = slide.content;
+    }
+
+    function prevSlide() { renderSlide(currentSlide - 1); }
+    function nextSlide() { renderSlide(currentSlide + 1); }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (!document.getElementById('slides-overlay').classList.contains('open')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'Escape') closeSlides();
+    });
+  </script>
+</body>
+</html>

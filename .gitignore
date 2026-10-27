@@ -1,5 +1,10 @@
-# Ignorar todo el contenido local excepto index.html y la documentación del repositorio
+# Ignorar archivos locales por defecto
 /*
 !/index.html
+!/edtech.html
+!/presentacion.html
+!/edtech-assets
+!/edtech-assets/**
+!/updsnet_visualizacion_completa_solicitudes (1).html
 !/README.md
 !/.gitignore
