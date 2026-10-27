@@ -71,7 +71,7 @@
   .nav nav { margin: 0; }
   .nav>.brand { font-size: 25px; }
   .nav .monogram { width: 35px; height: 39px; }
-  .quote-button { padding: 6px; font-size: 0; border: 0; }
+  .quote-button { padding: 6px 12px; }
   .menu-button { white-space: nowrap; flex-shrink: 0; }
   .nav>.brand { flex-shrink: 0; }
   .nav .brand small { white-space: nowrap; }
@@ -1099,4 +1099,30 @@ dialog.quote-modal::backdrop {
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+}
+
+.quote-button::before,
+.quote-button:before {
+  content: none !important;
+  display: none !important;
+}
+
+@media (max-width: 580px) {
+  .quote-button {
+    padding: 6px 10px !important;
+    gap: 6px !important;
+  }
+  .quote-button .quote-btn-text {
+    font-size: 11px !important;
+  }
+  .quote-button .quote-amount-pill {
+    font-size: 10px !important;
+    padding: 2px 7px !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .quote-button .quote-btn-text {
+    display: none !important;
+  }
 }
