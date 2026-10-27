@@ -728,12 +728,12 @@ function initHexagonParticles() {
       ctx.closePath();
 
       // Translucent deep fill
-      ctx.fillStyle = hsla(, 55%, 26%, );
+      ctx.fillStyle = 'hsla(' + this.hue + ', 55%, 26%, ' + (currentOpacity * 0.45) + ')';
       ctx.fill();
 
       // Crisp luminous border
       ctx.lineWidth = 1.8;
-      ctx.strokeStyle = hsla(, 80%, 55%, );
+      ctx.strokeStyle = 'hsla(' + this.hue + ', 80%, 55%, ' + (currentOpacity * 1.1) + ')';
       ctx.stroke();
 
       ctx.restore();
@@ -758,7 +758,7 @@ function initHexagonParticles() {
           ctx.moveTo(hexagons[i].x, hexagons[i].y);
           ctx.lineTo(hexagons[j].x, hexagons[j].y);
           ctx.lineWidth = 1;
-          ctx.strokeStyle = gba(65, 140, 255, );
+          ctx.strokeStyle = 'rgba(65, 140, 255, ' + lineAlpha + ')';
           ctx.stroke();
         }
       }
