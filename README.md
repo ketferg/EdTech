@@ -36,3 +36,11 @@ Accede a la plataforma web oficial directamente desde tu navegador:
 - **CSS3 modular**: `styles.css`, `landing.css`, `services.css`, `premium.css`, `intro.css`, `experiences.css`
 - **JavaScript vanilla**: Navegación fluida, animación de introducción interactiva y cotizador de proyectos
 - **Integraciones**: Enlaces directos a WhatsApp para cotizaciones personalizadas y Google Maps
+
+---
+
+## 📱 Canales y Redes Sociales Oficiales
+
+- **Instagram Oficial**: [@edtech20262026](https://www.instagram.com/edtech20262026?psln=MXRmYmYwOWs3bGxoMQ==)
+- **WhatsApp Directo**: Atención y cotizaciones automatizadas
+- **Telegram**: Soporte técnico directo con el equipo EdTech
