@@ -167,8 +167,15 @@
           </li>
         </ul>
 
-        <div class="sidebar-header-title">ADMINISTRACIÓN & ACCESOS</div>
+        <div class="sidebar-header-title">COMUNICACIÓN & ACCESOS</div>
         <ul class="sidebar-nav-list">
+          <li class="sidebar-nav-item" data-target-tab="tab-chat" id="nav-item-chat">
+            <button type="button" onclick="switchTab('tab-chat')">
+              <span class="icon"><i class="fa-regular fa-comments"></i></span>
+              <span>Chat entre Usuarios</span>
+              <span class="pill-count" id="pill-sidebar-chat" style="background:#0d6efd; color:#fff;">3</span>
+            </button>
+          </li>
           <li class="sidebar-nav-item" data-target-tab="tab-usuarios">
             <button type="button" onclick="switchTab('tab-usuarios')">
               <span class="icon"><i class="fa-solid fa-users"></i></span>
@@ -211,9 +218,9 @@
             <i class="fa-regular fa-bell"></i>
             <span class="header-badge badge-warning">3</span>
           </button>
-          <button class="header-icon-btn" title="Mensajes de Alumnos">
+          <button class="header-icon-btn" onclick="switchTab('tab-chat')" title="Mensajes y Chat entre Usuarios">
             <i class="fa-regular fa-comments"></i>
-            <span class="header-badge badge-danger">15</span>
+            <span class="header-badge badge-danger">3</span>
           </button>
           <button class="header-icon-btn" id="btn-toggle-finances" onclick="toggleFinancialsVisibility()" title="Alternar visibilidad de ganancias UPDS (Confidencial)">
             <i class="fa-solid fa-eye-slash" id="icon-toggle-finances"></i>
@@ -243,16 +250,19 @@
           </div>
         </div>
 
-        <!-- Quick Dashboard Version Switcher (v1, v2, v3) -->
+        <!-- Quick Dashboard Version Switcher (v1, v2, v3, Chat) -->
         <div class="dashboard-version-pills">
           <button type="button" id="pill-v1" class="version-pill-btn active" onclick="switchDashboardVersion('v1')">
-            <i class="fa-solid fa-table-cells"></i> v1: Materias SOLICITA
+            <i class="fa-solid fa-table-cells"></i> v1: Projects
           </button>
           <button type="button" id="pill-v2" class="version-pill-btn" onclick="switchDashboardVersion('v2')">
             <i class="fa-solid fa-chart-line"></i> v2: Chart.js
           </button>
           <button type="button" id="pill-v3" class="version-pill-btn" onclick="switchDashboardVersion('v3')">
             <i class="fa-solid fa-table-list"></i> v3: Data Tables
+          </button>
+          <button type="button" id="pill-chat" class="version-pill-btn" onclick="switchTab('tab-chat')">
+            <i class="fa-regular fa-comments"></i> Chat
           </button>
         </div>
       </div>
@@ -820,6 +830,77 @@
           </div>
         </div>
 
+        <!-- ===================================================================
+             VIEW 5: CHAT ENTRE USUARIOS (EXACT ADMINLTE 4 SCREENSHOT)
+        =================================================================== -->
+        <div id="view-chat" style="display:none;">
+          <div class="chat-container">
+            
+            <!-- LEFT PANE: CONTACTS SIDEBAR -->
+            <div class="chat-sidebar">
+              <div class="chat-search-wrapper">
+                <i class="fa-solid fa-magnifying-glass chat-search-icon"></i>
+                <input type="text" id="chat-search-input" class="chat-search-input" placeholder="Search contacts..." oninput="filtrarContactosChat(this.value)">
+              </div>
+
+              <div class="chat-contacts-list" id="chat-contacts-list">
+                <!-- Dynamically populated by JS -->
+              </div>
+            </div>
+
+            <!-- RIGHT PANE: MESSAGES CONVERSATION -->
+            <div class="chat-main">
+              
+              <!-- CHAT HEADER -->
+              <div class="chat-header">
+                <div class="chat-header-user">
+                  <div class="chat-contact-avatar" id="chat-active-avatar" style="background:#0d6efd;">OB</div>
+                  <div>
+                    <div class="chat-header-name" id="chat-active-name">Olivia Bennett</div>
+                    <div class="chat-header-status" id="chat-active-status">
+                      <span class="status-dot online"></span>
+                      <span id="chat-active-status-text">Online · typing...</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-header-actions">
+                  <button type="button" class="chat-tool-btn" onclick="iniciarLlamadaChat('audio')" title="Llamada de voz">
+                    <i class="fa-solid fa-phone"></i>
+                  </button>
+                  <button type="button" class="chat-tool-btn" onclick="iniciarLlamadaChat('video')" title="Videollamada">
+                    <i class="fa-solid fa-video"></i>
+                  </button>
+                  <button type="button" class="chat-tool-btn" onclick="mostrarOpcionesChat()" title="Opciones">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- CHAT MESSAGES BODY -->
+              <div class="chat-messages-body" id="chat-messages-body">
+                <!-- Injected dynamically by JS -->
+              </div>
+
+              <!-- CHAT INPUT BAR -->
+              <div class="chat-input-bar">
+                <button type="button" class="chat-input-btn" onclick="adjuntarArchivoChat()" title="Adjuntar archivo o acta">
+                  <i class="fa-solid fa-paperclip"></i>
+                </button>
+                <input type="text" id="chat-text-input" class="chat-text-input" placeholder="Type a message..." autocomplete="off" onkeydown="handleChatInputKey(event)">
+                <button type="button" class="chat-input-btn" onclick="insertarEmojiChat()" title="Insertar emoji">
+                  <i class="fa-regular fa-face-smile"></i>
+                </button>
+                <button type="button" id="chat-send-btn" class="chat-send-btn" onclick="enviarMensajeChat()" title="Enviar mensaje">
+                  <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1215,6 +1296,39 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-secondary-action" onclick="cerrarModales()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL LLAMADA EN VIVO CHAT -->
+  <div id="modal-llamada-chat" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 420px; text-align: center;">
+      <div class="modal-header" style="justify-content: center; position: relative;">
+        <div class="modal-title" style="font-size: 15px;">
+          <i class="fa-solid fa-phone" style="color:var(--bs-primary); margin-right: 6px;"></i>
+          <span id="modal-llamada-tipo">Llamada de Voz</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="finalizarLlamadaChat()" style="position: absolute; right: 16px;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 30px 20px;">
+        <div class="chat-contact-avatar" id="modal-llamada-avatar" style="width: 80px; height: 80px; font-size: 28px; margin: 0 auto 16px; background: #0d6efd; box-shadow: 0 0 20px rgba(13,110,253,0.4);">OB</div>
+        <h3 id="modal-llamada-nombre" style="font-size: 18px; color: #fff; font-weight: 700; margin-bottom: 4px;">Olivia Bennett</h3>
+        <p id="modal-llamada-sub" style="font-size: 13px; color: #8b949e; margin-bottom: 12px;">Decanatura • Revisión de Proyectos</p>
+        <div id="modal-llamada-timer" style="font-size: 20px; font-weight: 700; color: #2ea043; letter-spacing: 1px; margin-bottom: 24px;">Conectando...</div>
+        
+        <div style="display: flex; justify-content: center; gap: 16px;">
+          <button type="button" class="action-icon-btn" id="btn-llamada-mute" onclick="toggleMuteLlamada()" title="Silenciar micrófono" style="width: 44px; height: 44px; font-size: 16px; border-radius: 50%; background: #2b3036;">
+            <i class="fa-solid fa-microphone"></i>
+          </button>
+          <button type="button" class="action-icon-btn" id="btn-llamada-cam" onclick="toggleCamLlamada()" title="Encender / Apagar cámara" style="width: 44px; height: 44px; font-size: 16px; border-radius: 50%; background: #2b3036;">
+            <i class="fa-solid fa-video"></i>
+          </button>
+          <button type="button" onclick="finalizarLlamadaChat()" title="Colgar llamada" style="width: 44px; height: 44px; font-size: 16px; border-radius: 50%; background: #dc3545; color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-phone-slash"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>

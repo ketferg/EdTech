@@ -49,6 +49,7 @@
   const viewUsuarios = document.getElementById('view-usuarios');
   const viewEstadisticas = document.getElementById('view-estadisticas');
   const viewEstudiantes = document.getElementById('view-estudiantes');
+  const viewChat = document.getElementById('view-chat');
   const tbodyForo = document.getElementById('tbody-foro');
   const tbodyEvaluacion = document.getElementById('tbody-evaluacion');
   const tbodyHabilitadas = document.getElementById('tbody-habilitadas');
@@ -62,6 +63,7 @@
   const modalNuevoUsuario = document.getElementById('modal-nuevo-usuario');
   const modalPresencial = document.getElementById('modal-solicitud-presencial');
   const modalPerfilEstudiante = document.getElementById('modal-perfil-estudiante');
+  const modalLlamada = document.getElementById('modal-llamada-chat');
 
   // Currently active subject for modal actions
   let activeSubjectId = null;
@@ -235,11 +237,15 @@
       if (pill) pill.classList.toggle('active', v === activeVer);
     });
 
+    const pillChat = document.getElementById('pill-chat');
+    if (pillChat) pillChat.classList.toggle('active', tabId === 'tab-chat');
+
     if (tabId === 'tab-usuarios') {
       viewDashboard.style.display = 'none';
       viewUsuarios.style.display = 'block';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       if (viewEstudiantes) viewEstudiantes.style.display = 'none';
+      if (viewChat) viewChat.style.display = 'none';
       const b = document.getElementById('breadcrumb-current');
       const p = document.getElementById('page-title');
       if (b) b.innerHTML = '<span>Usuarios</span>';
@@ -249,6 +255,7 @@
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'block';
       if (viewEstudiantes) viewEstudiantes.style.display = 'none';
+      if (viewChat) viewChat.style.display = 'none';
       const b = document.getElementById('breadcrumb-current');
       const p = document.getElementById('page-title');
       if (b) b.innerHTML = '<span>Chart.js</span>';
@@ -259,16 +266,29 @@
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       if (viewEstudiantes) viewEstudiantes.style.display = 'block';
+      if (viewChat) viewChat.style.display = 'none';
       const b = document.getElementById('breadcrumb-current');
       const p = document.getElementById('page-title');
       if (b) b.innerHTML = '<a href="javascript:void(0)">Tables</a> <span>/</span> <span>Data</span>';
       if (p) p.innerHTML = '<span>Data Tables</span>';
       renderEstudiantesDataTable();
+    } else if (tabId === 'tab-chat') {
+      viewDashboard.style.display = 'none';
+      viewUsuarios.style.display = 'none';
+      if (viewEstadisticas) viewEstadisticas.style.display = 'none';
+      if (viewEstudiantes) viewEstudiantes.style.display = 'none';
+      if (viewChat) viewChat.style.display = 'block';
+      const b = document.getElementById('breadcrumb-current');
+      const p = document.getElementById('page-title');
+      if (b) b.innerHTML = '<span>Chat</span>';
+      if (p) p.innerHTML = '<span>Chat</span>';
+      renderChat();
     } else {
       viewDashboard.style.display = 'block';
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       if (viewEstudiantes) viewEstudiantes.style.display = 'none';
+      if (viewChat) viewChat.style.display = 'none';
       const b = document.getElementById('breadcrumb-current');
       const p = document.getElementById('page-title');
       if (b) b.innerHTML = '<span>Projects</span>';
@@ -1883,11 +1903,472 @@
     sidebar.classList.toggle('show-mobile');
   };
 
+  /* ===================================================================
+     12. CHAT ENTRE USUARIOS (EXACT ADMINLTE 4 SCREENSHOT & UPDS)
+  =================================================================== */
+  const UPDS_CHAT_DATA = {
+    activeContactId: 'c-olivia',
+    searchQuery: '',
+    callTimerInterval: null,
+    callSeconds: 0,
+    isMuted: false,
+    isCamOn: true,
+    contacts: [
+      {
+        id: 'c-olivia',
+        name: 'Olivia Bennett',
+        initials: 'OB',
+        color: '#0d6efd',
+        status: 'Online',
+        isTyping: true,
+        time: '2m',
+        lastSnippet: 'Approved — a few small notes...',
+        unread: 2,
+        role: 'Decanatura • Revisión de Proyectos',
+        messages: [
+          { from: 'me', text: 'Just finished going through it. Overall really solid — the new motion primitives are great.', time: '10:40 AM' },
+          { from: 'contact', text: 'Glad you like them. Any concerns?', time: '10:40 AM' },
+          { from: 'me', text: 'Two small things: the success state on form inputs feels light, and the focus ring is barely visible on dark theme.', time: '10:41 AM' },
+          { from: 'contact', text: "Yeah, that focus ring issue has been bugging me too. I'll bump the contrast and ping you for another look.", time: '10:42 AM' },
+          { from: 'me', text: 'Sounds good. Otherwise, ship it!', time: '10:42 AM' }
+        ]
+      },
+      {
+        id: 'c-marcus',
+        name: 'Marcus Reyes',
+        initials: 'MR',
+        color: '#198754',
+        status: 'Online',
+        isTyping: false,
+        time: '1h',
+        lastSnippet: 'Lunch Thursday?',
+        unread: 0,
+        role: 'Coordinador Académico de Facultad',
+        messages: [
+          { from: 'contact', text: 'Ing. Roberto, ¿revisó la asignación de aulas para el Módulo 2?', time: '09:15 AM' },
+          { from: 'me', text: 'Sí Marcus, el Laboratorio 2 ya está asignado para Telecomunicaciones en la noche.', time: '09:30 AM' },
+          { from: 'contact', text: 'Excelente. Lunch Thursday?', time: '10:00 AM' }
+        ]
+      },
+      {
+        id: 'c-sara',
+        name: 'Sara Khan',
+        initials: 'SK',
+        color: '#20c997',
+        status: 'Offline',
+        isTyping: false,
+        time: '3h',
+        lastSnippet: 'Customer interview notes are up.',
+        unread: 0,
+        role: 'Soporte y Atención al Estudiante',
+        messages: [
+          { from: 'contact', text: 'Customer interview notes are up.', time: '08:12 AM' },
+          { from: 'me', text: 'Gracias Sara, las tomo en cuenta para la reunión de mesa de hoy.', time: '08:45 AM' }
+        ]
+      },
+      {
+        id: 'c-diego',
+        name: 'Diego Smania',
+        initials: 'DS',
+        color: '#b45309',
+        status: 'Online',
+        isTyping: false,
+        time: 'Yesterday',
+        lastSnippet: 'PR is ready for review.',
+        unread: 1,
+        role: 'Administrador TI / Sistemas UPDS',
+        messages: [
+          { from: 'contact', text: 'Ingeniero, se aplicó el parche para la verificación de anti-cruces de horarios.', time: 'Yesterday' },
+          { from: 'contact', text: 'PR is ready for review.', time: 'Yesterday' }
+        ]
+      },
+      {
+        id: 'c-emma',
+        name: 'Emma Dawson',
+        initials: 'ED',
+        color: '#dc3545',
+        status: 'Offline',
+        isTyping: false,
+        time: 'Yesterday',
+        lastSnippet: 'Heading out, see you Mon.',
+        unread: 0,
+        role: 'Registro y Admisiones Central',
+        messages: [
+          { from: 'contact', text: 'Recibimos el Acta ACTA-DEC-2026-088. Apertura de paralelos completada en el sistema.', time: 'Yesterday' },
+          { from: 'contact', text: 'Heading out, see you Mon.', time: 'Yesterday' }
+        ]
+      },
+      {
+        id: 'c-liam',
+        name: 'Liam Carter',
+        initials: 'LC',
+        color: '#0284c7',
+        status: 'Offline',
+        isTyping: false,
+        time: 'May 16',
+        lastSnippet: 'Pushed the calendar fix.',
+        unread: 0,
+        role: 'Programador de Horarios',
+        messages: [
+          { from: 'contact', text: 'Pushed the calendar fix.', time: 'May 16' }
+        ]
+      },
+      {
+        id: 'c-ketfer',
+        name: 'Ketfer Gianella Salazar',
+        initials: 'KG',
+        color: '#8b5cf6',
+        status: 'Online',
+        isTyping: false,
+        time: 'Just now',
+        lastSnippet: 'Ingeniero, ya somos 18 alumnos listos en el foro...',
+        unread: 1,
+        role: 'Estudiante Delegado • Ing. en Redes',
+        messages: [
+          { from: 'contact', text: 'Estimado Decano, le escribo en representación de los 18 estudiantes inscritos en el foro para Tecnologías Inalámbricas.', time: '11:00 AM' },
+          { from: 'contact', text: 'Ya confirmamos que todos aprobamos Redes II. ¿Podría confirmarnos si se habilitará en el Turno Noche?', time: '11:01 AM' },
+          { from: 'me', text: 'Hola Ketfer. Excelente iniciativa, revisamos la solicitud en Decanatura y el quórum es suficiente. En la Mesa de Decisión de hoy asignaremos al docente y aula.', time: '11:05 AM' },
+          { from: 'contact', text: '¡Muchísimas gracias Ingeniero! Avisaré de inmediato a mis compañeros por el grupo de WhatsApp.', time: '11:08 AM' }
+        ]
+      },
+      {
+        id: 'c-andrea',
+        name: 'Lic. Andrea Suárez',
+        initials: 'AS',
+        color: '#ec4899',
+        status: 'Online',
+        isTyping: false,
+        time: '10m',
+        lastSnippet: 'Actas de Sistemas Operativos listas para firma digital.',
+        unread: 0,
+        role: 'Auxiliar de Decanatura',
+        messages: [
+          { from: 'contact', text: 'Ing. Roberto, terminé de contrastar los prerrequisitos de los 14 alumnos de Investigación Operativa II.', time: '09:50 AM' },
+          { from: 'contact', text: 'Todos cumplen con el 100% de la malla. Ya preparé el borrador del Acta Oficial.', time: '09:52 AM' },
+          { from: 'me', text: 'Perfecto Andrea. Procede a adjuntar el número correlativo para enviarlo a Registro Central.', time: '09:55 AM' }
+        ]
+      }
+    ]
+  };
+
+  function formatTimeNow() {
+    const d = new Date();
+    let hours = d.getHours();
+    const minutes = d.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${hours}:${minutes} ${ampm}`;
+  }
+
+  window.renderChat = function () {
+    renderChatContacts();
+    renderActiveChatConversation();
+  };
+
+  function renderChatContacts() {
+    const contactsListEl = document.getElementById('chat-contacts-list');
+    if (!contactsListEl) return;
+
+    contactsListEl.innerHTML = '';
+    const query = UPDS_CHAT_DATA.searchQuery.toLowerCase();
+
+    const filtered = UPDS_CHAT_DATA.contacts.filter(c =>
+      c.name.toLowerCase().includes(query) ||
+      c.role.toLowerCase().includes(query) ||
+      c.lastSnippet.toLowerCase().includes(query)
+    );
+
+    if (filtered.length === 0) {
+      contactsListEl.innerHTML = `<li style="padding:24px 16px; text-align:center; color:#8b949e; font-size:13px;">No se encontraron contactos.</li>`;
+      return;
+    }
+
+    filtered.forEach(contact => {
+      const isActive = contact.id === UPDS_CHAT_DATA.activeContactId;
+      const li = document.createElement('li');
+      li.className = `chat-contact-item ${isActive ? 'active' : ''}`;
+      li.onclick = () => seleccionarContactoChat(contact.id);
+
+      const unreadBadge = contact.unread > 0
+        ? `<span class="chat-unread-badge">${contact.unread}</span>`
+        : '';
+
+      li.innerHTML = `
+        <div class="chat-contact-avatar" style="background:${contact.color};">
+          ${contact.initials}
+        </div>
+        <div class="chat-contact-info">
+          <div class="chat-contact-header">
+            <span class="chat-contact-name">${contact.name}</span>
+            <span class="chat-contact-time">${contact.time}</span>
+          </div>
+          <div class="chat-contact-bottom">
+            <span class="chat-contact-snippet">${contact.lastSnippet}</span>
+            ${unreadBadge}
+          </div>
+        </div>
+      `;
+      contactsListEl.appendChild(li);
+    });
+  }
+
+  function renderActiveChatConversation() {
+    const activeContact = UPDS_CHAT_DATA.contacts.find(c => c.id === UPDS_CHAT_DATA.activeContactId);
+    if (!activeContact) return;
+
+    // Header info
+    const avatarEl = document.getElementById('chat-active-avatar');
+    const nameEl = document.getElementById('chat-active-name');
+    const statusTextEl = document.getElementById('chat-active-status-text');
+    const statusDotEl = document.querySelector('#chat-active-status .status-dot');
+
+    if (avatarEl) {
+      avatarEl.textContent = activeContact.initials;
+      avatarEl.style.backgroundColor = activeContact.color;
+    }
+    if (nameEl) nameEl.textContent = activeContact.name;
+
+    if (statusTextEl && statusDotEl) {
+      if (activeContact.isTyping) {
+        statusTextEl.textContent = 'Online · typing...';
+        statusDotEl.className = 'status-dot online';
+      } else if (activeContact.status === 'Online') {
+        statusTextEl.textContent = 'Online';
+        statusDotEl.className = 'status-dot online';
+      } else {
+        statusTextEl.textContent = 'Offline';
+        statusDotEl.className = 'status-dot offline';
+      }
+    }
+
+    // Messages body
+    const bodyEl = document.getElementById('chat-messages-body');
+    if (!bodyEl) return;
+
+    bodyEl.innerHTML = '';
+
+    activeContact.messages.forEach(msg => {
+      const isOutgoing = msg.from === 'me';
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-msg ${isOutgoing ? 'outgoing' : 'incoming'}`;
+      msgDiv.innerHTML = `
+        <div class="chat-msg-bubble">${msg.text}</div>
+        <div class="chat-msg-time">${msg.time}</div>
+      `;
+      bodyEl.appendChild(msgDiv);
+    });
+
+    // Typing bubble if active
+    if (activeContact.isTyping) {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'chat-typing-bubble';
+      typingDiv.id = 'chat-typing-indicator';
+      typingDiv.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      bodyEl.appendChild(typingDiv);
+    }
+
+    // Scroll to bottom
+    bodyEl.scrollTop = bodyEl.scrollHeight;
+  }
+
+  window.seleccionarContactoChat = function (contactId) {
+    UPDS_CHAT_DATA.activeContactId = contactId;
+    const contact = UPDS_CHAT_DATA.contacts.find(c => c.id === contactId);
+    if (contact) {
+      contact.unread = 0;
+    }
+    renderChatContacts();
+    renderActiveChatConversation();
+  };
+
+  window.filtrarContactosChat = function (query) {
+    UPDS_CHAT_DATA.searchQuery = query;
+    renderChatContacts();
+  };
+
+  window.handleChatInputKey = function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      enviarMensajeChat();
+    }
+  };
+
+  window.enviarMensajeChat = function () {
+    const input = document.getElementById('chat-text-input');
+    if (!input) return;
+
+    const text = input.value.trim();
+    if (!text) return;
+
+    const activeContact = UPDS_CHAT_DATA.contacts.find(c => c.id === UPDS_CHAT_DATA.activeContactId);
+    if (!activeContact) return;
+
+    const timeNow = formatTimeNow();
+
+    // Add user message
+    activeContact.messages.push({
+      from: 'me',
+      text: text,
+      time: timeNow
+    });
+
+    activeContact.lastSnippet = text;
+    activeContact.time = 'Just now';
+    input.value = '';
+
+    renderActiveChatConversation();
+    renderChatContacts();
+
+    // Trigger typing and contextual auto-reply
+    setTimeout(() => {
+      activeContact.isTyping = true;
+      renderActiveChatConversation();
+
+      setTimeout(() => {
+        activeContact.isTyping = false;
+
+        let autoReply = 'Entendido, procedemos de acuerdo a lo coordinado.';
+        if (activeContact.id === 'c-olivia') {
+          const replies = [
+            "I'll update the PR with those contrast fixes right away. Thanks for the quick feedback!",
+            "Great points! Just tested the high-contrast ring and it feels way cleaner now.",
+            "Sounds good, shipping the update to staging in 5 mins."
+          ];
+          autoReply = replies[Math.floor(Math.random() * replies.length)];
+        } else if (activeContact.id === 'c-ketfer') {
+          autoReply = "¡Excelente noticia Ing. Roberto! Ya les avisé a todos los alumnos por el grupo de WhatsApp. Esperamos la confirmación del aula.";
+        } else if (activeContact.id === 'c-andrea') {
+          autoReply = "Recibido Decano. Ya incorporé la resolución en el acta oficial para que pase a firma digital.";
+        } else if (activeContact.id === 'c-marcus') {
+          autoReply = "Anotado en la agenda. Llevo la planilla de docentes para revisar la carga horaria.";
+        } else if (activeContact.id === 'c-diego') {
+          autoReply = "El servicio de base de datos se actualizó correctamente. Cualquier novedad le aviso de inmediato.";
+        }
+
+        const replyTime = formatTimeNow();
+        activeContact.messages.push({
+          from: 'contact',
+          text: autoReply,
+          time: replyTime
+        });
+
+        activeContact.lastSnippet = autoReply;
+        activeContact.time = 'Just now';
+
+        renderActiveChatConversation();
+        renderChatContacts();
+        showToast(`💬 Mensaje de ${activeContact.name}: "${autoReply.substring(0, 32)}..."`);
+      }, 1600);
+
+    }, 500);
+  };
+
+  // Call simulation
+  window.iniciarLlamadaChat = function (tipo) {
+    const activeContact = UPDS_CHAT_DATA.contacts.find(c => c.id === UPDS_CHAT_DATA.activeContactId);
+    if (!activeContact) return;
+
+    if (modalLlamada) modalLlamada.classList.add('show');
+
+    const tipoEl = document.getElementById('modal-llamada-tipo');
+    const avatarEl = document.getElementById('modal-llamada-avatar');
+    const nombreEl = document.getElementById('modal-llamada-nombre');
+    const subEl = document.getElementById('modal-llamada-sub');
+    const timerEl = document.getElementById('modal-llamada-timer');
+
+    if (tipoEl) tipoEl.textContent = tipo === 'video' ? 'Videollamada en Vivo' : 'Llamada de Voz';
+    if (avatarEl) {
+      avatarEl.textContent = activeContact.initials;
+      avatarEl.style.backgroundColor = activeContact.color;
+    }
+    if (nombreEl) nombreEl.textContent = activeContact.name;
+    if (subEl) subEl.textContent = activeContact.role;
+    if (timerEl) timerEl.textContent = 'Conectando...';
+
+    UPDS_CHAT_DATA.callSeconds = 0;
+    clearInterval(UPDS_CHAT_DATA.callTimerInterval);
+
+    setTimeout(() => {
+      if (timerEl) timerEl.textContent = '00:00';
+      UPDS_CHAT_DATA.callTimerInterval = setInterval(() => {
+        UPDS_CHAT_DATA.callSeconds++;
+        const mins = Math.floor(UPDS_CHAT_DATA.callSeconds / 60).toString().padStart(2, '0');
+        const secs = (UPDS_CHAT_DATA.callSeconds % 60).toString().padStart(2, '0');
+        if (timerEl) timerEl.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }, 1500);
+  };
+
+  window.finalizarLlamadaChat = function () {
+    clearInterval(UPDS_CHAT_DATA.callTimerInterval);
+    if (modalLlamada) modalLlamada.classList.remove('show');
+    showToast(`📞 Llamada finalizada (${UPDS_CHAT_DATA.callSeconds}s de duración)`);
+  };
+
+  window.toggleMuteLlamada = function () {
+    UPDS_CHAT_DATA.isMuted = !UPDS_CHAT_DATA.isMuted;
+    const btn = document.getElementById('btn-llamada-mute');
+    if (btn) {
+      btn.innerHTML = UPDS_CHAT_DATA.isMuted ? '<i class="fa-solid fa-microphone-slash"></i>' : '<i class="fa-solid fa-microphone"></i>';
+      btn.style.background = UPDS_CHAT_DATA.isMuted ? '#dc3545' : '#2b3036';
+    }
+    showToast(UPDS_CHAT_DATA.isMuted ? 'Micrófono silenciado' : 'Micrófono activado');
+  };
+
+  window.toggleCamLlamada = function () {
+    UPDS_CHAT_DATA.isCamOn = !UPDS_CHAT_DATA.isCamOn;
+    const btn = document.getElementById('btn-llamada-cam');
+    if (btn) {
+      btn.innerHTML = UPDS_CHAT_DATA.isCamOn ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
+      btn.style.background = UPDS_CHAT_DATA.isCamOn ? '#2b3036' : '#dc3545';
+    }
+    showToast(UPDS_CHAT_DATA.isCamOn ? 'Cámara activada' : 'Cámara desactivada');
+  };
+
+  window.adjuntarArchivoChat = function () {
+    const activeContact = UPDS_CHAT_DATA.contacts.find(c => c.id === UPDS_CHAT_DATA.activeContactId);
+    if (!activeContact) return;
+
+    const timeNow = formatTimeNow();
+    const docText = `📄 Documento adjunto: Acta_Previa_Resolucion_DEC_2026.pdf (1.8 MB)`;
+
+    activeContact.messages.push({
+      from: 'me',
+      text: docText,
+      time: timeNow
+    });
+
+    activeContact.lastSnippet = '📄 Documento adjunto';
+    activeContact.time = 'Just now';
+
+    renderActiveChatConversation();
+    renderChatContacts();
+    showToast('📎 Documento adjuntado y enviado al chat.');
+  };
+
+  window.insertarEmojiChat = function () {
+    const input = document.getElementById('chat-text-input');
+    if (input) {
+      input.value += ' 👍 ';
+      input.focus();
+    }
+  };
+
+  window.mostrarOpcionesChat = function () {
+    showToast('⚙️ Opciones de conversación: Exportar historial, Silenciar notificaciones, Ver perfil.');
+  };
+
   // Close modals clicking outside
   document.querySelectorAll('.modal-backdrop').forEach(modal => {
     modal.addEventListener('click', function (e) {
       if (e.target === this) {
         cerrarModales();
+        finalizarLlamadaChat();
       }
     });
   });
