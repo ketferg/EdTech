@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdminLTE 4 | Decanatura de Ingeniería - SOLICITA UPDS</title>
+  
+  <!-- Google Fonts: Source Sans 3 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- AdminLTE 4 Decanato Stylesheet -->
+  <link rel="stylesheet" href="css/adminlte-decano.css">
+</head>
+<body>
+
+  <!-- ===================================================================
+       1. LOCKSCREEN SCREEN (ADMINLTE 4 - PANTALLA DE ACCESO DECANATO)
+  =================================================================== -->
+  <div id="lockscreen" class="lockscreen-wrapper">
+    <div class="lockscreen-brand">
+      <div class="logo-box">
+        <div class="logo-badge">A</div>
+        <div>
+          <span>AdminLTE 4</span>
+          <span class="logo-sub">UPDS • Decanatura de Ingeniería</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lockscreen-card">
+      <div class="lockscreen-user-name" id="lock-user-name">Ing. Roberto Mendoza</div>
+      <div class="lockscreen-user-role" id="lock-user-role">
+        <i class="fa-solid fa-shield-halved"></i> Rol: Decano (Decanatura de Ingeniería)
+      </div>
+
+      <form id="lockscreen-form" class="lockscreen-credentials">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" 
+             alt="Avatar" id="lock-user-avatar" class="lockscreen-avatar">
+        <input type="password" id="lockscreen-password" class="lockscreen-input" placeholder="password / PIN directivo" autofocus>
+        <button type="submit" class="lockscreen-btn" title="Desbloquear Sesión">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="lockscreen-hint">
+        Enter your password to retrieve your session (Presione Enter o la flecha para ingresar)
+      </div>
+
+      <!-- Selector Rápido de Rol Institucional -->
+      <div class="quick-role-switcher">
+        <div class="quick-role-switcher-title"><i class="fa-solid fa-users-gear"></i> O cambiar de usuario institucional guardado:</div>
+        <button type="button" class="role-pill-btn active" data-userid="USR-02" onclick="selectLockUser('USR-02')">
+          <span><strong>Ing. Roberto Mendoza</strong> (Decano)</span>
+          <span class="badge-pill badge-role-decano">Decanato</span>
+        </button>
+        <button type="button" class="role-pill-btn" data-userid="USR-03" onclick="selectLockUser('USR-03')">
+          <span><strong>Lic. Andrea Suárez</strong> (Auxiliar Secretaría)</span>
+          <span class="badge-pill badge-role-auxiliar">Auxiliar</span>
+        </button>
+        <button type="button" class="role-pill-btn" data-userid="USR-01" onclick="selectLockUser('USR-01')">
+          <span><strong>Ketfer Gianella Salazar</strong> (CTO EdTech)</span>
+          <span class="badge-pill badge-role-ti">TI / SuperAdmin</span>
+        </button>
+        <button type="button" class="role-pill-btn" data-userid="USR-04" onclick="selectLockUser('USR-04')">
+          <span><strong>Sebastián Peña Cruz</strong> (Pasante)</span>
+          <span class="badge-pill badge-role-temporal">Temporal</span>
+        </button>
+      </div>
+
+      <div class="lockscreen-footer">
+        Copyright © 2014-2026 <strong>AdminLTE.io</strong> / UPDS Facultad de Ingeniería & EdTech S.R.L.<br>
+        Todos los derechos reservados.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       2. MAIN APPLICATION SHELL
+  =================================================================== -->
+  <div class="app-wrapper">
+    
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar">
+      <a href="javascript:void(0)" class="sidebar-brand">
+        <div class="brand-logo">A</div>
+        <div>
+          <span style="font-weight:700;">AdminLTE 4</span>
+          <span style="font-size:11px; display:block; color:#ff951c; font-weight:600;">SOLICITA • DECANATO</span>
+        </div>
+      </a>
+
+      <!-- Sidebar User Panel -->
+      <div class="sidebar-user-panel">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" 
+             alt="User Avatar" id="sidebar-user-avatar" class="sidebar-user-avatar">
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebar-user-name">Ing. Roberto Mendoza</div>
+          <span class="sidebar-user-role-badge badge-role-decano" id="sidebar-user-role-badge">Decano</span>
+        </div>
+      </div>
+
+      <!-- Quick Filter -->
+      <div class="sidebar-filter">
+        <input type="text" class="sidebar-filter-input" placeholder="Filter menu...">
+      </div>
+
+      <!-- Navigation Menu -->
+      <div class="sidebar-menu-wrapper">
+        <div class="sidebar-header-title">PLANIFICACIÓN ACADÉMICA</div>
+        <ul class="sidebar-nav-list">
+          <li class="sidebar-nav-item active" data-target-tab="tab-foro">
+            <button type="button" onclick="switchTab('tab-foro')">
+              <span class="icon"><i class="fa-solid fa-comments"></i></span>
+              <span>1. Materias del Foro</span>
+              <span class="pill-count" id="pill-sidebar-foro">4</span>
+            </button>
+          </li>
+          <li class="sidebar-nav-item" data-target-tab="tab-evaluacion">
+            <button type="button" onclick="switchTab('tab-evaluacion')">
+              <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
+              <span>2. Mesa de Evaluación</span>
+              <span class="pill-count" id="pill-sidebar-eval">2</span>
+            </button>
+          </li>
+          <li class="sidebar-nav-item" data-target-tab="tab-habilitadas">
+            <button type="button" onclick="switchTab('tab-habilitadas')">
+              <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
+              <span>3. Habilitadas Oficiales</span>
+              <span class="pill-count" id="pill-sidebar-hab">1</span>
+            </button>
+          </li>
+        </ul>
+
+        <div class="sidebar-header-title">ADMINISTRACIÓN & ACCESOS</div>
+        <ul class="sidebar-nav-list">
+          <li class="sidebar-nav-item" data-target-tab="tab-usuarios">
+            <button type="button" onclick="switchTab('tab-usuarios')">
+              <span class="icon"><i class="fa-solid fa-users"></i></span>
+              <span>Directorio de Usuarios</span>
+            </button>
+          </li>
+          <li class="sidebar-nav-item">
+            <button type="button" onclick="lockDashboard()">
+              <span class="icon"><i class="fa-solid fa-lock"></i></span>
+              <span>Bloquear Sesión</span>
+            </button>
+          </li>
+          <li class="sidebar-nav-item">
+            <a href="../index.html">
+              <span class="icon"><i class="fa-solid fa-arrow-left"></i></span>
+              <span>Volver a Landing UPDS</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="app-main">
+      
+      <!-- TOP NAVBAR -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="header-toggle-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass header-search-icon"></i>
+            <input type="text" id="global-search-input" class="header-search-input" placeholder="Search materias, códigos, alumnos...">
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button class="header-icon-btn" title="Notificaciones del Foro">
+            <i class="fa-regular fa-bell"></i>
+            <span class="header-badge badge-warning">3</span>
+          </button>
+          <button class="header-icon-btn" title="Mensajes de Alumnos">
+            <i class="fa-regular fa-comments"></i>
+            <span class="header-badge badge-danger">15</span>
+          </button>
+          <button class="header-icon-btn" onclick="lockDashboard()" title="Bloquear Pantalla">
+            <i class="fa-solid fa-lock"></i>
+          </button>
+          <div class="header-user-btn">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" 
+                 alt="User" id="header-user-avatar" class="header-user-avatar">
+            <span class="header-user-name" id="header-user-name">Ing. Roberto Mendoza</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT HEADER / BREADCRUMB -->
+      <div class="content-header">
+        <h1 class="content-title" id="page-title">
+          <i class="fa-solid fa-diagram-project" style="color:var(--bs-primary);"></i>
+          <span>Gestión de Apertura de Materias</span>
+        </h1>
+        <div class="content-breadcrumb">
+          <a href="javascript:void(0)" onclick="switchTab('tab-foro')">Decanato</a>
+          <span>/</span>
+          <span id="breadcrumb-current">Materias & Planificación Académica</span>
+        </div>
+      </div>
+
+      <!-- CONTENT BODY -->
+      <div class="content-body">
+        
+        <!-- ===================================================================
+             VIEW 1: DASHBOARD & 3-STAGE PIPELINE (IMAGES 3 & SOLICITA)
+        =================================================================== -->
+        <div id="view-dashboard">
+          
+          <!-- TOP 4 KPI TILES (MATCHING IMAGE 3) -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-blue"></div>
+              <div class="kpi-title">
+                <span>Materias en Foro</span>
+                <i class="fa-solid fa-comments" style="color:var(--bs-primary);"></i>
+              </div>
+              <div class="kpi-value" id="kpi-total-foro">4</div>
+              <div class="kpi-subtext">Acumulando solicitudes de estudiantes</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-green"></div>
+              <div class="kpi-title">
+                <span>En Mesa de Evaluación</span>
+                <i class="fa-solid fa-scale-balanced" style="color:var(--bs-success);"></i>
+              </div>
+              <div class="kpi-value" id="kpi-total-eval">2</div>
+              <div class="kpi-subtext">Superaron el mínimo de 10 alumnos</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-yellow"></div>
+              <div class="kpi-title">
+                <span>Meta Pendiente (&lt; 10)</span>
+                <i class="fa-solid fa-clock-rotate-left" style="color:var(--bs-warning);"></i>
+              </div>
+              <div class="kpi-value" id="kpi-total-pendientes">2</div>
+              <div class="kpi-subtext">Requieren más postulaciones o difusión</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-cyan"></div>
+              <div class="kpi-title">
+                <span>Habilitadas Oficiales</span>
+                <i class="fa-solid fa-file-circle-check" style="color:var(--bs-info);"></i>
+              </div>
+              <div class="kpi-value" id="kpi-total-habilitadas">1</div>
+              <div class="kpi-subtext">Con acta generada y enviadas a Registro</div>
+            </div>
+          </div>
+
+          <!-- 3-STAGE PROGRESSIVE PIPELINE SELECTOR -->
+          <div class="pipeline-nav">
+            <button type="button" class="pipeline-tab-btn active" data-tab="tab-foro" onclick="switchTab('tab-foro')">
+              <i class="fa-solid fa-comments"></i>
+              <span>1. Materias del Foro (SOLICITA)</span>
+              <span class="tab-badge" id="badge-count-foro">4</span>
+            </button>
+            <button type="button" class="pipeline-tab-btn" data-tab="tab-evaluacion" onclick="switchTab('tab-evaluacion')">
+              <i class="fa-solid fa-scale-balanced"></i>
+              <span>2. En Evaluación & Asignación Docente</span>
+              <span class="tab-badge" id="badge-count-eval">2</span>
+            </button>
+            <button type="button" class="pipeline-tab-btn" data-tab="tab-habilitadas" onclick="switchTab('tab-habilitadas')">
+              <i class="fa-solid fa-file-signature"></i>
+              <span>3. Materias Habilitadas & Actas Registro</span>
+              <span class="tab-badge" id="badge-count-hab">1</span>
+            </button>
+          </div>
+
+          <!-- SECTION 1: MATERIAS DEL FORO -->
+          <div id="section-foro">
+            <div class="card-main">
+              <div class="card-toolbar">
+                <div class="card-toolbar-title">
+                  <i class="fa-solid fa-list-check" style="color:var(--bs-primary);"></i>
+                  <span>Materias Activas en Foro de Estudiantes</span>
+                </div>
+                <div class="card-toolbar-actions">
+                  <div class="table-search-box">
+                    <i class="fa-solid fa-magnifying-glass table-search-icon"></i>
+                    <input type="text" class="table-search-input" placeholder="Filtrar materias...">
+                  </div>
+                  <button type="button" class="btn-primary-action" onclick="abrirModalPresencial('FORO-01')">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>+ Registrar Alumno Presencial</span>
+                  </button>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="adminlte-table">
+                  <thead>
+                    <tr>
+                      <th>Materia / Carrera</th>
+                      <th>Estado Meta</th>
+                      <th>Progreso (Mín. 10)</th>
+                      <th>Estudiantes</th>
+                      <th>Recaudación Potencial</th>
+                      <th>Turno Requerido</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-foro">
+                    <!-- Populated dynamically by dashboard.js -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer">
+                <div>Nota: Las materias que alcanzan 10 o más alumnos habilitan el botón para <strong>Pasar a Mesa de Evaluación</strong>.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: EN EVALUACIÓN Y VIABILIDAD -->
+          <div id="section-evaluacion" style="display:none;">
+            <div class="card-main">
+              <div class="card-toolbar">
+                <div class="card-toolbar-title">
+                  <i class="fa-solid fa-calculator" style="color:var(--bs-success);"></i>
+                  <span>Mesa de Decisión Académica: Asignación y Viabilidad</span>
+                </div>
+                <div class="card-toolbar-actions">
+                  <span style="font-size:12px; color:#8b949e;">Validador: Secretaría de Decanatura & Decano de Facultad</span>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="adminlte-table">
+                  <thead>
+                    <tr>
+                      <th>Materia & Validación</th>
+                      <th>Estado Docente</th>
+                      <th>Turno & Espacio Físico</th>
+                      <th>Docente Asignado</th>
+                      <th>Viabilidad Financiera</th>
+                      <th>Alumnos</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-evaluacion">
+                    <!-- Populated dynamically by dashboard.js -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer">
+                <div>El Decano valida que el docente no tenga colisiones horarias y emite el <strong>Acta Oficial para Registro Central</strong>.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: MATERIAS HABILITADAS -->
+          <div id="section-habilitadas" style="display:none;">
+            <div class="card-main">
+              <div class="card-toolbar">
+                <div class="card-toolbar-title">
+                  <i class="fa-solid fa-file-circle-check" style="color:var(--bs-info);"></i>
+                  <span>Materias Habilitadas Oficialmente (Despachadas a Registro)</span>
+                </div>
+                <div class="card-toolbar-actions">
+                  <button type="button" class="btn-success-action" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Imprimir Resumen de Aperturas</span>
+                  </button>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="adminlte-table">
+                  <thead>
+                    <tr>
+                      <th>Nº Acta Oficial</th>
+                      <th>Materia & Plan</th>
+                      <th>Docente Titular</th>
+                      <th>Turno & Aula Asignada</th>
+                      <th>Inscripción & Margen</th>
+                      <th>Estado Registro</th>
+                      <th>Documento</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-habilitadas">
+                    <!-- Populated dynamically by dashboard.js -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer">
+                <div>Todas las actas emitidas cuentan con validez institucional UPDS para apertura de paralelos y matriculación directa.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===================================================================
+             VIEW 2: USUARIOS Y ROLES (IMAGE 2)
+        =================================================================== -->
+        <div id="view-usuarios" style="display:none;">
+          <div class="card-main">
+            <div class="card-toolbar">
+              <div class="card-toolbar-title">
+                <i class="fa-solid fa-id-card-clip" style="color:var(--bs-primary);"></i>
+                <span>Directorio de Usuarios de Decanatura</span>
+              </div>
+              <div class="card-toolbar-actions">
+                <div class="table-search-box">
+                  <i class="fa-solid fa-magnifying-glass table-search-icon"></i>
+                  <input type="text" class="table-search-input" placeholder="Search users...">
+                </div>
+                <select id="filter-users-role" class="table-filter-select">
+                  <option value="all">Todos los roles</option>
+                  <option value="TI">TI / SuperAdmin</option>
+                  <option value="Decano">Decano</option>
+                  <option value="Auxiliar">Auxiliar</option>
+                  <option value="Temporal">Temporal (Pasante)</option>
+                </select>
+                <button type="button" class="btn-primary-action" onclick="abrirNuevoUsuarioModal()">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>+ New user</span>
+                </button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="adminlte-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Expiración</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-usuarios">
+                  <!-- Populated dynamically by dashboard.js -->
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <div id="users-count-label">Mostrando usuarios</div>
+              <div class="pagination-group">
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       3. MODALS
+  =================================================================== -->
+
+  <!-- MODAL ASIGNAR DOCENTE & ESPACIO (CON ANTI-CRUCE DE HORARIO) -->
+  <div id="modal-asignar-docente" class="modal-backdrop">
+    <div class="modal-dialog modal-dialog-lg">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-chalkboard-user" style="color:var(--bs-primary);"></i>
+          <span>Asignación de Docente, Aula y Horario</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="cerrarModales()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#1a1d20; padding:12px 16px; border-radius:8px; margin-bottom:18px; border:1px solid #373b3e;">
+          <h3 id="modal-asig-titulo" style="font-size:16px; color:#fff; font-weight:700;">Tecnologías Inalámbricas</h3>
+          <div id="modal-asig-carrera" style="font-size:13px; color:#8b949e;">Ing. en Redes y Telecomunicaciones</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+          <!-- Turno -->
+          <div class="form-group">
+            <label class="form-label"><i class="fa-regular fa-clock"></i> Turno Oficial UPDS:</label>
+            <select id="asig-turno" class="form-control" onchange="verificarCruceHorario()">
+              <!-- Options populated by JS -->
+            </select>
+          </div>
+
+          <!-- Espacio Físico -->
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-door-open"></i> Aula o Laboratorio:</label>
+            <select id="asig-espacio" class="form-control">
+              <!-- Options populated by JS -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Docente con Anti-Colisión -->
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-user-tie"></i> Docente de la Especialidad:</label>
+          <select id="asig-docente" class="form-control" onchange="verificarCruceHorario()">
+            <!-- Options populated by JS -->
+          </select>
+        </div>
+
+        <!-- Alert Cruce de Horario -->
+        <div id="asig-conflict-alert" class="conflict-alert">
+          <!-- Filled dynamically by JS -->
+        </div>
+
+        <!-- Alert Horario Válido -->
+        <div id="asig-available-alert" class="available-alert">
+          <!-- Filled dynamically by JS -->
+        </div>
+
+        <!-- Resumen Financiero y de Viabilidad -->
+        <div class="viability-summary-card">
+          <div>
+            <div class="viability-item-title">Alumnos Validados</div>
+            <div class="viability-item-val" id="asig-calc-alumnos">16</div>
+          </div>
+          <div>
+            <div class="viability-item-title">Ingreso Estimado UPDS</div>
+            <div class="viability-item-val" style="color:#60a5fa;" id="asig-calc-ingreso">Bs 10.240</div>
+          </div>
+          <div>
+            <div class="viability-item-title">Margen Neto UPDS</div>
+            <div class="viability-item-val" style="color:#4ade80;" id="asig-calc-margen">Bs 7.740</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary-action" onclick="cerrarModales()">Cancelar</button>
+        <button type="button" id="btn-guardar-asignacion" class="btn-primary-action" onclick="guardarAsignacion()">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Asignación
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL VER ALUMNOS & PRERREQUISITOS -->
+  <div id="modal-ver-alumnos" class="modal-backdrop">
+    <div class="modal-dialog modal-dialog-lg">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modal-alumnos-titulo">Estudiantes Interesados</div>
+          <div style="font-size:12px; color:#8b949e;" id="modal-alumnos-sub">Validación de requisitos</div>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="cerrarModales()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="adminlte-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Registro UPDS</th>
+                <th>Nombre del Estudiante</th>
+                <th>Prerrequisitos Académicos</th>
+                <th>Contacto</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-alumnos-modal">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary-action" onclick="cerrarModales()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL REGISTRO PRESENCIAL DE ESTUDIANTE (WALK-IN) -->
+  <div id="modal-solicitud-presencial" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-user-plus" style="color:var(--bs-edtech-orange);"></i>
+          <span>Registrar Alumno Presencial en Ventanilla</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="cerrarModales()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px; color:#8b949e; margin-bottom:14px;">
+          Permite al auxiliar o decano registrar inmediatamente a un alumno que se apersone a secretaría, sumándolo al cómputo oficial de la materia:
+        </p>
+        <div style="font-weight:700; color:#fff; margin-bottom:16px;" id="presencial-materia-nombre">Materia</div>
+
+        <div class="form-group">
+          <label class="form-label">Nombre Completo del Estudiante:</label>
+          <input type="text" id="reg-nombre" class="form-control" placeholder="Ej. Carlos Antonio Morales">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nº de Registro UPDS:</label>
+          <input type="text" id="reg-registro" class="form-control" placeholder="Ej. 20230514">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Teléfono / WhatsApp de Contacto:</label>
+          <input type="text" id="reg-telefono" class="form-control" placeholder="Ej. 76012345">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary-action" onclick="cerrarModales()">Cancelar</button>
+        <button type="button" class="btn-primary-action" onclick="guardarRegistroPresencial()">
+          <i class="fa-solid fa-plus"></i> Sumar Estudiante
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ACTA OFICIAL DE HABILITACIÓN PARA REGISTRO (PDF STYLING) -->
+  <div id="modal-acta-registro" class="modal-backdrop">
+    <div class="modal-dialog modal-dialog-lg" style="max-width:860px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-file-signature" style="color:var(--bs-primary);"></i>
+          <span>Acta Oficial de Habilitación Académica (Para Registro Central)</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="cerrarModales()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="background:#343a40; padding:24px;">
+        
+        <!-- DOCUMENTO OFICIAL FORMATO INSTITUCIONAL UPDS -->
+        <div class="acta-document-container" id="printable-acta">
+          <div class="official-seal">
+            UNIVERSIDAD PRIVADA<br>DOMINGO SAVIO<br>★ DECANATURA ★<br>FACULTAD DE INGENIERÍA
+          </div>
+
+          <div class="acta-header">
+            <div class="acta-header-left">
+              <div style="width:48px; height:48px; background:#002b49; color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:24px;">U</div>
+              <div class="acta-header-titles">
+                <h1>Universidad Privada Domingo Savio</h1>
+                <h2>Facultad de Ingeniería • Sede Santa Cruz</h2>
+              </div>
+            </div>
+            <div class="acta-header-meta">
+              <div>Sede Central Académica</div>
+              <div class="acta-num-badge" id="acta-view-num">ACTA-DEC-2026-088</div>
+              <div style="margin-top:4px;">Fecha: <strong id="acta-view-fecha">2026-10-26</strong></div>
+            </div>
+          </div>
+
+          <div class="acta-body">
+            <h3 style="text-align:center; font-size:16px; font-weight:800; color:#002b49; margin-bottom:16px; text-transform:uppercase;">
+              Acta de Autorización y Apertura de Materia Especial
+            </h3>
+            <p>
+              Por la presente, la <strong>Decanatura de la Facultad de Ingeniería</strong> de la Universidad Privada Domingo Savio, en uso de sus atribuciones reglamentarias y habiéndose constatado la demanda estudiantil verificada a través de la plataforma <strong>SOLICITA</strong>, autoriza la habilitación del grupo modular para la materia que se detalla a continuación:
+            </p>
+
+            <table class="acta-table-grid">
+              <tr>
+                <th style="width:25%;">Materia:</th>
+                <td style="width:40%; font-weight:bold;" id="acta-view-materia">Sistemas de Comunicaciones Ópticas</td>
+                <th style="width:15%;">Código:</th>
+                <td style="width:20%;" id="acta-view-codigo">TEL-0330</td>
+              </tr>
+              <tr>
+                <th>Carrera:</th>
+                <td id="acta-view-carrera">Ing. en Redes y Telecomunicaciones</td>
+                <th>Nivel / Semestre:</th>
+                <td id="acta-view-semestre">8º Semestre</td>
+              </tr>
+              <tr>
+                <th>Turno & Horario:</th>
+                <td id="acta-view-turno">Noche (19:00 a 22:30)</td>
+                <th>Espacio / Aula:</th>
+                <td id="acta-view-aula">Laboratorio de Telecomunicaciones 2</td>
+              </tr>
+              <tr>
+                <th>Docente Designado:</th>
+                <td colspan="3" style="font-weight:bold; color:#002b49;" id="acta-view-docente">Ing. Víctor Hugo Soliz</td>
+              </tr>
+            </table>
+
+            <p style="margin-top:14px;">
+              <strong>Nómina Oficial de Estudiantes Matriculados y Habilitados:</strong><br>
+              El departamento de Registro y Admisiones queda facultado para proceder con la inscripción formal de los siguientes estudiantes:
+            </p>
+
+            <table class="acta-students-table">
+              <thead>
+                <tr>
+                  <th style="width:8%; text-align:center;">Nº</th>
+                  <th style="width:25%;">Registro UPDS</th>
+                  <th style="width:45%;">Nombres y Apellidos</th>
+                  <th style="width:22%;">Condición</th>
+                </tr>
+              </thead>
+              <tbody id="acta-students-tbody">
+                <!-- Filled dynamically -->
+              </tbody>
+            </table>
+
+            <div class="acta-signatures-box">
+              <div>
+                <div class="signature-line">
+                  <div class="signature-name" id="acta-view-firma-decano">Ing. Roberto Mendoza</div>
+                  <div class="signature-title">Decano de la Facultad de Ingeniería<br>UPDS Sede Santa Cruz</div>
+                </div>
+              </div>
+              <div>
+                <div class="signature-line">
+                  <div class="signature-name">Lic. Sandra Gutiérrez</div>
+                  <div class="signature-title">Dirección de Registro y Admisiones<br>Recepción y Apertura de Paralelo</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary-action" onclick="cerrarModales()">Cerrar</button>
+        <button type="button" class="btn-success-action" onclick="imprimirActa()">
+          <i class="fa-solid fa-print"></i> Imprimir / Guardar como PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL NUEVO USUARIO (CON VENCIMIENTO TEMPORAL) -->
+  <div id="modal-nuevo-usuario" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-user-shield" style="color:var(--bs-primary);"></i>
+          <span>Registrar Nuevo Usuario Institucional</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="cerrarModales()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Nombre y Apellido Completo:</label>
+          <input type="text" id="new-user-nombre" class="form-control" placeholder="Ej. Lic. Fernando Peña">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Correo Institucional:</label>
+          <input type="email" id="new-user-email" class="form-control" placeholder="Ej. fernando.pena@upds.net.bo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Rol del Usuario:</label>
+          <select id="new-user-rol" class="form-control" onchange="toggleExpirationInput()">
+            <option value="Auxiliar">Auxiliar (Secretaría Académica)</option>
+            <option value="Decano">Decano (Aprobación y Firmas)</option>
+            <option value="TI / SuperAdmin">TI / SuperAdmin (Control Total)</option>
+            <option value="Temporal">Temporal (Pasante o Apoyo)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cargo Descriptivo:</label>
+          <input type="text" id="new-user-cargo" class="form-control" placeholder="Ej. Pasante de Inscripciones Módulo 8">
+        </div>
+
+        <!-- Grupo dinámico para rol temporal -->
+        <div id="group-expiration-date" class="form-group" style="display:none; background:rgba(255,193,7,0.1); border:1px solid rgba(255,193,7,0.3); padding:12px; border-radius:8px;">
+          <label class="form-label" style="color:#facc15;"><i class="fa-solid fa-clock"></i> Fecha de Vencimiento de Acceso (Usuario Temporal):</label>
+          <input type="date" id="new-user-exp" class="form-control" value="2026-11-15">
+          <small style="color:#d1d5db; font-size:11px; margin-top:4px; display:block;">
+            Al cumplirse esta fecha, la cuenta se suspende automáticamente por seguridad académica.
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary-action" onclick="cerrarModales()">Cancelar</button>
+        <button type="button" class="btn-primary-action" onclick="guardarNuevoUsuario()">
+          <i class="fa-solid fa-user-check"></i> Crear Usuario
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data-solicita.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
