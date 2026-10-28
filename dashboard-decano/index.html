@@ -143,6 +143,17 @@
           </li>
         </ul>
 
+        <div class="sidebar-header-title">TABLAS & REPORTES</div>
+        <ul class="sidebar-nav-list">
+          <li class="sidebar-nav-item" data-target-tab="tab-estudiantes">
+            <button type="button" onclick="switchTab('tab-estudiantes')">
+              <span class="icon"><i class="fa-solid fa-table-list"></i></span>
+              <span>Data Tables: Estudiantes</span>
+              <span class="pill-count" style="background:#0dcaf0; color:#000; font-weight:700;">AdminLTE</span>
+            </button>
+          </li>
+        </ul>
+
         <div class="sidebar-header-title">ADMINISTRACIÓN & ACCESOS</div>
         <ul class="sidebar-nav-list">
           <li class="sidebar-nav-item" data-target-tab="tab-usuarios">
@@ -716,6 +727,85 @@
 
         </div>
 
+        <!-- ===================================================================
+             VIEW 4: DATA TABLES - PADRÓN DE ESTUDIANTES (IMAGE SCREENSHOT)
+        =================================================================== -->
+        <div id="view-estudiantes" style="display:none;">
+          <div class="card-main">
+            <div class="card-toolbar">
+              <div>
+                <div class="card-toolbar-title">
+                  <i class="fa-solid fa-table-list" style="color:var(--bs-primary);"></i>
+                  <span>Data Tables — Estudiantes SOLICITA</span>
+                </div>
+                <div style="font-size:12px; color:#8b949e; margin-top:3px;">
+                  Búsqueda directa de alumnos, verificación de estado en grupos y acceso al perfil académico
+                </div>
+              </div>
+
+              <!-- Top Action Tools: Export CSV, JSON & Filter (Matching AdminLTE Screenshot) -->
+              <div class="card-toolbar-actions">
+                <div class="dt-export-group">
+                  <button type="button" class="btn-export-outline" onclick="exportarEstudiantesCSV()" title="Descargar como CSV">
+                    <i class="fa-solid fa-file-csv"></i> Export CSV
+                  </button>
+                  <button type="button" class="btn-export-outline" onclick="exportarEstudiantesJSON()" title="Descargar como JSON">
+                    <i class="fa-solid fa-file-code"></i> Export JSON
+                  </button>
+                  <button type="button" class="btn-export-outline" onclick="window.print()" title="Imprimir padrón">
+                    <i class="fa-solid fa-print"></i> Print
+                  </button>
+                </div>
+                <div class="table-search-box">
+                  <i class="fa-solid fa-magnifying-glass table-search-icon"></i>
+                  <input type="text" id="dt-filter-global" class="table-search-input" placeholder="Filter rows..." oninput="filtrarEstudiantesGlobal(this.value)">
+                </div>
+              </div>
+            </div>
+
+            <!-- TABLA CON FILTROS POR COLUMNA (MATCHING SCREENSHOT) -->
+            <div class="table-responsive">
+              <table class="adminlte-table" id="table-dt-estudiantes">
+                <thead>
+                  <tr>
+                    <th style="width:4%;">#</th>
+                    <th style="width:24%;">
+                      <div>Name <i class="fa-solid fa-sort" style="font-size:10px; color:#6b7280;"></i></div>
+                      <input type="text" id="dt-col-name" class="dt-filter-input" placeholder="Filtrar nombre..." oninput="filtrarEstudiantesColumnas()">
+                    </th>
+                    <th style="width:18%;">
+                      <div>Registro / Correo <i class="fa-solid fa-sort" style="font-size:10px; color:#6b7280;"></i></div>
+                      <input type="text" id="dt-col-reg" class="dt-filter-input" placeholder="Filtrar registro..." oninput="filtrarEstudiantesColumnas()">
+                    </th>
+                    <th style="width:18%;">
+                      <div>Carrera <i class="fa-solid fa-sort" style="font-size:10px; color:#6b7280;"></i></div>
+                      <input type="text" id="dt-col-carrera" class="dt-filter-input" placeholder="Filtrar carrera..." oninput="filtrarEstudiantesColumnas()">
+                    </th>
+                    <th style="width:14%;">
+                      <div>Estado en Grupo <i class="fa-solid fa-sort" style="font-size:10px; color:#6b7280;"></i></div>
+                      <input type="text" id="dt-col-estado" class="dt-filter-input" placeholder="Estado..." oninput="filtrarEstudiantesColumnas()">
+                    </th>
+                    <th style="width:14%;">Materia(s) Solicitada(s)</th>
+                    <th style="width:8%; text-align:center;">Perfil</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-estudiantes">
+                  <!-- Populated dynamically by dashboard.js -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer">
+              <div id="dt-estudiantes-count-label">Mostrando estudiantes</div>
+              <div class="pagination-group">
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1043,6 +1133,74 @@
         <button type="button" class="btn-primary-action" onclick="guardarNuevoUsuario()">
           <i class="fa-solid fa-user-check"></i> Crear Usuario
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PERFIL ACADÉMICO DEL ESTUDIANTE (CON MATERIAS Y GRUPOS) -->
+  <div id="modal-perfil-estudiante" class="modal-backdrop">
+    <div class="modal-dialog modal-dialog-lg">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-id-card" style="color:var(--bs-primary);"></i>
+          <span>Perfil Académico del Estudiante — SOLICITA UPDS</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="cerrarModales()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Header con Datos Personales -->
+        <div class="student-profile-header">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=140&auto=format&fit=crop&q=80" 
+               id="perfil-est-avatar" alt="Avatar Estudiante" class="student-profile-avatar">
+          <div style="flex:1;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <h2 id="perfil-est-nombre" style="font-size:20px; font-weight:800; color:#fff; margin:0;">Estudiante</h2>
+              <span id="perfil-est-estado-gral" class="badge-pill badge-ontrack">Matriculado Regular</span>
+            </div>
+            <div style="font-size:13px; color:#adb5bd; margin-top:4px;">
+              <span>Registro UPDS: <strong id="perfil-est-reg" style="color:#60a5fa; font-family:monospace;">00000000</strong></span>
+              <span style="margin:0 8px;">•</span>
+              <span id="perfil-est-carrera" style="color:#cbd5e1;">Carrera</span>
+              <span style="margin:0 8px;">•</span>
+              <span id="perfil-est-semestre" style="color:#cbd5e1;">Semestre</span>
+            </div>
+            <div style="margin-top:10px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+              <span style="font-size:13px; color:#9ca3af;"><i class="fa-solid fa-phone"></i> <span id="perfil-est-telefono">+591 00000000</span></span>
+              <a href="javascript:void(0)" id="perfil-est-whatsapp-btn" target="_blank" class="btn-whatsapp-action">
+                <i class="fa-brands fa-whatsapp"></i> Contactar por WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección 1: Materias que está solicitando / Grupos asignados -->
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:14px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-list-check" style="color:var(--bs-primary);"></i>
+            <span>Materias Solicitadas & Grupos de este Estudiante</span>
+          </h4>
+          <div id="perfil-est-materias-container">
+            <!-- Inyectado dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Sección 2: Validación de Prerrequisitos de la Malla -->
+        <div style="background:#1a1d20; border:1px solid #373b3e; border-radius:8px; padding:14px 16px;">
+          <h4 style="font-size:13px; font-weight:700; color:#cbd5e1; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-shield-halved" style="color:#22c55e;"></i>
+            <span>Validación de Prerrequisitos Académicos (Kardex UPDS)</span>
+          </h4>
+          <p style="font-size:12px; color:#9ca3af; margin:0;" id="perfil-est-prerreq-nota">
+            El estudiante cuenta con las materias correlativas aprobadas de semestres previos. Habilitado reglamentariamente para cursar.
+          </p>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary-action" onclick="cerrarModales()">Cerrar</button>
       </div>
     </div>
   </div>

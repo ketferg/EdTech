@@ -48,10 +48,12 @@
   const viewDashboard = document.getElementById('view-dashboard');
   const viewUsuarios = document.getElementById('view-usuarios');
   const viewEstadisticas = document.getElementById('view-estadisticas');
+  const viewEstudiantes = document.getElementById('view-estudiantes');
   const tbodyForo = document.getElementById('tbody-foro');
   const tbodyEvaluacion = document.getElementById('tbody-evaluacion');
   const tbodyHabilitadas = document.getElementById('tbody-habilitadas');
   const tbodyUsuarios = document.getElementById('tbody-usuarios');
+  const tbodyEstudiantes = document.getElementById('tbody-estudiantes');
 
   // Modals
   const modalAsignar = document.getElementById('modal-asignar-docente');
@@ -59,6 +61,7 @@
   const modalActa = document.getElementById('modal-acta-registro');
   const modalNuevoUsuario = document.getElementById('modal-nuevo-usuario');
   const modalPresencial = document.getElementById('modal-solicitud-presencial');
+  const modalPerfilEstudiante = document.getElementById('modal-perfil-estudiante');
 
   // Currently active subject for modal actions
   let activeSubjectId = null;
@@ -183,17 +186,27 @@
       viewDashboard.style.display = 'none';
       viewUsuarios.style.display = 'block';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
+      if (viewEstudiantes) viewEstudiantes.style.display = 'none';
       document.getElementById('breadcrumb-current').textContent = 'Directorio de Usuarios';
     } else if (tabId === 'tab-estadisticas') {
       viewDashboard.style.display = 'none';
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'block';
+      if (viewEstudiantes) viewEstudiantes.style.display = 'none';
       document.getElementById('breadcrumb-current').textContent = 'Estadísticas de Demanda Académica';
       renderEstadisticas();
+    } else if (tabId === 'tab-estudiantes') {
+      viewDashboard.style.display = 'none';
+      viewUsuarios.style.display = 'none';
+      if (viewEstadisticas) viewEstadisticas.style.display = 'none';
+      if (viewEstudiantes) viewEstudiantes.style.display = 'block';
+      document.getElementById('breadcrumb-current').textContent = 'Data Tables: Padrón de Estudiantes';
+      renderEstudiantesDataTable();
     } else {
       viewDashboard.style.display = 'block';
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
+      if (viewEstudiantes) viewEstudiantes.style.display = 'none';
       document.getElementById('breadcrumb-current').textContent = 'Materias & Planificación Académica';
 
       // Pipeline subtabs
@@ -988,12 +1001,268 @@
     }
   }
 
+  /* ===================================================================
+     9.1 DATA TABLES: PADRÓN DE ESTUDIANTES & BÚSQUEDA (IMAGE SCREENSHOT)
+  =================================================================== */
+  let filterDtGlobal = '';
+  let filterDtName = '';
+  let filterDtReg = '';
+  let filterDtCarrera = '';
+  let filterDtEstado = '';
+
+  window.filtrarEstudiantesGlobal = function (val) {
+    filterDtGlobal = val.toLowerCase().trim();
+    renderEstudiantesDataTable();
+  };
+
+  window.filtrarEstudiantesColumnas = function () {
+    const inputName = document.getElementById('dt-col-name');
+    const inputReg = document.getElementById('dt-col-reg');
+    const inputCarrera = document.getElementById('dt-col-carrera');
+    const inputEstado = document.getElementById('dt-col-estado');
+
+    filterDtName = inputName ? inputName.value.toLowerCase().trim() : '';
+    filterDtReg = inputReg ? inputReg.value.toLowerCase().trim() : '';
+    filterDtCarrera = inputCarrera ? inputCarrera.value.toLowerCase().trim() : '';
+    filterDtEstado = inputEstado ? inputEstado.value.toLowerCase().trim() : '';
+
+    renderEstudiantesDataTable();
+  };
+
+  function getEstudiantesAgrupados() {
+    const map = new Map();
+
+    const addStudent = (st, materia, etapa) => {
+      const reg = st.reg;
+      if (!map.has(reg)) {
+        map.set(reg, {
+          reg: st.reg,
+          nombre: st.nombre,
+          telefono: st.telefono || '76000000',
+          carrera: materia.carreraNombre,
+          semestre: materia.semestre,
+          requisitosOk: st.requisitosOk !== undefined ? st.requisitosOk : true,
+          notaPrevia: st.notaPrevia || '82/100',
+          materias: []
+        });
+      }
+      const item = map.get(reg);
+      item.materias.push({
+        id: materia.id,
+        codigo: materia.codigo,
+        nombre: materia.nombre,
+        turno: materia.turno,
+        etapa: etapa,
+        horario: materia.horario || 'Noche (19:00 - 22:30)',
+        espacio: materia.espacioAsignado || materia.aulaAsignada || materia.tipoRequerido || 'Aula Teórica',
+        docente: materia.docenteAsignadoNombre || materia.docenteNombre || 'Por asignar',
+        interesados: materia.interesados || materia.alumnosInscritos || (materia.alumnos ? materia.alumnos.length : 10),
+        numActa: materia.numActa || null
+      });
+    };
+
+    UPDS_DATA.materiasForo.forEach(m => {
+      if (m.alumnos) m.alumnos.forEach(a => addStudent(a, m, 'Foro'));
+    });
+
+    UPDS_DATA.materiasEvaluacion.forEach(m => {
+      if (m.alumnos) m.alumnos.forEach(a => addStudent(a, m, 'Evaluación'));
+    });
+
+    UPDS_DATA.materiasHabilitadas.forEach(m => {
+      if (m.alumnos) m.alumnos.forEach(a => addStudent(a, m, 'Habilitada'));
+    });
+
+    return Array.from(map.values()).sort((a, b) => a.nombre.localeCompare(b.nombre));
+  }
+
+  function renderEstudiantesDataTable() {
+    if (!tbodyEstudiantes) return;
+    tbodyEstudiantes.innerHTML = '';
+
+    const allStudents = getEstudiantesAgrupados();
+
+    const filtered = allStudents.filter(st => {
+      const matchGlobal = !filterDtGlobal ||
+        st.nombre.toLowerCase().includes(filterDtGlobal) ||
+        st.reg.toLowerCase().includes(filterDtGlobal) ||
+        st.carrera.toLowerCase().includes(filterDtGlobal) ||
+        st.materias.some(m => m.nombre.toLowerCase().includes(filterDtGlobal) || m.codigo.toLowerCase().includes(filterDtGlobal));
+
+      const matchName = !filterDtName || st.nombre.toLowerCase().includes(filterDtName);
+      const matchReg = !filterDtReg || st.reg.toLowerCase().includes(filterDtReg);
+      const matchCarrera = !filterDtCarrera || st.carrera.toLowerCase().includes(filterDtCarrera);
+
+      let estadoStr = '';
+      if (st.materias.some(m => m.etapa === 'Habilitada')) estadoStr = 'habilitado';
+      else if (st.materias.some(m => m.etapa === 'Evaluación')) estadoStr = 'evaluación';
+      else estadoStr = 'foro';
+
+      const matchEstado = !filterDtEstado || estadoStr.includes(filterDtEstado);
+
+      return matchGlobal && matchName && matchReg && matchCarrera && matchEstado;
+    });
+
+    if (filtered.length === 0) {
+      tbodyEstudiantes.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8b949e;">No se encontraron estudiantes que coincidan con los filtros.</td></tr>`;
+      return;
+    }
+
+    filtered.forEach((st, idx) => {
+      let statusBadge = '';
+      if (st.materias.some(m => m.etapa === 'Habilitada')) {
+        statusBadge = '<span class="badge-pill badge-active"><i class="fa-solid fa-circle-check"></i> Matriculado Oficial</span>';
+      } else if (st.materias.some(m => m.etapa === 'Evaluación')) {
+        statusBadge = '<span class="badge-pill badge-ontrack"><i class="fa-solid fa-scale-balanced"></i> En Evaluación</span>';
+      } else {
+        statusBadge = '<span class="badge-pill badge-atrisk"><i class="fa-solid fa-comments"></i> En Foro</span>';
+      }
+
+      const materiasBadges = st.materias.map(m => {
+        const color = m.etapa === 'Habilitada' ? '#60a5fa' : (m.etapa === 'Evaluación' ? '#38bdf8' : '#cbd5e1');
+        return `<span class="badge-code" style="color:${color}; display:inline-block; margin:2px;" title="${m.nombre} (${m.turno})">${m.codigo}</span>`;
+      }).join(' ');
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="color:#6c757d; font-weight:600;">${idx + 1}</td>
+        <td>
+          <div style="font-weight:600; color:#fff;">${st.nombre}</div>
+          <small style="color:#8b949e;">Semestre ${st.semestre}º</small>
+        </td>
+        <td>
+          <span style="font-family:monospace; color:#60a5fa; font-weight:700;">${st.reg}</span>
+          <div style="font-size:11px; color:#8b949e;">${st.reg}@upds.net.bo</div>
+        </td>
+        <td>
+          <div style="color:#d1d5db; font-size:13px;">${st.carrera}</div>
+        </td>
+        <td>${statusBadge}</td>
+        <td>${materiasBadges}</td>
+        <td style="text-align:center;">
+          <button type="button" class="btn-primary-action" onclick="abrirPerfilEstudiante('${st.reg}')" style="padding:4px 10px; font-size:12px; margin:0 auto;">
+            <i class="fa-solid fa-id-card"></i> Ver Perfil
+          </button>
+        </td>
+      `;
+      tbodyEstudiantes.appendChild(tr);
+    });
+
+    const countLabel = document.getElementById('dt-estudiantes-count-label');
+    if (countLabel) {
+      countLabel.textContent = `Mostrando ${filtered.length} de ${allStudents.length} estudiantes registrados en SOLICITA`;
+    }
+  }
+
+  /* ===================================================================
+     9.2 MODAL PERFIL DEL ESTUDIANTE (REVISIÓN DE MATERIAS Y GRUPOS)
+  =================================================================== */
+  window.abrirPerfilEstudiante = function (registro) {
+    const allStudents = getEstudiantesAgrupados();
+    const st = allStudents.find(s => s.reg === registro);
+    if (!st) return;
+
+    document.getElementById('perfil-est-nombre').textContent = st.nombre;
+    document.getElementById('perfil-est-reg').textContent = st.reg;
+    document.getElementById('perfil-est-carrera').textContent = st.carrera;
+    document.getElementById('perfil-est-semestre').textContent = `Semestre ${st.semestre}º`;
+    document.getElementById('perfil-est-telefono').textContent = `+591 ${st.telefono}`;
+
+    const wpBtn = document.getElementById('perfil-est-whatsapp-btn');
+    if (wpBtn) {
+      wpBtn.href = `https://wa.me/591${st.telefono}?text=Hola%20${encodeURIComponent(st.nombre)}%2C%20le%20escribimos%20de%20la%20Decanatura%20de%20Ingenier%C3%ADa%20UPDS%20respecto%20a%20su%20solicitud%20en%20SOLICITA.`;
+    }
+
+    const containerMaterias = document.getElementById('perfil-est-materias-container');
+    if (containerMaterias) {
+      containerMaterias.innerHTML = '';
+      st.materias.forEach(m => {
+        let badgeFase = '';
+        let descFase = '';
+
+        if (m.etapa === 'Habilitada') {
+          badgeFase = `<span class="badge-pill badge-active"><i class="fa-solid fa-circle-check"></i> Habilitada Oficial (${m.numActa || 'Acta Registrada'})</span>`;
+          descFase = `Materia formalmente habilitada y despachada a Registro. Docente Asignado: <strong>${m.docente}</strong> • Turno: <strong>${m.turno}</strong> (${m.espacio}).`;
+        } else if (m.etapa === 'Evaluación') {
+          badgeFase = `<span class="badge-pill badge-ontrack"><i class="fa-solid fa-scale-balanced"></i> En Mesa de Evaluación</span>`;
+          descFase = `Superó el cupo reglamentario de 10 alumnos. En proceso de asignación docente y emisión de acta en Decanato.`;
+        } else {
+          badgeFase = `<span class="badge-pill badge-atrisk"><i class="fa-solid fa-comments"></i> Activa en Foro (${m.interesados}/10 alumnos)</span>`;
+          descFase = `Acumulando votos en la plataforma SOLICITA para alcanzar el umbral mínimo reglamentario.`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'student-subject-card';
+        card.innerHTML = `
+          <div>
+            <div style="font-weight:700; color:#fff; font-size:15px;">
+              <span class="badge-code" style="color:#60a5fa; margin-right:6px;">${m.codigo}</span>
+              ${m.nombre}
+            </div>
+            <div style="font-size:12px; color:#cbd5e1; margin-top:4px;">
+              ${descFase}
+            </div>
+          </div>
+          <div>${badgeFase}</div>
+        `;
+        containerMaterias.appendChild(card);
+      });
+    }
+
+    const elPrerreq = document.getElementById('perfil-est-prerreq-nota');
+    if (elPrerreq) {
+      elPrerreq.innerHTML = `
+        El estudiante cuenta con los requisitos curriculares aprobados en el sistema académico UPDS (Promedio previo: <strong>${st.notaPrevia}</strong>).
+        No registra bloqueos administrativos ni deudas financieras. <strong>Condición: Apto para matriculación directa.</strong>
+      `;
+    }
+
+    modalPerfilEstudiante.classList.add('show');
+  };
+
+  /* ===================================================================
+     9.3 EXPORTACIÓN DE DATOS (CSV Y JSON)
+  =================================================================== */
+  window.exportarEstudiantesCSV = function () {
+    const allStudents = getEstudiantesAgrupados();
+    let csv = 'Numero,Registro,Nombre,Carrera,Semestre,Telefono,Materias_Solicitadas,Estado\n';
+
+    allStudents.forEach((st, idx) => {
+      const matNames = st.materias.map(m => `${m.codigo} (${m.etapa})`).join('; ');
+      let est = st.materias.some(m => m.etapa === 'Habilitada') ? 'Habilitado' : (st.materias.some(m => m.etapa === 'Evaluacion') ? 'En Evaluacion' : 'En Foro');
+      csv += `"${idx + 1}","${st.reg}","${st.nombre}","${st.carrera}","${st.semestre}","${st.telefono}","${matNames}","${est}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `padron_estudiantes_solicita_upds_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📄 Padrón de estudiantes exportado exitosamente en formato CSV.');
+  };
+
+  window.exportarEstudiantesJSON = function () {
+    const allStudents = getEstudiantesAgrupados();
+    const jsonStr = JSON.stringify(allStudents, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `padron_estudiantes_solicita_upds_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📊 Padrón de estudiantes exportado exitosamente en formato JSON.');
+  };
+
   function renderAll() {
     renderKPIs();
     renderMateriasForo();
     renderMateriasEvaluacion();
     renderMateriasHabilitadas();
     renderUsuarios();
+    renderEstudiantesDataTable();
     if (currentActiveTab === 'tab-estadisticas') {
       renderEstadisticas();
     }

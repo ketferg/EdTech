@@ -1602,8 +1602,113 @@ body {
 }
 
 /* ===================================================================
-   15. ADMINLTE 4 CHART.JS CARDS (MATCHING SCREENSHOT)
+   16. ADMINLTE 4 DATATABLES & STUDENT PROFILE (IMAGE SCREENSHOT)
 =================================================================== */
+.dt-export-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-export-outline {
+  background: transparent;
+  border: 1px solid #495057;
+  color: #adb5bd;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-export-outline:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: #ced4da;
+}
+
+.dt-filter-input {
+  width: 100%;
+  background: #2b3038;
+  border: 1px solid #444c56;
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  margin-top: 6px;
+  outline: none;
+  font-weight: normal;
+}
+
+.dt-filter-input:focus {
+  border-color: var(--bs-primary);
+}
+
+.dt-filter-input::placeholder {
+  color: #6b7280;
+}
+
+.student-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--bs-card-border);
+  margin-bottom: 20px;
+}
+
+.student-profile-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 3px solid var(--bs-primary);
+  object-fit: cover;
+  background: #212529;
+}
+
+.student-subject-card {
+  background: #1a1d20;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  transition: border-color 0.2s;
+}
+
+.student-subject-card:hover {
+  border-color: var(--bs-primary);
+}
+
+.btn-whatsapp-action {
+  background: #198754;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-whatsapp-action:hover {
+  background: #157347;
+  color: #fff;
+}
+
 .charts-grid-2x2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
