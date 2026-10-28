@@ -1194,9 +1194,7 @@ function initPlansShowroom() {
     const name = (acquireName?.value || '').trim() || 'un cliente interesado';
     const inst = (acquireInst?.value || '').trim();
 
-    let text = 'Hola Ketfer Gianella (EdTech), soy ' + name + (inst ? ' de ' + inst : '') + '.
-
-';
+    let text = 'Hola Ketfer Gianella (EdTech), soy ' + name + (inst ? ', de ' + inst : '') + '.\n\n';
     text += 'Estuve probando la demo en vivo de *' + data.name + '* (' + data.price + ') en su sitio web y me interesa iniciar el proceso de contratación formal para mi institución.';
 
     const phone = '59162143492';
