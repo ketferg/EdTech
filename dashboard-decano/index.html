@@ -134,6 +134,13 @@
               <span class="pill-count" id="pill-sidebar-hab">1</span>
             </button>
           </li>
+          <li class="sidebar-nav-item" data-target-tab="tab-estadisticas">
+            <button type="button" onclick="switchTab('tab-estadisticas')">
+              <span class="icon"><i class="fa-solid fa-chart-pie"></i></span>
+              <span>4. Estadísticas & Demanda</span>
+              <span class="pill-count" style="background:#0d6efd; color:#fff;">UPDS</span>
+            </button>
+          </li>
         </ul>
 
         <div class="sidebar-header-title">ADMINISTRACIÓN & ACCESOS</div>
@@ -183,6 +190,9 @@
           <button class="header-icon-btn" title="Mensajes de Alumnos">
             <i class="fa-regular fa-comments"></i>
             <span class="header-badge badge-danger">15</span>
+          </button>
+          <button class="header-icon-btn" id="btn-toggle-finances" onclick="toggleFinancialsVisibility()" title="Alternar visibilidad de ganancias UPDS (Confidencial)">
+            <i class="fa-solid fa-eye-slash" id="icon-toggle-finances"></i>
           </button>
           <button class="header-icon-btn" onclick="lockDashboard()" title="Bloquear Pantalla">
             <i class="fa-solid fa-lock"></i>
@@ -305,7 +315,7 @@
                       <th>Estado Meta</th>
                       <th>Progreso (Mín. 10)</th>
                       <th>Estudiantes</th>
-                      <th>Recaudación Potencial</th>
+                      <th>Demanda & Alumnos</th>
                       <th>Turno Requerido</th>
                       <th>Acciones</th>
                     </tr>
@@ -341,7 +351,7 @@
                       <th>Estado Docente</th>
                       <th>Turno & Espacio Físico</th>
                       <th>Docente Asignado</th>
-                      <th>Viabilidad Financiera</th>
+                      <th>Validación Académica</th>
                       <th>Alumnos</th>
                       <th>Acciones</th>
                     </tr>
@@ -380,7 +390,7 @@
                       <th>Materia & Plan</th>
                       <th>Docente Titular</th>
                       <th>Turno & Aula Asignada</th>
-                      <th>Inscripción & Margen</th>
+                      <th>Alumnos Matriculados</th>
                       <th>Estado Registro</th>
                       <th>Documento</th>
                     </tr>
@@ -455,6 +465,184 @@
           </div>
         </div>
 
+        <!-- ===================================================================
+             VIEW 3: ESTADÍSTICAS ACADÉMICAS & DEMANDA ESTUDIANTIL
+        =================================================================== -->
+        <div id="view-estadisticas" style="display:none;">
+          
+          <!-- TOP 4 STATS SUMMARY -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-blue"></div>
+              <div class="kpi-title">
+                <span>Total Solicitudes Estudiantiles</span>
+                <i class="fa-solid fa-users" style="color:var(--bs-primary);"></i>
+              </div>
+              <div class="kpi-value" id="stat-kpi-solicitudes">0</div>
+              <div class="kpi-subtext">Alumnos interesados en el foro</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-green"></div>
+              <div class="kpi-title">
+                <span>Alumnos en Habilitadas</span>
+                <i class="fa-solid fa-graduation-cap" style="color:var(--bs-success);"></i>
+              </div>
+              <div class="kpi-value" id="stat-kpi-matriculados">0</div>
+              <div class="kpi-subtext">Matriculados listos para Registro</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-cyan"></div>
+              <div class="kpi-title">
+                <span>Promedio por Paralelo</span>
+                <i class="fa-solid fa-chart-line" style="color:var(--bs-info);"></i>
+              </div>
+              <div class="kpi-value" id="stat-kpi-promedio">0</div>
+              <div class="kpi-subtext">Estudiantes por materia autorizada</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-border-accent accent-orange"></div>
+              <div class="kpi-title">
+                <span>Tasa de Viabilidad</span>
+                <i class="fa-solid fa-percent" style="color:var(--bs-edtech-orange);"></i>
+              </div>
+              <div class="kpi-value" id="stat-kpi-viabilidad">0%</div>
+              <div class="kpi-subtext">Materias que superan la meta de 10</div>
+            </div>
+          </div>
+
+          <!-- 2X2 ANALYTICS GRID -->
+          <div class="stats-grid-2">
+            
+            <!-- Card 1: Ranking Materias Más Solicitadas -->
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <div class="stat-card-title">
+                  <i class="fa-solid fa-fire" style="color:#f97316;"></i>
+                  <span>Materias Más Solicitadas en Foro (Demanda Estudiantil)</span>
+                </div>
+                <span style="font-size:12px; color:#9ca3af;">Meta: ≥10</span>
+              </div>
+              <div class="stat-rank-list" id="stat-ranking-materias">
+                <!-- Injected dynamically by dashboard.js -->
+              </div>
+            </div>
+
+            <!-- Card 2: Demanda por Turno Académico -->
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <div class="stat-card-title">
+                  <i class="fa-regular fa-clock" style="color:#38bdf8;"></i>
+                  <span>Distribución de Demanda por Turno (UPDS)</span>
+                </div>
+                <span style="font-size:12px; color:#9ca3af;">4 turnos</span>
+              </div>
+              <div class="stat-rank-list" id="stat-demand-turnos">
+                <!-- Injected dynamically by dashboard.js -->
+              </div>
+            </div>
+
+            <!-- Card 3: Demanda por Carrera de Ingeniería -->
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <div class="stat-card-title">
+                  <i class="fa-solid fa-network-wired" style="color:#a855f7;"></i>
+                  <span>Demanda Estudiantil por Carrera</span>
+                </div>
+                <span style="font-size:12px; color:#9ca3af;">Facultad de Ingeniería</span>
+              </div>
+              <div class="stat-rank-list" id="stat-demand-carreras">
+                <!-- Injected dynamically by dashboard.js -->
+              </div>
+            </div>
+
+            <!-- Card 4: Estado del Ciclo de Apertura -->
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <div class="stat-card-title">
+                  <i class="fa-solid fa-diagram-next" style="color:#22c55e;"></i>
+                  <span>Estado del Ciclo de Materias (Flujo SOLICITA)</span>
+                </div>
+                <span style="font-size:12px; color:#9ca3af;">Total Activas</span>
+              </div>
+              <div class="stat-rank-list" id="stat-pipeline-breakdown">
+                <!-- Injected dynamically by dashboard.js -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- MÓDULO CONFIDENCIAL DE GANANCIAS PARA LA UNIVERSIDAD UPDS -->
+          <div class="confidential-card" id="confidential-profits-section">
+            <div class="confidential-header">
+              <div class="confidential-title-group">
+                <h3>
+                  <i class="fa-solid fa-building-columns" style="color:var(--bs-primary);"></i>
+                  <span>Balance Económico Institucional (UPDS)</span>
+                  <span id="badge-privacy-status" class="badge-pill badge-atrisk" style="font-size:11px; margin-left:8px;">
+                    <i class="fa-solid fa-lock"></i> Oculto por Privacidad
+                  </span>
+                </h3>
+                <p>Métricas confidenciales de recaudación de matrículas y ganancias operativas de la Facultad de Ingeniería.</p>
+              </div>
+              <button type="button" class="btn-privacy-pill" id="btn-privacy-stats-toggle" onclick="toggleFinancialsVisibility()">
+                <i class="fa-solid fa-eye" id="icon-privacy-stats"></i>
+                <span id="label-privacy-stats">Ver Ganancias de la Universidad</span>
+              </button>
+            </div>
+
+            <!-- Estado Bloqueado / Oculto -->
+            <div id="confidential-locked-block" class="confidential-locked-state">
+              <i class="fa-solid fa-shield-halved" style="font-size:32px; color:#fbbf24; margin-bottom:12px; display:inline-block;"></i>
+              <h4 style="color:#fff; font-size:16px; font-weight:700;">Datos Financieros Protegidos</h4>
+              <p style="color:#9ca3af; font-size:13px; max-width:560px; margin:8px auto 16px;">
+                La visualización de aranceles estudiantiles (Bs 640/módulo), honorarios docentes (Bs 2.500) y margen de ganancia para la UPDS se mantiene oculta por confidencialidad directiva.
+              </p>
+              <button type="button" class="btn-primary-action" onclick="toggleFinancialsVisibility()" style="margin:0 auto; padding:8px 18px;">
+                <i class="fa-solid fa-unlock-keyhole"></i> Revelar Ganancias para la Universidad
+              </button>
+            </div>
+
+            <!-- Estado Desbloqueado con Cifras Oficiales UPDS -->
+            <div id="confidential-unlocked-block" style="display:none;">
+              <div class="confidential-grid">
+                <div class="profit-tile">
+                  <div class="profit-tile-title">Recaudación Matrículas</div>
+                  <div class="profit-tile-value" style="color:#60a5fa;" id="stat-calc-recaudacion">Bs 0</div>
+                  <small style="color:#9ca3af; font-size:11px;">Alumnos matriculados x Bs 640</small>
+                </div>
+
+                <div class="profit-tile">
+                  <div class="profit-tile-title">Honorarios Docentes</div>
+                  <div class="profit-tile-value" style="color:#f87171;" id="stat-calc-docentes">Bs 0</div>
+                  <small style="color:#9ca3af; font-size:11px;">Bs 2.500 por materia habilitada</small>
+                </div>
+
+                <div class="profit-tile" style="border-color:rgba(25,135,84,0.4); background:rgba(25,135,84,0.1);">
+                  <div class="profit-tile-title" style="color:#4ade80; font-weight:700;">Ganancia Neta UPDS</div>
+                  <div class="profit-tile-value" style="color:#4ade80;" id="stat-calc-ganancia">Bs 0</div>
+                  <small style="color:#86efac; font-size:11px;">Superávit de la Facultad</small>
+                </div>
+
+                <div class="profit-tile">
+                  <div class="profit-tile-title">Margen Institucional</div>
+                  <div class="profit-tile-value" style="color:#facc15;" id="stat-calc-margen-pct">0%</div>
+                  <small style="color:#9ca3af; font-size:11px;">Retorno sobre costos docentes</small>
+                </div>
+              </div>
+              <div style="margin-top:14px; text-align:right;">
+                <button type="button" class="btn-secondary-action" onclick="toggleFinancialsVisibility()" style="font-size:12px; padding:5px 12px;">
+                  <i class="fa-solid fa-eye-slash"></i> Ocultar Ganancias Nuevamente
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>
@@ -517,19 +705,19 @@
           <!-- Filled dynamically by JS -->
         </div>
 
-        <!-- Resumen Financiero y de Viabilidad -->
+        <!-- Resumen Académico y de Viabilidad -->
         <div class="viability-summary-card">
           <div>
             <div class="viability-item-title">Alumnos Validados</div>
             <div class="viability-item-val" id="asig-calc-alumnos">16</div>
           </div>
           <div>
-            <div class="viability-item-title">Ingreso Estimado UPDS</div>
-            <div class="viability-item-val" style="color:#60a5fa;" id="asig-calc-ingreso">Bs 10.240</div>
+            <div class="viability-item-title">Capacidad del Espacio</div>
+            <div class="viability-item-val" style="color:#60a5fa;" id="asig-calc-capacidad">30 cupos</div>
           </div>
           <div>
-            <div class="viability-item-title">Margen Neto UPDS</div>
-            <div class="viability-item-val" style="color:#4ade80;" id="asig-calc-margen">Bs 7.740</div>
+            <div class="viability-item-title">Ganancia Estimada UPDS</div>
+            <div class="viability-item-val" style="color:#4ade80;" id="asig-calc-margen">••••••</div>
           </div>
         </div>
       </div>
@@ -791,3 +979,4 @@
   <script src="js/dashboard.js"></script>
 </body>
 </html>
+

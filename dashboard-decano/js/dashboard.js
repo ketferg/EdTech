@@ -1,6 +1,6 @@
 /**
  * ADMINLTE 4 - DECANATURA FACULTAD DE INGENIERÍA UPDS
- * Interactive Logic: 3-Stage Pipeline, Schedule Anti-Collision, Walk-ins, & Users Directory
+ * Interactive Logic: 3-Stage Pipeline, Schedule Anti-Collision, Walk-ins, Users Directory & Academic Demand Statistics
  * EdTech S.R.L. - UPDS Santa Cruz
  */
 
@@ -8,10 +8,11 @@
   'use strict';
 
   // State
-  let currentActiveTab = 'tab-foro'; // 'tab-foro' | 'tab-evaluacion' | 'tab-habilitadas' | 'tab-usuarios'
+  let currentActiveTab = 'tab-foro'; // 'tab-foro' | 'tab-evaluacion' | 'tab-habilitadas' | 'tab-usuarios' | 'tab-estadisticas'
   let currentUser = UPDS_DATA.usuarios.find(u => u.rol === 'Decano') || UPDS_DATA.usuarios[1];
   let searchFilter = '';
   let roleFilter = 'all';
+  let showFinancials = false; // Oculto por defecto por temas de privacidad de ganancias
 
   // DOM Elements
   const lockscreen = document.getElementById('lockscreen');
@@ -27,6 +28,7 @@
   const sidebarUserName = document.getElementById('sidebar-user-name');
   const sidebarUserAvatar = document.getElementById('sidebar-user-avatar');
   const sidebarUserRoleBadge = document.getElementById('sidebar-user-role-badge');
+  const iconToggleFinances = document.getElementById('icon-toggle-finances');
 
   // KPI elements
   const kpiTotalForo = document.getElementById('kpi-total-foro');
@@ -45,6 +47,7 @@
   // Containers
   const viewDashboard = document.getElementById('view-dashboard');
   const viewUsuarios = document.getElementById('view-usuarios');
+  const viewEstadisticas = document.getElementById('view-estadisticas');
   const tbodyForo = document.getElementById('tbody-foro');
   const tbodyEvaluacion = document.getElementById('tbody-evaluacion');
   const tbodyHabilitadas = document.getElementById('tbody-habilitadas');
@@ -97,7 +100,6 @@
   if (lockscreenForm) {
     lockscreenForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      // Unlock with any entered password/PIN (or default 1234)
       unlockDashboard();
     });
   }
@@ -120,19 +122,78 @@
   };
 
   /* ===================================================================
-     2. NAVIGATION & TABS
+     2. PRIVACY TOGGLE: VISIBILIDAD DE GANANCIAS UNIVERSITARIAS
+  =================================================================== */
+  window.toggleFinancialsVisibility = function () {
+    showFinancials = !showFinancials;
+
+    // Update header toggle icon
+    if (iconToggleFinances) {
+      iconToggleFinances.className = showFinancials ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+    }
+
+    // Update confidential card in statistics view
+    const lockedBlock = document.getElementById('confidential-locked-block');
+    const unlockedBlock = document.getElementById('confidential-unlocked-block');
+    const badgePrivacy = document.getElementById('badge-privacy-status');
+    const labelPrivacyStats = document.getElementById('label-privacy-stats');
+    const iconPrivacyStats = document.getElementById('icon-privacy-stats');
+    const btnPrivacyStats = document.getElementById('btn-privacy-stats-toggle');
+
+    if (lockedBlock && unlockedBlock) {
+      if (showFinancials) {
+        lockedBlock.style.display = 'none';
+        unlockedBlock.style.display = 'block';
+        if (badgePrivacy) {
+          badgePrivacy.className = 'badge-pill badge-ontrack';
+          badgePrivacy.innerHTML = '<i class="fa-solid fa-unlock"></i> Desbloqueado';
+        }
+        if (labelPrivacyStats) labelPrivacyStats.textContent = 'Ocultar Ganancias';
+        if (iconPrivacyStats) iconPrivacyStats.className = 'fa-solid fa-eye-slash';
+        if (btnPrivacyStats) btnPrivacyStats.classList.add('active');
+      } else {
+        lockedBlock.style.display = 'block';
+        unlockedBlock.style.display = 'none';
+        if (badgePrivacy) {
+          badgePrivacy.className = 'badge-pill badge-atrisk';
+          badgePrivacy.innerHTML = '<i class="fa-solid fa-lock"></i> Oculto por Privacidad';
+        }
+        if (labelPrivacyStats) labelPrivacyStats.textContent = 'Ver Ganancias de la Universidad';
+        if (iconPrivacyStats) iconPrivacyStats.className = 'fa-solid fa-eye';
+        if (btnPrivacyStats) btnPrivacyStats.classList.remove('active');
+      }
+    }
+
+    // Re-render views with updated privacy state
+    renderAll();
+
+    const toastMsg = showFinancials
+      ? '🔓 Modo Financiero UPDS: Cifras de recaudación y ganancias reveladas.'
+      : '🔒 Modo Académico Protegido: Ganancias institucionales ocultas.';
+    showToast(toastMsg);
+  };
+
+  /* ===================================================================
+     3. NAVIGATION & TABS
   =================================================================== */
   window.switchTab = function (tabId) {
     currentActiveTab = tabId;
 
-    // Views toggle
     if (tabId === 'tab-usuarios') {
       viewDashboard.style.display = 'none';
       viewUsuarios.style.display = 'block';
+      if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       document.getElementById('breadcrumb-current').textContent = 'Directorio de Usuarios';
+    } else if (tabId === 'tab-estadisticas') {
+      viewDashboard.style.display = 'none';
+      viewUsuarios.style.display = 'none';
+      if (viewEstadisticas) viewEstadisticas.style.display = 'block';
+      document.getElementById('breadcrumb-current').textContent = 'Estadísticas de Demanda Académica';
+      renderEstadisticas();
     } else {
       viewDashboard.style.display = 'block';
       viewUsuarios.style.display = 'none';
+      if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       document.getElementById('breadcrumb-current').textContent = 'Materias & Planificación Académica';
 
       // Pipeline subtabs
@@ -140,7 +201,7 @@
         btn.classList.toggle('active', btn.dataset.tab === tabId);
       });
 
-      // Show hide table sections
+      // Show/hide table sections
       document.getElementById('section-foro').style.display = tabId === 'tab-foro' ? 'block' : 'none';
       document.getElementById('section-evaluacion').style.display = tabId === 'tab-evaluacion' ? 'block' : 'none';
       document.getElementById('section-habilitadas').style.display = tabId === 'tab-habilitadas' ? 'block' : 'none';
@@ -155,7 +216,7 @@
   };
 
   /* ===================================================================
-     3. RENDER KPIS & COUNTERS
+     4. RENDER KPIS & COUNTERS
   =================================================================== */
   function renderKPIs() {
     const totalForo = UPDS_DATA.materiasForo.length;
@@ -180,7 +241,7 @@
   }
 
   /* ===================================================================
-     4. RENDER TAB 1: MATERIAS DEL FORO (STAGE 1)
+     5. RENDER TAB 1: MATERIAS DEL FORO (STAGE 1)
   =================================================================== */
   function renderMateriasForo() {
     if (!tbodyForo) return;
@@ -194,7 +255,7 @@
     );
 
     if (filtered.length === 0) {
-      tbodyForo.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8b949e;">No hay materias en el foro que coincidan con la búsqueda.</td></tr>`;
+      tbodyForo.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8b949e;">No hay materias en el foro que coincidan con la búsqueda.</td></tr>`;
       return;
     }
 
@@ -207,7 +268,7 @@
 
       const progressColor = isViable ? 'var(--bs-success)' : (pct >= 70 ? 'var(--bs-info)' : 'var(--bs-warning)');
 
-      // Stacked avatars preview (first 4 + remainder)
+      // Stacked avatars preview
       let avatarStack = '<div class="avatar-group">';
       const previewCount = Math.min(4, m.alumnos.length);
       for (let i = 0; i < previewCount; i++) {
@@ -221,7 +282,12 @@
       }
       avatarStack += '</div>';
 
-      const recaudacionPotencial = (m.interesados * 640).toLocaleString('es-BO');
+      // Nivel de Demanda (enfoque académico) + subtexto financiero solo si está desbloqueado
+      const nivelDemanda = m.interesados >= 15 ? '🔥 Alta Demanda' : (m.interesados >= 10 ? '⚡ Viable' : '🌱 En Proceso');
+      const badgeDemanda = `<span class="badge-pill ${isViable ? 'badge-ontrack' : 'badge-atrisk'}">${nivelDemanda}</span>`;
+      const financialSubtext = showFinancials
+        ? `<div style="font-size:11px; color:#60a5fa; margin-top:3px;"><i class="fa-solid fa-coins"></i> Potencial: Bs ${(m.interesados * 640).toLocaleString('es-BO')}</div>`
+        : `<div style="font-size:11px; color:#8b949e; margin-top:3px;">${m.interesados} postulaciones activas</div>`;
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -246,8 +312,8 @@
           <div style="cursor:pointer;" onclick="abrirAlumnosModal('${m.id}')" title="Clic para ver lista de estudiantes">${avatarStack}</div>
         </td>
         <td>
-          <div style="font-weight:600; color:#fff;">Bs ${recaudacionPotencial}</div>
-          <small style="color:#8b949e;">(${m.interesados} x Bs 640)</small>
+          <div>${badgeDemanda}</div>
+          ${financialSubtext}
         </td>
         <td>
           <span class="badge-shift"><i class="fa-regular fa-clock"></i> ${m.turno}</span>
@@ -272,7 +338,7 @@
   }
 
   /* ===================================================================
-     5. RENDER TAB 2: EN EVALUACIÓN Y VIABILIDAD (STAGE 2)
+     6. RENDER TAB 2: EN EVALUACIÓN Y VIABILIDAD (STAGE 2)
   =================================================================== */
   function renderMateriasEvaluacion() {
     if (!tbodyEvaluacion) return;
@@ -286,7 +352,7 @@
     );
 
     if (filtered.length === 0) {
-      tbodyEvaluacion.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8b949e;">No hay materias en evaluación actualmente. Pase materias viables desde el foro.</td></tr>`;
+      tbodyEvaluacion.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8b949e;">No hay materias en evaluación actualmente. Pase materias viables desde el foro.</td></tr>`;
       return;
     }
 
@@ -294,11 +360,22 @@
       const tieneDocente = !!m.docenteAsignadoId;
       const statusBadge = tieneDocente
         ? `<span class="badge-pill badge-ontrack"><i class="fa-solid fa-user-check"></i> Docente Asignado</span>`
-        : `<span class="badge-pill badge-delayed"><i class="fa-solid fa-triangle-exclamation"></i> Requiere Asignación</span>`;
+        : `<span class="badge-pill badge-delayed"><i class="fa-solid fa-triangle-exclamation"></i> Requiere Docente</span>`;
 
       // Espacio name
       const espacioObj = UPDS_DATA.espacios.find(e => e.id === m.espacioAsignado);
       const espacioTexto = espacioObj ? `${espacioObj.nombre} (${espacioObj.capacidad} cap.)` : 'Por asignar';
+
+      // Columna de Validación Académica
+      const academicValidation = `
+        <div style="font-weight:600; color:#38bdf8;">
+          <i class="fa-solid fa-clipboard-check"></i> 100% Prerrequisitos OK
+        </div>
+        <div style="font-size:11px; color:#9ca3af; margin-top:2px;">
+          ${m.auxiliarValidador || 'Auxiliar de Secretaría'}
+        </div>
+        ${showFinancials ? `<div style="font-size:11px; color:#4ade80; margin-top:3px; font-weight:700;">Margen UPDS: Bs ${m.utilidadInstitucional.toLocaleString('es-BO')}</div>` : ''}
+      `;
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -307,9 +384,6 @@
           <div class="subject-meta">
             <span class="badge-code">${m.codigo}</span>
             <span>${m.carreraNombre}</span>
-          </div>
-          <div style="font-size:11px; color:#38bdf8; margin-top:2px;">
-            <i class="fa-solid fa-clipboard-check"></i> Validado por Auxiliar (${m.alumnos.length} con requisitos OK)
           </div>
         </td>
         <td>${statusBadge}</td>
@@ -321,13 +395,10 @@
         </td>
         <td>
           <div style="font-weight:600; color:${tieneDocente ? '#fff' : '#f87171'};">
-            ${tieneDocente ? `<i class="fa-solid fa-chalkboard-user"></i> ${m.docenteAsignadoNombre}` : '<i class="fa-solid fa-circle-exclamation"></i> Pendiente de Docente'}
+            ${tieneDocente ? `<i class="fa-solid fa-chalkboard-user"></i> ${m.docenteAsignadoNombre}` : '<i class="fa-solid fa-circle-exclamation"></i> Pendiente de Asignación'}
           </div>
         </td>
-        <td>
-          <div style="font-weight:700; color:#4ade80;">Bs ${m.utilidadInstitucional.toLocaleString('es-BO')} Margen</div>
-          <small style="color:#9aa0a6;">Recaudo: Bs ${m.recaudacionEstimada.toLocaleString('es-BO')} | Sueldo: Bs ${m.honorarioDocente.toLocaleString('es-BO')}</small>
-        </td>
+        <td>${academicValidation}</td>
         <td>
           <span class="badge-pill badge-completed">${m.alumnos.length} inscritos</span>
         </td>
@@ -347,7 +418,7 @@
   }
 
   /* ===================================================================
-     6. RENDER TAB 3: MATERIAS HABILITADAS & ACTAS (STAGE 3)
+     7. RENDER TAB 3: MATERIAS HABILITADAS & ACTAS (STAGE 3)
   =================================================================== */
   function renderMateriasHabilitadas() {
     if (!tbodyHabilitadas) return;
@@ -367,6 +438,10 @@
     }
 
     filtered.forEach(m => {
+      const financialSubtext = showFinancials
+        ? `<div style="font-size:11px; color:#4ade80; margin-top:3px;"><i class="fa-solid fa-coins"></i> Superávit: Bs ${m.utilidadUPDS.toLocaleString('es-BO')}</div>`
+        : `<div style="font-size:11px; color:#8b949e; margin-top:3px;">Paralelo oficial completo</div>`;
+
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>
@@ -390,7 +465,7 @@
         </td>
         <td>
           <span class="badge-pill badge-ontrack">${m.alumnosInscritos} Alumnos</span>
-          <div style="font-size:11px; color:#4ade80; margin-top:3px;">Bs ${m.utilidadUPDS.toLocaleString('es-BO')} Superávit</div>
+          ${financialSubtext}
         </td>
         <td>
           <span class="badge-pill badge-active"><i class="fa-solid fa-paper-plane"></i> Enviado a Registro</span>
@@ -406,7 +481,198 @@
   }
 
   /* ===================================================================
-     7. RENDER TAB USUARIOS (IMAGE 2)
+     8. RENDER VIEW 3: ESTADÍSTICAS ACADÉMICAS & DEMANDA ESTUDIANTIL
+  =================================================================== */
+  function renderEstadisticas() {
+    if (!viewEstadisticas) return;
+
+    // Totales
+    const solForo = UPDS_DATA.materiasForo.reduce((acc, m) => acc + m.interesados, 0);
+    const solEval = UPDS_DATA.materiasEvaluacion.reduce((acc, m) => acc + m.alumnos.length, 0);
+    const solHab = UPDS_DATA.materiasHabilitadas.reduce((acc, m) => acc + m.alumnosInscritos, 0);
+    const totalSolicitudes = solForo + solEval + solHab;
+
+    const totalMaterias = UPDS_DATA.materiasForo.length + UPDS_DATA.materiasEvaluacion.length + UPDS_DATA.materiasHabilitadas.length;
+    const materiasViables = UPDS_DATA.materiasForo.filter(m => m.interesados >= m.metaMinima).length +
+      UPDS_DATA.materiasEvaluacion.length +
+      UPDS_DATA.materiasHabilitadas.length;
+
+    const tasaViabilidad = totalMaterias > 0 ? Math.round((materiasViables / totalMaterias) * 100) : 0;
+    const promedioHab = UPDS_DATA.materiasHabilitadas.length > 0
+      ? Math.round(solHab / UPDS_DATA.materiasHabilitadas.length)
+      : (solEval > 0 ? Math.round(solEval / UPDS_DATA.materiasEvaluacion.length) : 0);
+
+    // Update Top 4 KPIs
+    const elSol = document.getElementById('stat-kpi-solicitudes');
+    const elMat = document.getElementById('stat-kpi-matriculados');
+    const elProm = document.getElementById('stat-kpi-promedio');
+    const elViab = document.getElementById('stat-kpi-viabilidad');
+
+    if (elSol) elSol.textContent = totalSolicitudes;
+    if (elMat) elMat.textContent = solHab;
+    if (elProm) elProm.textContent = promedioHab;
+    if (elViab) elViab.textContent = `${tasaViabilidad}%`;
+
+    // 1. Ranking de Materias más Solicitadas en Foro
+    const listRanking = document.getElementById('stat-ranking-materias');
+    if (listRanking) {
+      listRanking.innerHTML = '';
+      const allForo = [...UPDS_DATA.materiasForo].sort((a, b) => b.interesados - a.interesados);
+      allForo.forEach(m => {
+        const pct = Math.min(100, Math.round((m.interesados / m.limite) * 100));
+        const color = m.interesados >= 10 ? 'var(--bs-success)' : 'var(--bs-warning)';
+        const item = document.createElement('div');
+        item.className = 'stat-rank-item';
+        item.innerHTML = `
+          <div class="stat-rank-info">
+            <span class="stat-rank-name">${m.nombre} <small style="color:#8b949e;">(${m.codigo} • ${m.carreraNombre})</small></span>
+            <span class="stat-rank-badge" style="color:${color}; background:rgba(255,255,255,0.06);">${m.interesados} estudiantes (${pct}%)</span>
+          </div>
+          <div class="stat-bar-track">
+            <div class="stat-bar-fill" style="width:${pct}%; background-color:${color};"></div>
+          </div>
+        `;
+        listRanking.appendChild(item);
+      });
+    }
+
+    // 2. Demanda por Turno UPDS
+    const listTurnos = document.getElementById('stat-demand-turnos');
+    if (listTurnos) {
+      listTurnos.innerHTML = '';
+      const turnoCounts = { Mañana: 0, Mediodía: 0, Tarde: 0, Noche: 0 };
+      
+      // Conteo en foro
+      UPDS_DATA.materiasForo.forEach(m => {
+        if (turnoCounts[m.turno] !== undefined) turnoCounts[m.turno] += m.interesados;
+      });
+      // Conteo en evaluación
+      UPDS_DATA.materiasEvaluacion.forEach(m => {
+        if (turnoCounts[m.turno] !== undefined) turnoCounts[m.turno] += m.alumnos.length;
+      });
+      // Conteo en habilitadas
+      UPDS_DATA.materiasHabilitadas.forEach(m => {
+        if (turnoCounts[m.turno] !== undefined) turnoCounts[m.turno] += m.alumnosInscritos;
+      });
+
+      const maxTurno = Math.max(...Object.values(turnoCounts), 1);
+      const coloresTurno = {
+        Noche: '#38bdf8',
+        Mañana: '#4ade80',
+        Tarde: '#fbbf24',
+        Mediodía: '#a855f7'
+      };
+
+      Object.entries(turnoCounts).forEach(([turno, cant]) => {
+        const pct = Math.round((cant / totalSolicitudes) * 100) || 0;
+        const barPct = Math.round((cant / maxTurno) * 100);
+        const item = document.createElement('div');
+        item.className = 'stat-rank-item';
+        item.innerHTML = `
+          <div class="stat-rank-info">
+            <span class="stat-rank-name">Turno ${turno}</span>
+            <span class="stat-rank-badge" style="color:${coloresTurno[turno]}; background:rgba(255,255,255,0.06);">${cant} alumnos (${pct}%)</span>
+          </div>
+          <div class="stat-bar-track">
+            <div class="stat-bar-fill" style="width:${barPct}%; background-color:${coloresTurno[turno]};"></div>
+          </div>
+        `;
+        listTurnos.appendChild(item);
+      });
+    }
+
+    // 3. Demanda por Carrera
+    const listCarreras = document.getElementById('stat-demand-carreras');
+    if (listCarreras) {
+      listCarreras.innerHTML = '';
+      const carreraCounts = {};
+      UPDS_DATA.facultad.carreras.forEach(c => { carreraCounts[c.nombre] = 0; });
+
+      const sumCarrera = (arr, countProp) => {
+        arr.forEach(m => {
+          if (carreraCounts[m.carreraNombre] !== undefined) {
+            carreraCounts[m.carreraNombre] += m[countProp];
+          } else {
+            carreraCounts[m.carreraNombre] = m[countProp];
+          }
+        });
+      };
+
+      sumCarrera(UPDS_DATA.materiasForo, 'interesados');
+      UPDS_DATA.materiasEvaluacion.forEach(m => { carreraCounts[m.carreraNombre] = (carreraCounts[m.carreraNombre] || 0) + m.alumnos.length; });
+      sumCarrera(UPDS_DATA.materiasHabilitadas, 'alumnosInscritos');
+
+      const maxCarrera = Math.max(...Object.values(carreraCounts), 1);
+      const colMap = ['#0d6efd', '#22c55e', '#ff951c'];
+      let idx = 0;
+
+      Object.entries(carreraCounts).forEach(([carrera, cant]) => {
+        const pct = Math.round((cant / totalSolicitudes) * 100) || 0;
+        const barPct = Math.round((cant / maxCarrera) * 100);
+        const col = colMap[idx % colMap.length];
+        idx++;
+
+        const item = document.createElement('div');
+        item.className = 'stat-rank-item';
+        item.innerHTML = `
+          <div class="stat-rank-info">
+            <span class="stat-rank-name">${carrera}</span>
+            <span class="stat-rank-badge" style="color:${col}; background:rgba(255,255,255,0.06);">${cant} solicitudes (${pct}%)</span>
+          </div>
+          <div class="stat-bar-track">
+            <div class="stat-bar-fill" style="width:${barPct}%; background-color:${col};"></div>
+          </div>
+        `;
+        listCarreras.appendChild(item);
+      });
+    }
+
+    // 4. Desglose del Ciclo de Materias
+    const listPipeline = document.getElementById('stat-pipeline-breakdown');
+    if (listPipeline) {
+      listPipeline.innerHTML = '';
+      const etapas = [
+        { label: 'Pestaña 1: Materias en Foro (Acumulando)', count: UPDS_DATA.materiasForo.length, col: '#ff951c' },
+        { label: 'Pestaña 2: Mesa de Evaluación (Viables)', count: UPDS_DATA.materiasEvaluacion.length, col: '#0d6efd' },
+        { label: 'Pestaña 3: Habilitadas con Acta Oficial', count: UPDS_DATA.materiasHabilitadas.length, col: '#198754' }
+      ];
+
+      etapas.forEach(e => {
+        const pct = totalMaterias > 0 ? Math.round((e.count / totalMaterias) * 100) : 0;
+        const item = document.createElement('div');
+        item.className = 'stat-rank-item';
+        item.innerHTML = `
+          <div class="stat-rank-info">
+            <span class="stat-rank-name">${e.label}</span>
+            <span class="stat-rank-badge" style="color:${e.col}; background:rgba(255,255,255,0.06);">${e.count} materias (${pct}%)</span>
+          </div>
+          <div class="stat-bar-track">
+            <div class="stat-bar-fill" style="width:${pct}%; background-color:${e.col};"></div>
+          </div>
+        `;
+        listPipeline.appendChild(item);
+      });
+    }
+
+    // 5. Balance Económico Confidencial UPDS (Cifras Reales de Ganancias)
+    const totalRecaudacionHab = UPDS_DATA.materiasHabilitadas.reduce((acc, m) => acc + (m.alumnosInscritos * 640), 0);
+    const totalCostoDocentesHab = UPDS_DATA.materiasHabilitadas.length * 2500;
+    const totalGananciaUPDS = totalRecaudacionHab - totalCostoDocentesHab;
+    const margenPct = totalCostoDocentesHab > 0 ? Math.round((totalGananciaUPDS / totalCostoDocentesHab) * 100) : 0;
+
+    const elRecaudacion = document.getElementById('stat-calc-recaudacion');
+    const elDocentes = document.getElementById('stat-calc-docentes');
+    const elGanancia = document.getElementById('stat-calc-ganancia');
+    const elMargenPct = document.getElementById('stat-calc-margen-pct');
+
+    if (elRecaudacion) elRecaudacion.textContent = `Bs ${totalRecaudacionHab.toLocaleString('es-BO')}`;
+    if (elDocentes) elDocentes.textContent = `Bs ${totalCostoDocentesHab.toLocaleString('es-BO')}`;
+    if (elGanancia) elGanancia.textContent = `Bs ${totalGananciaUPDS.toLocaleString('es-BO')}`;
+    if (elMargenPct) elMargenPct.textContent = `+${margenPct}%`;
+  }
+
+  /* ===================================================================
+     9. RENDER TAB USUARIOS (IMAGE 2)
   =================================================================== */
   function renderUsuarios() {
     if (!tbodyUsuarios) return;
@@ -468,10 +734,13 @@
     renderMateriasEvaluacion();
     renderMateriasHabilitadas();
     renderUsuarios();
+    if (currentActiveTab === 'tab-estadisticas') {
+      renderEstadisticas();
+    }
   }
 
   /* ===================================================================
-     8. TRANSICIONES DE ESTADO (ETAPAS SOLICITA)
+     10. TRANSICIONES DE ESTADO (ETAPAS SOLICITA)
   =================================================================== */
 
   // Mover de Pestaña 1 (Foro) a Pestaña 2 (Evaluación)
@@ -521,7 +790,6 @@
     renderAll();
     switchTab('tab-evaluacion');
 
-    // Notificación elegante
     showToast(`✅ "${m.nombre}" fue trasladada exitosamente a la Mesa de Evaluación con ${m.interesados} alumnos validados.`);
   };
 
@@ -568,7 +836,7 @@
       alumnos: m.alumnos
     };
 
-    // Actualizar asignación del docente para que ahora tenga este turno ocupado
+    // Actualizar asignación del docente
     const docenteObj = UPDS_DATA.docentes.find(d => d.id === m.docenteAsignadoId);
     if (docenteObj && !docenteObj.asignaciones.includes(m.turno)) {
       docenteObj.asignaciones.push(m.turno);
@@ -585,7 +853,7 @@
   };
 
   /* ===================================================================
-     9. MODAL ASIGNAR DOCENTE & ESPACIO (CON ANTI-CRUCE DE HORARIO)
+     11. MODAL ASIGNAR DOCENTE & ESPACIO (CON ANTI-CRUCE DE HORARIO)
   =================================================================== */
   window.abrirAsignarModal = function (materiaId) {
     activeSubjectId = materiaId;
@@ -629,15 +897,25 @@
       selectDocente.appendChild(opt);
     });
 
-    // Viability calculations
-    document.getElementById('asig-calc-alumnos').textContent = `${m.alumnos.length} inscritos`;
-    document.getElementById('asig-calc-ingreso').textContent = `Bs ${(m.alumnos.length * 640).toLocaleString('es-BO')}`;
-    document.getElementById('asig-calc-margen').textContent = `Bs ${((m.alumnos.length * 640) - 2500).toLocaleString('es-BO')}`;
+    // Resumen académico y de viabilidad
+    const elAlumnos = document.getElementById('asig-calc-alumnos');
+    const elCapacidad = document.getElementById('asig-calc-capacidad');
+    const elMargen = document.getElementById('asig-calc-margen');
 
-    // Run collision check immediately
+    if (elAlumnos) elAlumnos.textContent = `${m.alumnos.length} inscritos`;
+    if (elCapacidad) {
+      const esp = UPDS_DATA.espacios.find(e => e.id === m.espacioAsignado);
+      elCapacidad.textContent = esp ? `${esp.capacidad} cupos (${esp.tipo})` : '30 cupos';
+    }
+    if (elMargen) {
+      if (showFinancials) {
+        elMargen.textContent = `Bs ${((m.alumnos.length * 640) - 2500).toLocaleString('es-BO')}`;
+      } else {
+        elMargen.textContent = '•••••• (Protegido)';
+      }
+    }
+
     verificarCruceHorario();
-
-    // Show modal
     modalAsignar.classList.add('show');
   };
 
@@ -655,28 +933,25 @@
     alertAvailable.classList.remove('show');
     btnGuardar.disabled = false;
 
-    if (!docenteId) {
-      return;
-    }
+    if (!docenteId) return;
 
     const docente = UPDS_DATA.docentes.find(d => d.id === docenteId);
     if (!docente) return;
 
-    // Verificar si el docente ya tiene clase en el MISMO turno
     if (docente.asignaciones.includes(turnoSeleccionado)) {
       alertConflict.innerHTML = `
         <i class="fa-solid fa-triangle-exclamation" style="font-size:18px; margin-top:2px;"></i>
         <div>
           <strong>¡Conflicto de Horario Detectado!</strong><br>
           El <strong>${docente.nombre}</strong> ya tiene asignada una materia en el turno <strong>${turnoSeleccionado}</strong>.
-          Por reglamento docente UPDS, un docente no puede dictar dos materias simultáneas en el mismo turno.
+          Por normativa docente UPDS, no puede dictar dos materias simultáneas en el mismo turno.
         </div>
       `;
       alertConflict.classList.add('show');
       btnGuardar.disabled = true;
     } else {
       const otrosTurnos = docente.asignaciones.length > 0
-        ? `Dicta otra materia en turno <strong>${docente.asignaciones.join(', ')}</strong>, lo cual está 100% permitido por ser diferente turno.`
+        ? `Dicta otra materia en turno <strong>${docente.asignaciones.join(', ')}</strong>, lo cual está permitido por ser turno diferente.`
         : `El docente no tiene ninguna otra carga horaria este módulo.`;
 
       alertAvailable.innerHTML = `
@@ -719,7 +994,7 @@
   };
 
   /* ===================================================================
-     10. MODAL VER ALUMNOS & PRERREQUISITOS
+     12. MODAL VER ALUMNOS & PRERREQUISITOS
   =================================================================== */
   window.abrirAlumnosModal = function (materiaId) {
     activeSubjectId = materiaId;
@@ -730,7 +1005,7 @@
     if (!m) return;
 
     document.getElementById('modal-alumnos-titulo').textContent = `Estudiantes Interesados - ${m.nombre}`;
-    document.getElementById('modal-alumnos-sub').textContent = `${m.carreraNombre} • Semestre ${m.semestre} • Meta: ${m.alumnos.length}/${m.metaMinima || 10} alumnos`;
+    document.getElementById('modal-alumnos-sub').textContent = `${m.carreraNombre} • Semestre ${m.semestre} • Demanda: ${m.alumnos.length}/${m.metaMinima || 10} alumnos`;
 
     const tbody = document.getElementById('tbody-alumnos-modal');
     tbody.innerHTML = '';
@@ -753,7 +1028,7 @@
   };
 
   /* ===================================================================
-     11. MODAL REGISTRO PRESENCIAL DE ESTUDIANTE (WALK-IN)
+     13. MODAL REGISTRO PRESENCIAL DE ESTUDIANTE (WALK-IN)
   =================================================================== */
   window.abrirModalPresencial = function (materiaId) {
     activeSubjectId = materiaId;
@@ -782,7 +1057,6 @@
       return;
     }
 
-    // Agregar a la lista de estudiantes
     m.alumnos.push({
       reg: registro,
       nombre: nombre,
@@ -797,7 +1071,7 @@
   };
 
   /* ===================================================================
-     12. MODAL ACTA OFICIAL DE HABILITACIÓN PARA REGISTRO
+     14. MODAL ACTA OFICIAL DE HABILITACIÓN PARA REGISTRO
   =================================================================== */
   window.abrirActaModal = function (materiaId) {
     const m = UPDS_DATA.materiasHabilitadas.find(item => item.id === materiaId);
@@ -814,7 +1088,6 @@
     document.getElementById('acta-view-docente').textContent = m.docenteNombre;
     document.getElementById('acta-view-firma-decano').textContent = m.aprobadoPor;
 
-    // Student roster in Acta
     const tbody = document.getElementById('acta-students-tbody');
     tbody.innerHTML = '';
     m.alumnos.forEach((al, idx) => {
@@ -836,7 +1109,7 @@
   };
 
   /* ===================================================================
-     13. MODAL NUEVO USUARIO (CON VENCIMIENTO TEMPORAL)
+     15. MODAL NUEVO USUARIO (CON VENCIMIENTO TEMPORAL)
   =================================================================== */
   window.abrirNuevoUsuarioModal = function () {
     document.getElementById('new-user-nombre').value = '';
@@ -912,7 +1185,7 @@
   };
 
   /* ===================================================================
-     14. UTILS, TOASTS & EVENT LISTENERS
+     16. UTILS, TOASTS & EVENT LISTENERS
   =================================================================== */
   window.cerrarModales = function () {
     document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('show'));
