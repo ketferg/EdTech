@@ -1027,14 +1027,194 @@ function initContactTypewriter() {
 }
 
 // Ensure execution when DOM is ready
+
+/* =========================================================
+   SHOWROOM & DEMO MODAL CONTROLLER ("Hacemos así")
+   ========================================================= */
+function initPlansShowroom() {
+  const modal = document.querySelector('#demo-modal');
+  if (!modal) return;
+
+  const urlDisplay = document.querySelector('#demo-url-display');
+  const closeBtn = document.querySelector('#close-demo-modal');
+  const tabBtns = document.querySelectorAll('.demo-tab-btn');
+  const tabContents = document.querySelectorAll('.demo-tab-content');
+  const demoViews = document.querySelectorAll('.demo-view');
+
+  const acquireTitle = document.querySelector('#acquire-modal-title');
+  const acquirePrice = document.querySelector('#acquire-price-val');
+  const acquireBtn = document.querySelector('#btn-acquire-whatsapp');
+  const acquireName = document.querySelector('#acquire-name');
+  const acquireInst = document.querySelector('#acquire-institution');
+
+  let currentPlan = 'gestion';
+
+  const planData = {
+    esencial: {
+      name: 'Plan Esencial',
+      price: 'Bs 2.500',
+      url: 'https://edtech.bo/showroom/portal-institucional-web',
+      viewClass: '.demo-view-esencial'
+    },
+    gestion: {
+      name: 'Plan Gestión',
+      price: 'Bs 8.000',
+      url: 'https://edtech.bo/showroom/sistema-gestion-academica',
+      viewClass: '.demo-view-gestion'
+    },
+    campus: {
+      name: 'Campus 360°',
+      price: 'Bs 13.500',
+      url: 'https://edtech.bo/showroom/campus-virtual-solicita',
+      viewClass: '.demo-view-campus'
+    }
+  };
+
+  function selectTab(tabKey) {
+    tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabKey));
+    tabContents.forEach(content => content.classList.toggle('active', content.id === 'tab-' + tabKey));
+  }
+
+  function setPlanView(planKey) {
+    currentPlan = planKey;
+    const data = planData[planKey] || planData.gestion;
+
+    if (urlDisplay) urlDisplay.textContent = data.url;
+    if (acquireTitle) acquireTitle.textContent = 'Propuesta de Adquisición: ' + data.name;
+    if (acquirePrice) acquirePrice.textContent = data.price;
+
+    demoViews.forEach(view => view.classList.remove('active'));
+    const targetView = document.querySelector(data.viewClass);
+    if (targetView) targetView.classList.add('active');
+  }
+
+  function openShowroom(planKey, tabKey = 'preview') {
+    setPlanView(planKey);
+    selectTab(tabKey);
+    if (typeof modal.showModal === 'function') {
+      modal.showModal();
+    } else {
+      modal.setAttribute('open', '');
+    }
+  }
+
+  function closeShowroom() {
+    if (typeof modal.close === 'function') {
+      modal.close();
+    } else {
+      modal.removeAttribute('open');
+    }
+  }
+
+  // Open triggers from cards
+  document.querySelectorAll('[data-open-demo]').forEach(btn => {
+    btn.addEventListener('click', () => openShowroom(btn.dataset.openDemo, 'preview'));
+  });
+
+  document.querySelectorAll('[data-open-acquire]').forEach(btn => {
+    btn.addEventListener('click', () => openShowroom(btn.dataset.openAcquire, 'acquire'));
+  });
+
+  // Tab switching
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => selectTab(btn.dataset.tab));
+  });
+
+  // Modal close handlers
+  closeBtn?.addEventListener('click', closeShowroom);
+  modal.addEventListener('click', e => {
+    const rect = modal.getBoundingClientRect();
+    if (e.target === modal && (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom)) {
+      closeShowroom();
+    }
+  });
+
+  // QR SCANNER SIMULATOR INTERACTION
+  const btnTriggerQr = document.querySelector('#btn-trigger-qr');
+  const qrLaser = document.querySelector('#qr-laser-line');
+  const qrSuccess = document.querySelector('#qr-success-badge');
+  const qrLogEntry = document.querySelector('#qr-log-entry');
+  const attendancePct = document.querySelector('#demo-attendance-pct');
+
+  const mockStudents = [
+    { name: 'Mateo Fernández Ramos', grade: '5to Secundaria B', time: '07:42 AM', stat: 'Puntual' },
+    { name: 'Sofía Valverde Cortez', grade: '4to Secundaria A', time: '07:44 AM', stat: 'Puntual' },
+    { name: 'Lucas Morales Justiniano', grade: '6to Secundaria C', time: '07:45 AM', stat: 'Puntual' },
+    { name: 'Valentina Rojas Méndez', grade: '3ro Secundaria A', time: '07:46 AM', stat: 'Puntual' }
+  ];
+  let studentIdx = 0;
+
+  btnTriggerQr?.addEventListener('click', () => {
+    if (!qrLaser || !qrSuccess) return;
+
+    btnTriggerQr.disabled = true;
+    btnTriggerQr.style.opacity = '0.7';
+
+    // Start laser animation
+    qrLaser.classList.add('scanning');
+    qrSuccess.classList.remove('show');
+
+    setTimeout(() => {
+      qrLaser.classList.remove('scanning');
+      qrSuccess.classList.add('show');
+
+      // Update student log
+      studentIdx = (studentIdx + 1) % mockStudents.length;
+      const s = mockStudents[studentIdx];
+      if (qrLogEntry) {
+        qrLogEntry.innerHTML = '<strong>' + s.name + '</strong> (' + s.grade + ')<br><small>Hora: ' + s.time + ' · Asistencia: <em>' + s.stat + '</em> · Notificación enviada ✓</small>';
+      }
+      if (attendancePct) {
+        attendancePct.textContent = '95.' + (4 + studentIdx) + '%';
+      }
+
+      setTimeout(() => {
+        qrSuccess.classList.remove('show');
+        btnTriggerQr.disabled = false;
+        btnTriggerQr.style.opacity = '1';
+      }, 1600);
+    }, 750);
+  });
+
+  // MOCK WEBSITE PRE-REGISTRATION
+  const btnMockApply = document.querySelector('#btn-mock-apply');
+  const mockApplySuccess = document.querySelector('#mock-apply-success');
+  btnMockApply?.addEventListener('click', () => {
+    if (mockApplySuccess) {
+      mockApplySuccess.style.display = 'block';
+      btnMockApply.textContent = '✓ Preinscripción Enviada';
+      btnMockApply.disabled = true;
+      btnMockApply.style.background = '#2ed573';
+    }
+  });
+
+  // ACQUIRE VIA WHATSAPP HANDLER
+  acquireBtn?.addEventListener('click', () => {
+    const data = planData[currentPlan] || planData.gestion;
+    const name = (acquireName?.value || '').trim() || 'un cliente interesado';
+    const inst = (acquireInst?.value || '').trim();
+
+    let text = 'Hola Ketfer Gianella (EdTech), soy ' + name + (inst ? ' de ' + inst : '') + '.
+
+';
+    text += 'Estuve probando la demo en vivo de *' + data.name + '* (' + data.price + ') en su sitio web y me interesa iniciar el proceso de contratación formal para mi institución.';
+
+    const phone = '59162143492';
+    const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener,noreferrer');
+  });
+}
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initHeroParticles();
     initHexagonParticles();
     initContactTypewriter();
+    initPlansShowroom();
   });
 } else {
   initHeroParticles();
   initHexagonParticles();
   initContactTypewriter();
+  initPlansShowroom();
 }
