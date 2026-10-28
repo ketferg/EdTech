@@ -669,6 +669,266 @@
     if (elDocentes) elDocentes.textContent = `Bs ${totalCostoDocentesHab.toLocaleString('es-BO')}`;
     if (elGanancia) elGanancia.textContent = `Bs ${totalGananciaUPDS.toLocaleString('es-BO')}`;
     if (elMargenPct) elMargenPct.textContent = `+${margenPct}%`;
+
+    // Inicializar y actualizar gráficos de Chart.js estilo AdminLTE 4
+    initCharts();
+  }
+
+  /* ===================================================================
+     8.1 CHART.JS CHARTS INITIALIZER (EXACTO ADMINLTE 4 SCREENSHOT)
+  =================================================================== */
+  let chartLine = null;
+  let chartArea = null;
+  let chartColumn = null;
+  let chartDonut = null;
+
+  function initCharts() {
+    if (typeof Chart === 'undefined') return;
+
+    // Configuración global tema oscuro para Chart.js
+    Chart.defaults.color = '#9aa0a6';
+    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.08)';
+    Chart.defaults.font.family = "'Source Sans 3', sans-serif";
+
+    // 1. Line Chart: Tendencia Modular (Jan - Dec)
+    const canvasLine = document.getElementById('chart-line-solicitudes');
+    if (canvasLine) {
+      if (chartLine) chartLine.destroy();
+      const ctx = canvasLine.getContext('2d');
+      chartLine = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{
+            label: 'Alumnos Solicitantes',
+            data: [31, 35, 32, 40, 42, 46, 44, 49, 53, 57, 61, 66],
+            borderColor: '#0d6efd',
+            backgroundColor: '#0d6efd',
+            pointBackgroundColor: '#0d6efd',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            tension: 0.35,
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#212529',
+              borderColor: '#0d6efd',
+              borderWidth: 1,
+              titleColor: '#fff',
+              bodyColor: '#cbd5e1',
+              callbacks: {
+                label: (ctx) => ` ${ctx.parsed.y} Estudiantes postulados`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: { stepSize: 10 }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    // 2. Area Chart: Postulantes en Foro vs Habilitados
+    const canvasArea = document.getElementById('chart-area-demanda');
+    if (canvasArea) {
+      if (chartArea) chartArea.destroy();
+      const ctx = canvasArea.getContext('2d');
+
+      const gradBlue = ctx.createLinearGradient(0, 0, 0, 220);
+      gradBlue.addColorStop(0, 'rgba(13, 110, 253, 0.45)');
+      gradBlue.addColorStop(1, 'rgba(13, 110, 253, 0.0)');
+
+      const gradCyan = ctx.createLinearGradient(0, 0, 0, 220);
+      gradCyan.addColorStop(0, 'rgba(13, 202, 240, 0.35)');
+      gradCyan.addColorStop(1, 'rgba(13, 202, 240, 0.0)');
+
+      chartArea = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan \'26', 'Feb \'26', 'Mar \'26', 'Apr \'26', 'May \'26', 'Jun \'26', 'Jul \'26'],
+          datasets: [
+            {
+              label: 'Postulantes en Foro',
+              data: [28, 32, 30, 38, 44, 42, 54],
+              fill: true,
+              borderColor: '#0d6efd',
+              backgroundColor: gradBlue,
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 0,
+              pointHoverRadius: 5
+            },
+            {
+              label: 'Habilitados Registro',
+              data: [15, 18, 19, 23, 25, 28, 35],
+              fill: true,
+              borderColor: '#0dcaf0',
+              backgroundColor: gradCyan,
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 0,
+              pointHoverRadius: 5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                boxWidth: 12,
+                usePointStyle: true,
+                color: '#d1d5db',
+                padding: 12
+              }
+            },
+            tooltip: {
+              backgroundColor: '#212529',
+              borderColor: '#373b3e',
+              borderWidth: 1
+            }
+          },
+          scales: {
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: { stepSize: 10 }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    // 3. Column Chart: Demanda por Turno Académico
+    const canvasColumn = document.getElementById('chart-column-turnos');
+    if (canvasColumn) {
+      if (chartColumn) chartColumn.destroy();
+      const ctx = canvasColumn.getContext('2d');
+
+      const turnoCounts = { Mañana: 0, Mediodía: 0, Tarde: 0, Noche: 0 };
+      UPDS_DATA.materiasForo.forEach(m => { if (turnoCounts[m.turno] !== undefined) turnoCounts[m.turno] += m.interesados; });
+      UPDS_DATA.materiasEvaluacion.forEach(m => { if (turnoCounts[m.turno] !== undefined) turnoCounts[m.turno] += m.alumnos.length; });
+      UPDS_DATA.materiasHabilitadas.forEach(m => { if (turnoCounts[m.turno] !== undefined) turnoCounts[m.turno] += m.alumnosInscritos; });
+
+      chartColumn = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Mañana', 'Mediodía', 'Tarde', 'Noche'],
+          datasets: [{
+            label: 'Estudiantes Interesados',
+            data: [turnoCounts.Mañana, turnoCounts.Mediodía, turnoCounts.Tarde, turnoCounts.Noche],
+            backgroundColor: '#8b5cf6',
+            borderRadius: 6,
+            barPercentage: 0.45
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#212529',
+              borderColor: '#8b5cf6',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => ` ${ctx.parsed.y} Estudiantes`
+              }
+            }
+          },
+          scales: {
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.06)' }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    // 4. Donut Chart: Distribución por Carrera de Ingeniería
+    const canvasDonut = document.getElementById('chart-donut-carreras');
+    if (canvasDonut) {
+      if (chartDonut) chartDonut.destroy();
+      const ctx = canvasDonut.getContext('2d');
+
+      const carreraCounts = {
+        'Ing. en Redes': 0,
+        'Ing. de Sistemas': 0,
+        'Ing. Industrial': 0
+      };
+
+      const mapName = (name) => {
+        if (name.includes('Redes')) return 'Ing. en Redes';
+        if (name.includes('Sistemas')) return 'Ing. de Sistemas';
+        return 'Ing. Industrial';
+      };
+
+      UPDS_DATA.materiasForo.forEach(m => { carreraCounts[mapName(m.carreraNombre)] += m.interesados; });
+      UPDS_DATA.materiasEvaluacion.forEach(m => { carreraCounts[mapName(m.carreraNombre)] += m.alumnos.length; });
+      UPDS_DATA.materiasHabilitadas.forEach(m => { carreraCounts[mapName(m.carreraNombre)] += m.alumnosInscritos; });
+
+      const totalIng = (carreraCounts['Ing. en Redes'] + carreraCounts['Ing. de Sistemas'] + carreraCounts['Ing. Industrial']) || 1;
+
+      chartDonut = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Ing. Redes y Telecom', 'Ing. de Sistemas', 'Ing. Industrial'],
+          datasets: [{
+            data: [carreraCounts['Ing. en Redes'], carreraCounts['Ing. de Sistemas'], carreraCounts['Ing. Industrial']],
+            backgroundColor: ['#0d6efd', '#8b5cf6', '#ec4899'],
+            borderWidth: 3,
+            borderColor: '#262a2f'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '58%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                boxWidth: 12,
+                usePointStyle: true,
+                color: '#d1d5db',
+                padding: 16
+              }
+            },
+            tooltip: {
+              backgroundColor: '#212529',
+              borderColor: '#373b3e',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => ` ${ctx.label}: ${ctx.parsed} alumnos (${Math.round((ctx.parsed / totalIng) * 100)}%)`
+              }
+            }
+          }
+        }
+      });
+    }
   }
 
   /* ===================================================================

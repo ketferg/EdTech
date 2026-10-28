@@ -513,7 +513,80 @@
             </div>
           </div>
 
-          <!-- 2X2 ANALYTICS GRID -->
+          <!-- 4 CHART.JS CARDS (EXACT ADMINLTE 4 DESIGN AS PER USER SCREENSHOT) -->
+          <div class="charts-grid-2x2">
+            
+            <!-- 1. LINE CHART -->
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <i class="fa-solid fa-chart-line" style="color:#0d6efd;"></i>
+                  <span>Line Chart</span>
+                  <span style="font-size:12px; color:#8b949e; font-weight:normal; margin-left:6px;">— Tendencia Modular de Solicitudes</span>
+                </div>
+                <div class="chart-card-tools">
+                  <button type="button" class="chart-tool-btn" title="Minimizar"><i class="fa-solid fa-minus"></i></button>
+                </div>
+              </div>
+              <div class="chart-card-body">
+                <canvas id="chart-line-solicitudes"></canvas>
+              </div>
+            </div>
+
+            <!-- 2. AREA CHART -->
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <i class="fa-solid fa-chart-area" style="color:#0dcaf0;"></i>
+                  <span>Area Chart</span>
+                  <span style="font-size:12px; color:#8b949e; font-weight:normal; margin-left:6px;">— Postulantes en Foro vs Habilitados</span>
+                </div>
+                <div class="chart-card-tools">
+                  <button type="button" class="chart-tool-btn" title="Minimizar"><i class="fa-solid fa-minus"></i></button>
+                </div>
+              </div>
+              <div class="chart-card-body">
+                <canvas id="chart-area-demanda"></canvas>
+              </div>
+            </div>
+
+            <!-- 3. COLUMN CHART -->
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <i class="fa-solid fa-chart-simple" style="color:#a855f7;"></i>
+                  <span>Column Chart</span>
+                  <span style="font-size:12px; color:#8b949e; font-weight:normal; margin-left:6px;">— Demanda Estudiantil por Turno UPDS</span>
+                </div>
+                <div class="chart-card-tools">
+                  <button type="button" class="chart-tool-btn" title="Minimizar"><i class="fa-solid fa-minus"></i></button>
+                </div>
+              </div>
+              <div class="chart-card-body">
+                <canvas id="chart-column-turnos"></canvas>
+              </div>
+            </div>
+
+            <!-- 4. DONUT CHART -->
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <i class="fa-solid fa-chart-pie" style="color:#d63384;"></i>
+                  <span>Donut Chart</span>
+                  <span style="font-size:12px; color:#8b949e; font-weight:normal; margin-left:6px;">— Distribución por Carrera de Ingeniería</span>
+                </div>
+                <div class="chart-card-tools">
+                  <button type="button" class="chart-tool-btn" title="Minimizar"><i class="fa-solid fa-minus"></i></button>
+                </div>
+              </div>
+              <div class="chart-card-body" style="display:flex; justify-content:center; align-items:center; min-height:260px;">
+                <canvas id="chart-donut-carreras"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RANKING DETAIL TABLE & DEMANDA -->
           <div class="stats-grid-2">
             
             <!-- Card 1: Ranking Materias Más Solicitadas -->
@@ -974,6 +1047,8 @@
     </div>
   </div>
 
+  <!-- Chart.js 4 (AdminLTE Analytics) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Scripts -->
   <script src="js/data-solicita.js"></script>
   <script src="js/dashboard.js"></script>
