@@ -2131,19 +2131,7 @@ dialog.demo-dialog::backdrop {
 }
 
 /* CAMPUS 360 DEMO */
-.btn-launch-solicita {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  background: linear-gradient(135deg, #1558d6 0%, #0d3e9e 100%) !important;
-  color: #ffffff !important;
-  padding: 7px 14px !important;
-  border-radius: 8px !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  text-decoration: none !important;
-  box-shadow: 0 3px 10px rgba(21, 88, 214, 0.4) !important;
-}
+
 
 .campus-modules-grid {
   display: grid !important;
@@ -2207,7 +2195,7 @@ dialog.demo-dialog::backdrop {
   border-radius: 999px !important;
 }
 
-.solicita-mini-stat {
+.campus-mini-stat {
   display: flex !important;
   justify-content: space-between !important;
   font-size: 11px !important;
@@ -2483,114 +2471,6 @@ dialog.demo-dialog::backdrop {
   line-height: 1.4 !important;
   margin: 6px 0 0 !important;
   text-align: center !important;
-}
-
-/* =========================================================
-   SOLICITA SPECIAL SPOTLIGHT IN GESTIÓN ACADÉMICA
-   ========================================================= */
-.demo-solicita-spotlight {
-  margin-top: 22px !important;
-  background: linear-gradient(135deg, rgba(21, 88, 214, 0.22) 0%, rgba(255, 149, 28, 0.16) 100%) !important;
-  border: 1.8px solid #ff951c !important;
-  border-radius: 14px !important;
-  padding: 20px 24px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 20px !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 149, 28, 0.25) !important;
-}
-
-@media (max-width: 760px) {
-  .demo-solicita-spotlight {
-    flex-direction: column !important;
-    text-align: center !important;
-  }
-}
-
-.dss-badge {
-  display: inline-block !important;
-  font-size: 10.5px !important;
-  font-weight: 800 !important;
-  color: #ffaa33 !important;
-  background: rgba(255, 149, 28, 0.18) !important;
-  border: 1px solid rgba(255, 149, 28, 0.4) !important;
-  padding: 3px 10px !important;
-  border-radius: 999px !important;
-  margin-bottom: 8px !important;
-  letter-spacing: 0.05em !important;
-}
-
-.dss-left h4 {
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  margin: 0 0 6px !important;
-}
-
-.dss-left p {
-  font-size: 13px !important;
-  color: #c0d3ec !important;
-  line-height: 1.5 !important;
-  margin: 0 !important;
-  max-width: 480px !important;
-}
-
-.dss-right {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 6px !important;
-  flex-shrink: 0 !important;
-}
-
-.btn-solicita-spotlight {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  background: linear-gradient(135deg, #ff951c 0%, #ff5e00 100%) !important;
-  color: #0b1424 !important;
-  font-weight: 800 !important;
-  font-size: 13.5px !important;
-  padding: 12px 20px !important;
-  border-radius: 10px !important;
-  text-decoration: none !important;
-  box-shadow: 0 4px 18px rgba(255, 149, 28, 0.5) !important;
-  transition: all 0.25s ease !important;
-  white-space: nowrap !important;
-}
-
-.btn-solicita-spotlight:hover {
-  background: linear-gradient(135deg, #ffa83e 0%, #ff731a 100%) !important;
-  transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 6px 24px rgba(255, 149, 28, 0.7) !important;
-}
-
-.dss-note {
-  font-size: 10.5px !important;
-  color: #8da3c3 !important;
-}
-
-/* Service Card Pill */
-.service-solicita-pill {
-  display: inline-block !important;
-  margin-top: 10px !important;
-  margin-bottom: 12px !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  color: #ff951c !important;
-  background: rgba(255, 149, 28, 0.12) !important;
-  border: 1px solid rgba(255, 149, 28, 0.35) !important;
-  padding: 5px 11px !important;
-  border-radius: 7px !important;
-  transition: all 0.25s ease !important;
-}
-
-.service-solicita-pill:hover {
-  background: #ff951c !important;
-  color: #0b1424 !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 3px 12px rgba(255, 149, 28, 0.4) !important;
 }
 
 /* =========================================================

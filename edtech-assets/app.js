@@ -64,7 +64,7 @@ function buildWhatsAppMessage() {
     }
     msg += '\n\n¿Podríamos coordinar una breve llamada o reunión para conocer el alcance y los tiempos de entrega? ¡Muchas gracias!';
   } else {
-    msg += 'Quiero conocer más sobre las soluciones de EdTech y la propuesta SOLICITA. ¿Podríamos conversar sobre opciones y presupuestos?';
+    msg += 'Quiero conocer más sobre las soluciones y sistemas de EdTech. ¿Podríamos conversar sobre opciones y presupuestos?';
   }
   return msg;
 }
@@ -1091,7 +1091,7 @@ function initPlansShowroom() {
     campus: {
       name: 'Campus 360°',
       price: 'Bs 13.500',
-      url: 'https://edtech.bo/showroom/campus-virtual-solicita',
+      url: 'https://edtech.bo/showroom/campus-virtual',
       viewClass: '.demo-view-campus'
     }
   };
