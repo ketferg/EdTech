@@ -441,6 +441,21 @@ document.querySelectorAll('.service').forEach(card => {
   preview.setAttribute('aria-hidden', 'true');
   // Plantillas visuales locales; no contienen entradas del usuario.
   preview.innerHTML = serviceScenes[service.id];
+
+  // Demo interactiva: acceso directo desde la foto (cara frontal)
+  const demoKey = service.id === 'gestion' ? 'gestion' : (service.id === 'web' ? 'esencial' : (service.id === 'asistencia' ? 'gestion' : null));
+  if (demoKey) {
+    preview.classList.add('has-interactive-demo');
+    preview.dataset.openDemo = demoKey;
+    preview.setAttribute('role', 'button');
+    preview.setAttribute('tabindex', '0');
+    preview.setAttribute('title', 'Haz clic para probar la demo interactiva');
+    const demoBadge = document.createElement('span');
+    demoBadge.className = 'preview-demo-tag';
+    demoBadge.innerHTML = '<span>💻 Demo en Vivo</span> <span class="p-arrow">↗</span>';
+    preview.appendChild(demoBadge);
+  }
+
   oldTop.replaceWith(preview);
   const category = document.createElement('span');
   category.className = 'service-category'; category.textContent = serviceSceneLabels[service.id];
@@ -450,7 +465,7 @@ document.querySelectorAll('.service').forEach(card => {
   while (card.firstChild) front.append(card.firstChild);
   const toggle = document.createElement('button'); toggle.type = 'button'; toggle.className = 'service-explore'; toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-controls', 'detail-' + service.id);
   const label = document.createElement('span'); label.textContent = 'Explorar esta solución';
-  const arrow = document.createElement('span'); arrow.className = 'explore-arrow'; arrow.textContent = '↻'; arrow.setAttribute('aria-hidden', 'true'); toggle.append(label, arrow);
+  const arrow = document.createElement('span'); arrow.className = 'explore-arrow'; arrow.textContent = '↺'; arrow.setAttribute('aria-hidden', 'true'); toggle.append(label, arrow);
   const bottom = front.querySelector('.service-bottom'); front.insertBefore(toggle, bottom);
   const back = document.createElement('div'); back.className = 'solution-face solution-back'; back.id = 'detail-' + service.id; back.inert = true; back.setAttribute('aria-hidden', 'true');
   const heading = document.createElement('div'); heading.className = 'solution-back-heading';
@@ -461,7 +476,18 @@ document.querySelectorAll('.service').forEach(card => {
   const benefits = document.createElement('ul'); benefits.className = 'service-benefits';
   details.benefits.forEach((text, index) => { const item = document.createElement('li'); item.textContent = text; item.style.setProperty('--detail-delay', 320 + index * 90 + 'ms'); benefits.append(item); });
   const note = document.createElement('p'); note.className = 'solution-note'; note.textContent = 'Definimos el alcance contigo, según lo que necesite tu proyecto.';
-  back.append(heading, title, description, benefits, note, bottom.cloneNode(true));
+
+  // Demo interactiva: acceso en la parte de atrás (al girar la tarjeta)
+  if (demoKey) {
+    const backDemoBtn = document.createElement('button');
+    backDemoBtn.type = 'button';
+    backDemoBtn.className = 'btn-card-back-demo';
+    backDemoBtn.dataset.openDemo = demoKey;
+    backDemoBtn.innerHTML = '<span>💻 Probar Demostración Interactiva en Vivo</span> <span aria-hidden="true">↗</span>';
+    back.append(heading, title, description, benefits, backDemoBtn, note, bottom.cloneNode(true));
+  } else {
+    back.append(heading, title, description, benefits, note, bottom.cloneNode(true));
+  }
   rotor.append(front, back); card.append(rotor); card.classList.add('solution-flip');
   function flipSolution(flipped) {
     const visible = flipped ? back : front;
@@ -1106,14 +1132,26 @@ function initPlansShowroom() {
     }
   }
 
-  // Open triggers from cards
-  document.querySelectorAll('[data-open-demo]').forEach(btn => {
-    btn.addEventListener('click', () => openShowroom(btn.dataset.openDemo, 'preview'));
+  // Delegated click listeners so any button or photo with [data-open-demo] works dynamically
+  document.addEventListener('click', e => {
+    const demoTrigger = e.target.closest('[data-open-demo]');
+    if (demoTrigger) {
+      e.preventDefault();
+      e.stopPropagation();
+      openShowroom(demoTrigger.dataset.openDemo || 'gestion', 'preview');
+      return;
+    }
+    const acqTrigger = e.target.closest('[data-open-acquire]');
+    if (acqTrigger) {
+      e.preventDefault();
+      e.stopPropagation();
+      openShowroom(acqTrigger.dataset.openAcquire || 'gestion', 'acquire');
+      return;
+    }
   });
 
-  document.querySelectorAll('[data-open-acquire]').forEach(btn => {
-    btn.addEventListener('click', () => openShowroom(btn.dataset.openAcquire, 'acquire'));
-  });
+  // Expose to window for direct calls
+  window.openEdTechShowroom = openShowroom;
 
   // Tab switching
   tabBtns.forEach(btn => {

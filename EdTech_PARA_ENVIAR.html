@@ -2964,6 +2964,108 @@ dialog.demo-dialog::backdrop {
   box-shadow: 0 3px 12px rgba(255, 149, 28, 0.4) !important;
 }
 
+/* =========================================================
+   CARD PHOTO DEMO OVERLAY & BACK FACE DEMO ACTIONS
+   ========================================================= */
+.service-preview.has-interactive-demo {
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+.service-preview.has-interactive-demo:hover {
+  border-color: rgba(255, 149, 28, 0.5) !important;
+  box-shadow: 0 8px 24px -4px rgba(255, 149, 28, 0.3) !important;
+}
+
+.preview-demo-tag {
+  position: absolute !important;
+  bottom: 9px !important;
+  right: 9px !important;
+  background: linear-gradient(135deg, #ff951c 0%, #ff5e00 100%) !important;
+  color: #0b1424 !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.03em !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 4px 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  box-shadow: 0 4px 14px rgba(255, 149, 28, 0.5) !important;
+  cursor: pointer !important;
+  z-index: 6 !important;
+  pointer-events: auto !important;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.service-preview.has-interactive-demo:hover .preview-demo-tag,
+.preview-demo-tag:hover {
+  transform: scale(1.08) translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(255, 149, 28, 0.75) !important;
+  background: linear-gradient(135deg, #ffa83e 0%, #ff731a 100%) !important;
+}
+
+.btn-card-back-demo {
+  width: 100% !important;
+  margin: 14px 0 10px !important;
+  padding: 10px 14px !important;
+  background: linear-gradient(135deg, rgba(255, 149, 28, 0.18) 0%, rgba(21, 88, 214, 0.18) 100%) !important;
+  border: 1.5px solid #ff951c !important;
+  border-radius: 9px !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+  transition: all 0.25s ease !important;
+}
+
+.btn-card-back-demo:hover {
+  background: linear-gradient(135deg, #ff951c 0%, #ff5e00 100%) !important;
+  color: #081220 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(255, 149, 28, 0.6) !important;
+}
+
+.service-action-pills {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  margin: 10px 0 14px !important;
+}
+
+.btn-service-demo-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, rgba(21, 88, 214, 0.28) 0%, rgba(13, 27, 46, 0.7) 100%) !important;
+  border: 1px solid rgba(88, 147, 245, 0.4) !important;
+  padding: 6px 12px !important;
+  border-radius: 7px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+  width: fit-content !important;
+}
+
+.btn-service-demo-pill:hover {
+  background: linear-gradient(135deg, #1558d6 0%, #0d3a8e 100%) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(21, 88, 214, 0.5) !important;
+}
+
 
 /* === EDTECH-ASSETS/SERVICES.CSS === */
 .service-grid { align-items: start; gap: 22px; }
@@ -3096,7 +3198,7 @@ dialog.demo-dialog::backdrop {
   </style>
 </head>
 <body>
-  <dialog id="brand-intro" class="brand-intro" aria-labelledby="intro-title">
+<dialog id="brand-intro" class="brand-intro" aria-labelledby="intro-title">
     <div class="sp-bg" aria-hidden="true"><div class="sp-bubble sp-bubble-one"></div><div class="sp-bubble sp-bubble-two"></div><div class="sp-bubble sp-bubble-three"></div><div class="sp-sun-halo"></div><div class="sp-sun"></div><div class="sp-horizon"></div><span class="sp-particle" style="--left:12%;--pdur:4s;--pdelay:.1s;--dx:24px">✦</span><span class="sp-particle" style="--left:29%;--pdur:5s;--pdelay:.8s;--dx:-20px">+</span><span class="sp-particle" style="--left:73%;--pdur:4.6s;--pdelay:.4s;--dx:28px">✧</span><span class="sp-particle" style="--left:89%;--pdur:5.4s;--pdelay:1.2s;--dx:-14px">✦</span></div>
     <div class="sp-rings" aria-hidden="true"><div class="sp-ring"></div><div class="sp-ring sp-ring-two"></div><div class="sp-ring sp-ring-three"></div></div>
     <div class="sp-logo-wrap"><p class="sp-kicker">BOLIVIA · TECNOLOGÍA CON PROPÓSITO</p><div class="sp-picture"><img src="edtech-assets/edtech-equipo.jpg" alt="Imagen de marca de EdTech con los cuatro estudiantes" width="1024" height="576"></div><div class="sp-brand">Ed<span>Tech</span></div><div class="sp-tagline">TECNOLOGÍA EDUCATIVA</div><div class="sp-divider"></div><h2 id="intro-title" class="sp-phrase">Cada idea es un<br><span>nuevo amanecer.</span></h2><p class="sp-subphrase" id="intro-message">Hoy damos el primer paso. El futuro lo construimos juntos.</p></div>
@@ -3110,7 +3212,7 @@ dialog.demo-dialog::backdrop {
       <a class="brand" href="#inicio" aria-label="EdTech, inicio"><span class="monogram">ET<span>↗</span></span><span>Ed<span class="orange">Tech</span><small>TECNOLOGÍA EDUCATIVA</small></span></a>
       <button class="menu-button" type="button" aria-controls="navigation" aria-expanded="false">Menú <span aria-hidden="true">☰</span></button>
       <nav id="navigation" aria-label="Navegación principal">
-        <a href="#servicios">Servicios</a><a href="#planes">Planes</a><a href="#nosotros">Nosotros</a><a href="#proyectos">Proyectos</a><a href="#contacto">Contacto</a>
+        <a href="#servicios">Servicios</a><a href="#nosotros">Nosotros</a><a href="#proyectos">Proyectos</a><a href="#contacto">Contacto</a>
       </nav>
       <button class="quote-button" type="button" data-open-quote aria-label="Abrir mi cotización">
         <svg class="quote-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
@@ -3148,123 +3250,17 @@ dialog.demo-dialog::backdrop {
 <section class="section services-section" id="servicios">
       <div class="container"><div class="section-heading"><div><p class="eyebrow blue">01 — NUESTROS SERVICIOS</p><h2>Tecnología que se adapta<br>a tu <span class="blue">organización.</span></h2></div><p class="muted">Tu necesidad es el punto de partida.<br>Selecciona los servicios que te interesen y solicita una cotización a medida.</p></div>
         <div class="service-grid">
-          <article id="servicio-web" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">↗</span><span>01</span></div><h3>Páginas web institucionales</h3><p>Una presencia digital clara para presentar tu institución, sus noticias y su oferta educativa.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 2.500</strong></p><button type="button" data-service="web" aria-label="Añadir páginas web institucionales a la cotización">+</button></div></article>
-          <article id="servicio-gestion" class="service featured"><div class="service-top"><span class="service-icon" aria-hidden="true">⌘</span><span>02</span></div><h3>Sistemas de gestión académica</h3><p>Propuestas a medida para organizar inscripciones, notas, horarios y reportes académicos.</p><a href="upds_net_simulaci_n_multi_carrera_solicita_upds.html" target="_blank" rel="noopener" class="service-solicita-pill">⭐ Ver Proyecto Insignia: SOLICITA (UPDS.NET) ↗</a><div class="service-bottom"><p><small>DESDE</small><strong>Bs 8.000</strong></p><button type="button" data-service="gestion" aria-label="Añadir sistemas de gestión académica a la cotización">+</button></div></article>
+          <article id="servicio-web" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">↗</span><span>01</span></div><h3>Páginas web institucionales</h3><p>Una presencia digital clara para presentar tu institución, sus noticias y su oferta educativa.</p><div class="service-action-pills"><button type="button" class="btn-service-demo-pill" data-open-demo="esencial" aria-label="Probar demostración de web institucional">💻 Probar Demo Web ↗</button></div><div class="service-bottom"><p><small>DESDE</small><strong>Bs 2.500</strong></p><button type="button" data-service="web" aria-label="Añadir páginas web institucionales a la cotización">+</button></div></article>
+          <article id="servicio-gestion" class="service featured"><div class="service-top"><span class="service-icon" aria-hidden="true">⌘</span><span>02</span></div><h3>Sistemas de gestión académica</h3><p>Propuestas a medida para organizar inscripciones, notas, horarios y reportes académicos.</p><div class="service-action-pills"><button type="button" class="btn-service-demo-pill" data-open-demo="gestion" aria-label="Probar demostración interactiva de gestión académica">💻 Probar Demo Interactiva ↗</button><a href="upds_net_simulaci_n_multi_carrera_solicita_upds.html" target="_blank" rel="noopener" class="service-solicita-pill">⭐ Ver Proyecto Insignia: SOLICITA (UPDS.NET) ↗</a></div><div class="service-bottom"><p><small>DESDE</small><strong>Bs 8.000</strong></p><button type="button" data-service="gestion" aria-label="Añadir sistemas de gestión académica a la cotización">+</button></div></article>
           <article id="servicio-aulas" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">▤</span><span>03</span></div><h3>Plataformas de aulas virtuales</h3><p>Espacios digitales para acercar contenidos, actividades y evaluaciones a tus estudiantes.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 5.500</strong></p><button type="button" data-service="aulas" aria-label="Añadir plataformas de aulas virtuales a la cotización">+</button></div></article>
           <article id="servicio-automatizacion" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">⇄</span><span>04</span></div><h3>Automatización de procesos</h3><p>Revisamos cómo trabajas y proponemos flujos digitales para simplificar trámites y tareas repetitivas.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 3.500</strong></p><button type="button" data-service="automatizacion" aria-label="Añadir automatización de procesos a la cotización">+</button></div></article>
-          <article id="servicio-asistencia" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">✓</span><span>05</span></div><h3>Control de asistencia</h3><p>Propuestas de registro digital con QR y reportes para estudiantes y personal.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 3.000</strong></p><button type="button" data-service="asistencia" aria-label="Añadir control de asistencia a la cotización">+</button></div></article>
+          <article id="servicio-asistencia" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">✓</span><span>05</span></div><h3>Control de asistencia</h3><p>Propuestas de registro digital con QR y reportes para estudiantes y personal.</p><div class="service-action-pills"><button type="button" class="btn-service-demo-pill" data-open-demo="gestion" aria-label="Probar simulador de escáner QR">⚡ Probar Escáner QR ↗</button></div><div class="service-bottom"><p><small>DESDE</small><strong>Bs 3.000</strong></p><button type="button" data-service="asistencia" aria-label="Añadir control de asistencia a la cotización">+</button></div></article>
           <article id="servicio-soporte" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">⚙</span><span>06</span></div><h3>Soporte y mantenimiento</h3><p>Acompañamiento técnico, actualizaciones y respaldos según las necesidades del proyecto.</p><div class="service-bottom"><p><small>DESDE / MES</small><strong>Bs 600</strong></p><button type="button" data-service="soporte" aria-label="Añadir soporte y mantenimiento a la cotización">+</button></div></article>
         </div><p class="pricing-note">Precios orientativos. El alcance, los plazos y el precio final se definen en una cotización según las necesidades de tu proyecto.</p>
       </div>
     </section>
 
-    <!-- =========================================================
-         02 — PLANES DE IMPLEMENTACION & DEMOS EN VIVO ("Hacemos asi")
-         ========================================================= -->
-    <section class="section plans-showroom-section" id="planes">
-      <div class="container">
-        <div class="section-heading text-center">
-          <div>
-            <p class="eyebrow orange">02 — SOLUCIONES LLAVE EN MANO</p>
-            <h2>Elige tu plan. <span class="orange">Mira cómo trabajamos.</span></h2>
-          </div>
-          <p class="muted mx-auto">Explora una demostración interactiva de cada solución antes de contratar. Conoce qué incluye, cómo se ve el sistema y nuestro proceso de entrega transparente.</p>
-        </div>
-
-        <div class="plans-grid">
-          <!-- PLAN 1: ESENCIAL -->
-          <article class="plan-card" data-plan="esencial">
-            <div class="plan-card-header">
-              <span class="plan-badge">Presencia Digital</span>
-              <h3 class="plan-title">Plan Esencial</h3>
-              <p class="plan-desc">Ideal para colegios, academias e institutos que buscan captar alumnos y presentar su oferta formalmente.</p>
-              <div class="plan-price-wrap">
-                <span class="plan-price-from">INVERSIÓN REFERENCIAL</span>
-                <div class="plan-price-amount">Bs 2.500 <small>/ pago único</small></div>
-              </div>
-            </div>
-
-            <ul class="plan-features">
-              <li><span class="chk">✓</span> <strong>Página Web Institucional</strong> moderna y 100% responsiva</li>
-              <li><span class="chk">✓</span> <strong>Módulo de Preinscripciones</strong> y captura de postulantes</li>
-              <li><span class="chk">✓</span> Dominio propio institucional + Certificado SSL Seguro</li>
-              <li><span class="chk">✓</span> Entrega garantizada en <strong>10 a 14 días hábiles</strong></li>
-            </ul>
-
-            <div class="plan-actions">
-              <button type="button" class="btn-plan-demo" data-open-demo="esencial" aria-label="Probar demo de Plan Esencial">
-                <span class="btn-icon">🖥️</span> Probar Demo en Vivo
-              </button>
-              <button type="button" class="btn-plan-acquire" data-open-acquire="esencial" aria-label="Ver cómo adquirir Plan Esencial">
-                <span>📋 Cómo Adquirirlo</span> <span aria-hidden="true">↗</span>
-              </button>
-            </div>
-          </article>
-
-          <!-- PLAN 2: GESTIÓN (DESTACADO / RECOMENDADO) -->
-          <article class="plan-card featured-plan" data-plan="gestion">
-            <div class="plan-ribbon">⭐ MÁS POPULAR</div>
-            <div class="plan-card-header">
-              <span class="plan-badge badge-orange">Institucional &amp; Control</span>
-              <h3 class="plan-title">Plan Gestión</h3>
-              <p class="plan-desc">Control administrativo total para instituciones educativas: matrículas, calificaciones y asistencia automatizada.</p>
-              <div class="plan-price-wrap">
-                <span class="plan-price-from">INVERSIÓN REFERENCIAL</span>
-                <div class="plan-price-amount orange-amount">Bs 8.000 <small>/ desarrollo llave en mano</small></div>
-              </div>
-            </div>
-
-            <ul class="plan-features">
-              <li><span class="chk chk-orange">★</span> <strong>Incluye módulo insignia SOLICITA</strong> (Apertura de materias UPDS)</li>
-              <li><span class="chk chk-orange">✓</span> <strong>Sistema de Gestión Académica</strong> (Alumnos, Notas, Reportes)</li>
-              <li><span class="chk chk-orange">✓</span> <strong>Control de Asistencia con Código QR</strong> y credenciales</li>
-              <li><span class="chk chk-orange">✓</span> Panel diferenciado para Directores, Docentes y Secretaría</li>
-              <li><span class="chk chk-orange">✓</span> <strong>Capacitación presencial/virtual</strong> + 6 meses de soporte</li>
-            </ul>
-
-            <div class="plan-actions">
-              <button type="button" class="btn-plan-demo btn-demo-featured" data-open-demo="gestion" aria-label="Probar demo de Plan Gestión">
-                <span class="btn-icon">⚡</span> Probar Demo con Escáner QR
-              </button>
-              <button type="button" class="btn-plan-acquire" data-open-acquire="gestion" aria-label="Ver cómo adquirir Plan Gestión">
-                <span>📋 Cómo Adquirirlo</span> <span aria-hidden="true">↗</span>
-              </button>
-            </div>
-          </article>
-
-          <!-- PLAN 3: CAMPUS 360° -->
-          <article class="plan-card" data-plan="campus">
-            <div class="plan-card-header">
-              <span class="plan-badge">Suite Integral</span>
-              <h3 class="plan-title">Campus 360°</h3>
-              <p class="plan-desc">La solución definitiva para universidades y centros superiores: gestión, campus virtual y automatización de trámites.</p>
-              <div class="plan-price-wrap">
-                <span class="plan-price-from">INVERSIÓN REFERENCIAL</span>
-                <div class="plan-price-amount">Bs 13.500 <small>/ suite completa</small></div>
-              </div>
-            </div>
-
-            <ul class="plan-features">
-              <li><span class="chk">✓</span> <strong>Todo lo incluido en Plan Gestión</strong> al 100%</li>
-              <li><span class="chk">✓</span> <strong>Plataforma de Aulas Virtuales</strong> para clases y tareas</li>
-              <li><span class="chk">✓</span> <strong>Módulo SOLICITA</strong> para apertura ágil de materias</li>
-              <li><span class="chk">✓</span> <strong>12 meses de soporte prioritario</strong> y copias de seguridad en la nube</li>
-            </ul>
-
-            <div class="plan-actions">
-              <button type="button" class="btn-plan-demo" data-open-demo="campus" aria-label="Probar demo de Campus 360">
-                <span class="btn-icon">🎓</span> Probar Demo de Campus
-              </button>
-              <button type="button" class="btn-plan-acquire" data-open-acquire="campus" aria-label="Ver cómo adquirir Campus 360">
-                <span>📋 Cómo Adquirirlo</span> <span aria-hidden="true">↗</span>
-              </button>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section about-section" id="nosotros"><div class="container">
+<section class="section about-section" id="nosotros"><div class="container">
       <div class="about-top"><div><p class="eyebrow orange">02 — SOMOS EDTECH</p><h2>Nacimos en las aulas.<br>Pensamos en <span class="orange">lo que sigue.</span></h2></div><p>Somos un emprendimiento boliviano que une tecnología y administración. En EdTech buscamos ayudar a instituciones educativas a modernizar su trabajo mediante páginas web, sistemas y procesos digitales diseñados para sus necesidades.</p></div>
       <div class="values"><article><span>01 / PROPÓSITO</span><h3>Resolver lo cotidiano.</h3><p>Crear herramientas sencillas que ayuden a reducir trámites y organizar mejor la vida académica.</p></article><article><span>02 / VISIÓN</span><h3>Crecer con la educación.</h3><p>Aspiramos a acompañar a instituciones bolivianas en su transformación digital, empezando con SOLICITA.</p></article><article><span>03 / ENFOQUE</span><h3>Escuchar antes de crear.</h3><p>Entender las necesidades de estudiantes y equipos académicos para diseñar soluciones útiles.</p></article></div>
       <div class="team-heading"><h3>Un equipo, distintas perspectivas.</h3><span>TECNOLOGÍA + GESTIÓN</span></div>
@@ -3756,7 +3752,7 @@ dialog.demo-dialog::backdrop {
     </div>
   </dialog>
 
-  <script>
+<script>
 'use strict';
 const services = [
   { id: 'web', name: 'Página web institucional', price: 2500, desc: 'Presencia web, dominio y diseño adaptado a móviles' },
@@ -4200,6 +4196,21 @@ document.querySelectorAll('.service').forEach(card => {
   preview.setAttribute('aria-hidden', 'true');
   // Plantillas visuales locales; no contienen entradas del usuario.
   preview.innerHTML = serviceScenes[service.id];
+
+  // Demo interactiva: acceso directo desde la foto (cara frontal)
+  const demoKey = service.id === 'gestion' ? 'gestion' : (service.id === 'web' ? 'esencial' : (service.id === 'asistencia' ? 'gestion' : null));
+  if (demoKey) {
+    preview.classList.add('has-interactive-demo');
+    preview.dataset.openDemo = demoKey;
+    preview.setAttribute('role', 'button');
+    preview.setAttribute('tabindex', '0');
+    preview.setAttribute('title', 'Haz clic para probar la demo interactiva');
+    const demoBadge = document.createElement('span');
+    demoBadge.className = 'preview-demo-tag';
+    demoBadge.innerHTML = '<span>💻 Demo en Vivo</span> <span class="p-arrow">↗</span>';
+    preview.appendChild(demoBadge);
+  }
+
   oldTop.replaceWith(preview);
   const category = document.createElement('span');
   category.className = 'service-category'; category.textContent = serviceSceneLabels[service.id];
@@ -4209,7 +4220,7 @@ document.querySelectorAll('.service').forEach(card => {
   while (card.firstChild) front.append(card.firstChild);
   const toggle = document.createElement('button'); toggle.type = 'button'; toggle.className = 'service-explore'; toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-controls', 'detail-' + service.id);
   const label = document.createElement('span'); label.textContent = 'Explorar esta solución';
-  const arrow = document.createElement('span'); arrow.className = 'explore-arrow'; arrow.textContent = '↻'; arrow.setAttribute('aria-hidden', 'true'); toggle.append(label, arrow);
+  const arrow = document.createElement('span'); arrow.className = 'explore-arrow'; arrow.textContent = '↺'; arrow.setAttribute('aria-hidden', 'true'); toggle.append(label, arrow);
   const bottom = front.querySelector('.service-bottom'); front.insertBefore(toggle, bottom);
   const back = document.createElement('div'); back.className = 'solution-face solution-back'; back.id = 'detail-' + service.id; back.inert = true; back.setAttribute('aria-hidden', 'true');
   const heading = document.createElement('div'); heading.className = 'solution-back-heading';
@@ -4220,7 +4231,18 @@ document.querySelectorAll('.service').forEach(card => {
   const benefits = document.createElement('ul'); benefits.className = 'service-benefits';
   details.benefits.forEach((text, index) => { const item = document.createElement('li'); item.textContent = text; item.style.setProperty('--detail-delay', 320 + index * 90 + 'ms'); benefits.append(item); });
   const note = document.createElement('p'); note.className = 'solution-note'; note.textContent = 'Definimos el alcance contigo, según lo que necesite tu proyecto.';
-  back.append(heading, title, description, benefits, note, bottom.cloneNode(true));
+
+  // Demo interactiva: acceso en la parte de atrás (al girar la tarjeta)
+  if (demoKey) {
+    const backDemoBtn = document.createElement('button');
+    backDemoBtn.type = 'button';
+    backDemoBtn.className = 'btn-card-back-demo';
+    backDemoBtn.dataset.openDemo = demoKey;
+    backDemoBtn.innerHTML = '<span>💻 Probar Demostración Interactiva en Vivo</span> <span aria-hidden="true">↗</span>';
+    back.append(heading, title, description, benefits, backDemoBtn, note, bottom.cloneNode(true));
+  } else {
+    back.append(heading, title, description, benefits, note, bottom.cloneNode(true));
+  }
   rotor.append(front, back); card.append(rotor); card.classList.add('solution-flip');
   function flipSolution(flipped) {
     const visible = flipped ? back : front;
@@ -4865,14 +4887,26 @@ function initPlansShowroom() {
     }
   }
 
-  // Open triggers from cards
-  document.querySelectorAll('[data-open-demo]').forEach(btn => {
-    btn.addEventListener('click', () => openShowroom(btn.dataset.openDemo, 'preview'));
+  // Delegated click listeners so any button or photo with [data-open-demo] works dynamically
+  document.addEventListener('click', e => {
+    const demoTrigger = e.target.closest('[data-open-demo]');
+    if (demoTrigger) {
+      e.preventDefault();
+      e.stopPropagation();
+      openShowroom(demoTrigger.dataset.openDemo || 'gestion', 'preview');
+      return;
+    }
+    const acqTrigger = e.target.closest('[data-open-acquire]');
+    if (acqTrigger) {
+      e.preventDefault();
+      e.stopPropagation();
+      openShowroom(acqTrigger.dataset.openAcquire || 'gestion', 'acquire');
+      return;
+    }
   });
 
-  document.querySelectorAll('[data-open-acquire]').forEach(btn => {
-    btn.addEventListener('click', () => openShowroom(btn.dataset.openAcquire, 'acquire'));
-  });
+  // Expose to window for direct calls
+  window.openEdTechShowroom = openShowroom;
 
   // Tab switching
   tabBtns.forEach(btn => {
@@ -4976,6 +5010,6 @@ if (document.readyState === 'loading') {
   initPlansShowroom();
 }
 
-  </script>
+</script>
 </body>
 </html>
