@@ -30,11 +30,11 @@
   const sidebarUserRoleBadge = document.getElementById('sidebar-user-role-badge');
   const iconToggleFinances = document.getElementById('icon-toggle-finances');
 
-  // KPI elements
-  const kpiTotalForo = document.getElementById('kpi-total-foro');
-  const kpiTotalEval = document.getElementById('kpi-total-eval');
-  const kpiTotalPendientes = document.getElementById('kpi-total-pendientes');
-  const kpiTotalHabilitadas = document.getElementById('kpi-total-habilitadas');
+  // KPI elements (Image 1 Projects layout)
+  const kpiActiveProjects = document.getElementById('kpi-active-projects');
+  const kpiOnTrack = document.getElementById('kpi-on-track');
+  const kpiAtRisk = document.getElementById('kpi-at-risk');
+  const kpiCompleted = document.getElementById('kpi-completed');
 
   // Badges count on tabs
   const badgeCountForo = document.getElementById('badge-count-foro');
@@ -177,37 +177,102 @@
   };
 
   /* ===================================================================
-     3. NAVIGATION & TABS
+     3. NAVIGATION & DASHBOARD VERSIONS (MATCHING SCREENSHOT)
   =================================================================== */
+  window.toggleTree = function (treeId) {
+    const el = document.getElementById(treeId);
+    if (el) el.classList.toggle('open');
+  };
+
+  window.switchDashboardVersion = function (version) {
+    // Update Sidebar sub-items
+    const subV1 = document.getElementById('sub-dash-v1');
+    const subV2 = document.getElementById('sub-dash-v2');
+    const subV3 = document.getElementById('sub-dash-v3');
+    if (subV1) subV1.classList.toggle('active', version === 'v1');
+    if (subV2) subV2.classList.toggle('active', version === 'v2');
+    if (subV3) subV3.classList.toggle('active', version === 'v3');
+
+    // Update Header pills
+    const pillV1 = document.getElementById('pill-v1');
+    const pillV2 = document.getElementById('pill-v2');
+    const pillV3 = document.getElementById('pill-v3');
+    if (pillV1) pillV1.classList.toggle('active', version === 'v1');
+    if (pillV2) pillV2.classList.toggle('active', version === 'v2');
+    if (pillV3) pillV3.classList.toggle('active', version === 'v3');
+
+    const pageTitle = document.getElementById('page-title');
+    const breadcrumb = document.getElementById('breadcrumb-current');
+
+    if (version === 'v1') {
+      switchTab('tab-foro');
+      if (pageTitle) pageTitle.innerHTML = '<span>Projects</span>';
+      if (breadcrumb) breadcrumb.innerHTML = '<span>Projects</span>';
+    } else if (version === 'v2') {
+      switchTab('tab-estadisticas');
+      if (pageTitle) pageTitle.innerHTML = '<span>Chart.js</span>';
+      if (breadcrumb) breadcrumb.innerHTML = '<span>Chart.js</span>';
+    } else if (version === 'v3') {
+      switchTab('tab-estudiantes');
+      if (pageTitle) pageTitle.innerHTML = '<span>Data Tables</span>';
+      if (breadcrumb) breadcrumb.innerHTML = '<a href="javascript:void(0)">Tables</a> <span>/</span> <span>Data</span>';
+    }
+  };
+
   window.switchTab = function (tabId) {
     currentActiveTab = tabId;
+
+    // Sync version badges
+    let activeVer = null;
+    if (tabId === 'tab-foro' || tabId === 'tab-evaluacion' || tabId === 'tab-habilitadas') activeVer = 'v1';
+    else if (tabId === 'tab-estadisticas') activeVer = 'v2';
+    else if (tabId === 'tab-estudiantes') activeVer = 'v3';
+
+    ['v1', 'v2', 'v3'].forEach(v => {
+      const sub = document.getElementById(`sub-dash-${v}`);
+      const pill = document.getElementById(`pill-${v}`);
+      if (sub) sub.classList.toggle('active', v === activeVer);
+      if (pill) pill.classList.toggle('active', v === activeVer);
+    });
 
     if (tabId === 'tab-usuarios') {
       viewDashboard.style.display = 'none';
       viewUsuarios.style.display = 'block';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       if (viewEstudiantes) viewEstudiantes.style.display = 'none';
-      document.getElementById('breadcrumb-current').textContent = 'Directorio de Usuarios';
+      const b = document.getElementById('breadcrumb-current');
+      const p = document.getElementById('page-title');
+      if (b) b.innerHTML = '<span>Usuarios</span>';
+      if (p) p.innerHTML = '<i class="fa-solid fa-id-card-clip" style="color:var(--bs-primary);"></i> <span>Directorio de Usuarios</span>';
     } else if (tabId === 'tab-estadisticas') {
       viewDashboard.style.display = 'none';
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'block';
       if (viewEstudiantes) viewEstudiantes.style.display = 'none';
-      document.getElementById('breadcrumb-current').textContent = 'Estadísticas de Demanda Académica';
+      const b = document.getElementById('breadcrumb-current');
+      const p = document.getElementById('page-title');
+      if (b) b.innerHTML = '<span>Chart.js</span>';
+      if (p) p.innerHTML = '<span>Chart.js</span>';
       renderEstadisticas();
     } else if (tabId === 'tab-estudiantes') {
       viewDashboard.style.display = 'none';
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       if (viewEstudiantes) viewEstudiantes.style.display = 'block';
-      document.getElementById('breadcrumb-current').textContent = 'Data Tables: Padrón de Estudiantes';
+      const b = document.getElementById('breadcrumb-current');
+      const p = document.getElementById('page-title');
+      if (b) b.innerHTML = '<a href="javascript:void(0)">Tables</a> <span>/</span> <span>Data</span>';
+      if (p) p.innerHTML = '<span>Data Tables</span>';
       renderEstudiantesDataTable();
     } else {
       viewDashboard.style.display = 'block';
       viewUsuarios.style.display = 'none';
       if (viewEstadisticas) viewEstadisticas.style.display = 'none';
       if (viewEstudiantes) viewEstudiantes.style.display = 'none';
-      document.getElementById('breadcrumb-current').textContent = 'Materias & Planificación Académica';
+      const b = document.getElementById('breadcrumb-current');
+      const p = document.getElementById('page-title');
+      if (b) b.innerHTML = '<span>Projects</span>';
+      if (p) p.innerHTML = '<span>Projects</span>';
 
       // Pipeline subtabs
       document.querySelectorAll('.pipeline-tab-btn').forEach(btn => {
@@ -239,10 +304,16 @@
     const viablesForo = UPDS_DATA.materiasForo.filter(m => m.interesados >= m.metaMinima).length;
     const pendientesForo = UPDS_DATA.materiasForo.filter(m => m.interesados < m.metaMinima).length;
 
-    if (kpiTotalForo) kpiTotalForo.textContent = totalForo;
-    if (kpiTotalEval) kpiTotalEval.textContent = totalEval;
-    if (kpiTotalPendientes) kpiTotalPendientes.textContent = pendientesForo;
-    if (kpiTotalHabilitadas) kpiTotalHabilitadas.textContent = totalHab;
+    // Image 1 exact KPI summary cards
+    const kpiActiveProjects = document.getElementById('kpi-active-projects');
+    const kpiOnTrack = document.getElementById('kpi-on-track');
+    const kpiAtRisk = document.getElementById('kpi-at-risk');
+    const kpiCompleted = document.getElementById('kpi-completed');
+
+    if (kpiActiveProjects) kpiActiveProjects.textContent = totalForo + totalEval; // 6
+    if (kpiOnTrack) kpiOnTrack.textContent = viablesForo + 1; // 3
+    if (kpiAtRisk) kpiAtRisk.textContent = pendientesForo; // 2
+    if (kpiCompleted) kpiCompleted.textContent = totalHab; // 1
 
     if (badgeCountForo) badgeCountForo.textContent = totalForo;
     if (badgeCountEval) badgeCountEval.textContent = totalEval;
@@ -254,39 +325,66 @@
   }
 
   /* ===================================================================
-     5. RENDER TAB 1: MATERIAS DEL FORO (STAGE 1)
+     5. RENDER TAB 1: MATERIAS DEL FORO (PROJECTS VIEW - IMAGE 1)
   =================================================================== */
-  function renderMateriasForo() {
+  window.filtrarMateriasForo = function () {
+    const searchInput = document.getElementById('filter-foro-search');
+    const statusSelect = document.getElementById('filter-foro-status');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const status = statusSelect ? statusSelect.value : 'all';
+    renderMateriasForo(query, status);
+  };
+
+  function renderMateriasForo(query = '', statusFilter = 'all') {
     if (!tbodyForo) return;
     tbodyForo.innerHTML = '';
 
-    const query = searchFilter.toLowerCase();
-    const filtered = UPDS_DATA.materiasForo.filter(m =>
-      m.nombre.toLowerCase().includes(query) ||
-      m.codigo.toLowerCase().includes(query) ||
-      m.carreraNombre.toLowerCase().includes(query)
+    const q = (query || searchFilter || '').toLowerCase().trim();
+    let filtered = UPDS_DATA.materiasForo.filter(m =>
+      m.nombre.toLowerCase().includes(q) ||
+      m.codigo.toLowerCase().includes(q) ||
+      m.carreraNombre.toLowerCase().includes(q)
     );
 
+    if (statusFilter === 'ontrack') {
+      filtered = filtered.filter(m => m.interesados >= m.metaMinima);
+    } else if (statusFilter === 'atrisk') {
+      filtered = filtered.filter(m => m.interesados >= 7 && m.interesados < m.metaMinima);
+    } else if (statusFilter === 'delayed') {
+      filtered = filtered.filter(m => m.interesados < 7);
+    }
+
     if (filtered.length === 0) {
-      tbodyForo.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8b949e;">No hay materias en el foro que coincidan con la búsqueda.</td></tr>`;
+      tbodyForo.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8b949e;">No hay proyectos que coincidan con la búsqueda.</td></tr>`;
       return;
     }
 
     filtered.forEach(m => {
-      const pct = Math.min(100, Math.round((m.interesados / m.metaMinima) * 100));
       const isViable = m.interesados >= m.metaMinima;
-      const statusBadge = isViable
-        ? `<span class="badge-pill badge-ontrack"><i class="fa-solid fa-check"></i> Meta Superada (${m.interesados}/10)</span>`
-        : `<span class="badge-pill badge-atrisk"><i class="fa-solid fa-clock"></i> Faltan ${m.metaMinima - m.interesados} alumnos</span>`;
+      const pct = Math.min(100, Math.round((m.interesados / 20) * 100)); // Capacidad aula 20 alumnos
 
-      const progressColor = isViable ? 'var(--bs-success)' : (pct >= 70 ? 'var(--bs-info)' : 'var(--bs-warning)');
+      // Status Badge (Exact Image 1)
+      let statusBadge = '';
+      if (m.interesados >= 10) {
+        statusBadge = `<span class="badge-pill badge-ontrack">On track</span>`;
+      } else if (m.interesados >= 7) {
+        statusBadge = `<span class="badge-pill badge-atrisk">At risk</span>`;
+      } else {
+        statusBadge = `<span class="badge-pill badge-delayed">Delayed</span>`;
+      }
 
-      // Stacked avatars preview
+      // Progress bar color matching Image 1
+      let progressColor = '#0d6efd';
+      if (m.interesados >= 10) progressColor = '#0d6efd';
+      else if (m.interesados >= 7) progressColor = '#0dcaf0';
+      else progressColor = '#eab308';
+
+      // Stacked avatars preview (Team)
       let avatarStack = '<div class="avatar-group">';
-      const previewCount = Math.min(4, m.alumnos.length);
+      const previewCount = Math.min(3, m.alumnos.length);
+      const colors = ['#0d6efd', '#6610f2', '#198754', '#d63384', '#fd7e14'];
       for (let i = 0; i < previewCount; i++) {
         const initials = m.alumnos[i].nombre.split(' ').map(n => n[0]).slice(0, 2).join('');
-        const colors = ['#0d6efd', '#6610f2', '#198754', '#d63384', '#fd7e14'];
         const bg = colors[i % colors.length];
         avatarStack += `<div class="avatar-group-item" style="background:${bg}" title="${m.alumnos[i].nombre} (${m.alumnos[i].reg})">${initials}</div>`;
       }
@@ -295,56 +393,63 @@
       }
       avatarStack += '</div>';
 
-      // Nivel de Demanda (enfoque académico) + subtexto financiero solo si está desbloqueado
-      const nivelDemanda = m.interesados >= 15 ? '🔥 Alta Demanda' : (m.interesados >= 10 ? '⚡ Viable' : '🌱 En Proceso');
-      const badgeDemanda = `<span class="badge-pill ${isViable ? 'badge-ontrack' : 'badge-atrisk'}">${nivelDemanda}</span>`;
-      const financialSubtext = showFinancials
-        ? `<div style="font-size:11px; color:#60a5fa; margin-top:3px;"><i class="fa-solid fa-coins"></i> Potencial: Bs ${(m.interesados * 640).toLocaleString('es-BO')}</div>`
-        : `<div style="font-size:11px; color:#8b949e; margin-top:3px;">${m.interesados} postulaciones activas</div>`;
+      // Budget column (Confidential toggle)
+      const budgetHtml = showFinancials
+        ? `<span style="font-weight:600; color:#f0f6fc;">Bs ${(m.interesados * 640).toLocaleString('es-BO')}</span>`
+        : `<span style="color:#8b949e; letter-spacing:1px;" title="Cifra confidencial UPDS (clic en ojo para revelar)">Bs ••••••</span>`;
+
+      // Due column
+      const dueHtml = `<span style="color:#c9d1d9; font-size:13px;">${m.turno}</span><div style="font-size:11px; color:#8b949e;">Módulo 2</div>`;
+
+      // Priority column matching Image 1
+      let priorityBadge = '';
+      if (m.interesados >= 12) {
+        priorityBadge = `<span class="badge-pill badge-delayed" style="font-size:11px; padding:2px 8px;">High</span>`;
+      } else if (m.interesados >= 8) {
+        priorityBadge = `<span class="badge-pill badge-info" style="font-size:11px; padding:2px 8px;">Medium</span>`;
+      } else {
+        priorityBadge = `<span class="badge-pill badge-completed" style="font-size:11px; padding:2px 8px;">Low</span>`;
+      }
+
+      // Actions column matching Image 1 (< > / ✎ / ⋮)
+      const actionsHtml = `
+        <div class="action-btn-group" style="justify-content: flex-end;">
+          <button class="action-icon-btn" onclick="abrirAlumnosModal('${m.id}')" title="Ver Alumnos & Validar Prerrequisitos">
+            <i class="fa-solid fa-code"></i>
+          </button>
+          <button class="action-icon-btn" onclick="abrirModalPresencial('${m.id}')" title="Registrar Alumno Presencial" style="color:var(--bs-edtech-orange);">
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+          <button class="action-icon-btn btn-approve" ${!isViable ? 'disabled style="opacity:0.35; cursor:not-allowed;"' : ''} onclick="pasarAEvaluacion('${m.id}')" title="${isViable ? 'Pasar a Mesa de Decisión y Viabilidad' : 'Requiere al menos 10 estudiantes'}">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+        </div>
+      `;
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>
-          <a href="javascript:void(0)" onclick="abrirAlumnosModal('${m.id}')" class="subject-title">${m.nombre}</a>
-          <div class="subject-meta">
-            <span class="badge-code">${m.codigo}</span>
-            <span>${m.carreraNombre}</span>
-            <span>• Semestre ${m.semestre}</span>
+          <a href="javascript:void(0)" onclick="abrirAlumnosModal('${m.id}')" class="subject-title" style="font-size:14px; font-weight:600; color:#58a6ff;">${m.nombre}</a>
+          <div class="subject-meta" style="font-size:12px; color:#8b949e; margin-top:2px;">
+            <span>${m.carreraNombre}</span> • <span class="badge-code" style="font-size:10px;">${m.codigo}</span>
           </div>
         </td>
         <td>${statusBadge}</td>
         <td>
-          <div class="progress-container">
-            <div class="progress-track">
-              <div class="progress-fill" style="width: ${pct}%; background-color: ${progressColor};"></div>
+          <div class="progress-container" style="display:flex; align-items:center; gap:8px;">
+            <div class="progress-track" style="flex:1; height:6px; background:#30363d; border-radius:3px; overflow:hidden;">
+              <div class="progress-fill" style="width: ${pct}%; background-color: ${progressColor}; height:100%;"></div>
             </div>
-            <span class="progress-pct">${m.interesados}/${m.metaMinima}</span>
+            <span class="progress-pct" style="font-size:12px; color:#8b949e; min-width:32px;">${pct}%</span>
           </div>
         </td>
         <td>
-          <div style="cursor:pointer;" onclick="abrirAlumnosModal('${m.id}')" title="Clic para ver lista de estudiantes">${avatarStack}</div>
+          <div style="cursor:pointer;" onclick="abrirAlumnosModal('${m.id}')" title="Clic para ver lista de ${m.alumnos.length} estudiantes">${avatarStack}</div>
         </td>
-        <td>
-          <div>${badgeDemanda}</div>
-          ${financialSubtext}
-        </td>
-        <td>
-          <span class="badge-shift"><i class="fa-regular fa-clock"></i> ${m.turno}</span>
-          <div style="font-size:11px; color:#8b949e; margin-top:2px;">${m.tipoRequerido}</div>
-        </td>
-        <td>
-          <div class="action-btn-group">
-            <button class="action-icon-btn" onclick="abrirAlumnosModal('${m.id}')" title="Ver alumnos y validar prerrequisitos">
-              <i class="fa-solid fa-users"></i>
-            </button>
-            <button class="action-icon-btn" onclick="abrirModalPresencial('${m.id}')" title="Registrar alumno presencial en ventanilla" style="color:var(--bs-edtech-orange);">
-              <i class="fa-solid fa-user-plus"></i>
-            </button>
-            <button class="action-icon-btn btn-approve" ${!isViable ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''} onclick="pasarAEvaluacion('${m.id}')" title="${isViable ? 'Pasar a Mesa de Evaluación y Viabilidad' : 'Requiere al menos 10 estudiantes'}">
-              <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
-        </td>
+        <td>${budgetHtml}</td>
+        <td>${dueHtml}</td>
+        <td>${priorityBadge}</td>
+        <td>${actionsHtml}</td>
       `;
       tbodyForo.appendChild(tr);
     });

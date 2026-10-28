@@ -458,6 +458,144 @@ body {
 }
 
 /* ===================================================================
+   2.1 SIDEBAR TREEVIEW & DASHBOARD VERSIONS (MATCHING SCREENSHOT)
+=================================================================== */
+.sidebar-tree-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+
+.sidebar-tree-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  color: #adb5bd;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.sidebar-tree-header:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.sidebar-tree-arrow,
+.tree-chevron {
+  margin-left: auto;
+  font-size: 11px;
+  color: #8b949e;
+  transition: transform 0.25s ease;
+}
+
+.sidebar-tree-item.open .sidebar-tree-arrow,
+.sidebar-tree-item.open .tree-chevron {
+  transform: rotate(180deg);
+}
+
+.sidebar-tree-menu {
+  list-style: none;
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 10px;
+  margin-top: 2px;
+}
+
+.sidebar-tree-item.open .sidebar-tree-menu {
+  display: flex;
+}
+
+.sidebar-sub-item button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  color: #9aa0a6;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.sidebar-sub-item button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.sidebar-sub-item.active button {
+  background-color: #2b3038;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-sub-icon-circle {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid #6c757d;
+  display: inline-block;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.sidebar-sub-item.active .sidebar-sub-icon-circle {
+  border-color: #fff;
+  background-color: transparent;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+/* Quick Version Switcher Pills in Content Header */
+.dashboard-version-pills {
+  display: inline-flex;
+  align-items: center;
+  background: #212529;
+  border: 1px solid var(--bs-card-border);
+  border-radius: 20px;
+  padding: 3px;
+  gap: 4px;
+}
+
+.version-pill-btn {
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.version-pill-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.version-pill-btn.active {
+  background: var(--bs-primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.3);
+}
+
+/* ===================================================================
    3. APP HEADER / NAVBAR
 =================================================================== */
 .app-header {
@@ -650,8 +788,62 @@ body {
 }
 
 /* ===================================================================
-   5. TOP KPI TILES (PROJECTS SUMMARY - IMAGE 3)
+   5. TOP KPI TILES (PROJECTS SUMMARY - IMAGE 1 EXACT DESIGN)
 =================================================================== */
+.kpi-grid-projects {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 992px) {
+  .kpi-grid-projects {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .kpi-grid-projects {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-project-card {
+  background-color: #212529;
+  border: 1px solid #343a40;
+  border-radius: 6px;
+  padding: 16px 20px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.kpi-project-card:hover {
+  transform: translateY(-2px);
+  border-color: #495057;
+}
+
+.kpi-project-label {
+  font-size: 13px;
+  color: #8b949e;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.kpi-project-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #f0f6fc;
+  line-height: 1.1;
+}
+
+.kpi-val-green {
+  color: #2ea043;
+}
+
+.kpi-val-yellow {
+  color: #d29922;
+}
+
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

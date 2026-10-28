@@ -111,6 +111,37 @@
 
       <!-- Navigation Menu -->
       <div class="sidebar-menu-wrapper">
+        <div class="sidebar-header-title">VISTAS PRINCIPALES</div>
+        
+        <!-- TREEVIEW DROPDOWN DASHBOARD (MATCHING ADMINLTE SCREENSHOT) -->
+        <div class="sidebar-tree-item open" id="tree-dashboards">
+          <button type="button" class="sidebar-tree-header" onclick="toggleTree('tree-dashboards')">
+            <span class="icon"><i class="fa-solid fa-gauge-high"></i></span>
+            <span>Dashboard</span>
+            <span class="sidebar-tree-arrow"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <ul class="sidebar-tree-menu">
+            <li class="sidebar-sub-item active" id="sub-dash-v1">
+              <button type="button" onclick="switchDashboardVersion('v1')">
+                <span class="sidebar-sub-icon-circle"></span>
+                <span>Dashboard v1 (Ciclo SOLICITA)</span>
+              </button>
+            </li>
+            <li class="sidebar-sub-item" id="sub-dash-v2">
+              <button type="button" onclick="switchDashboardVersion('v2')">
+                <span class="sidebar-sub-icon-circle"></span>
+                <span>Dashboard v2 (Chart.js Métricas)</span>
+              </button>
+            </li>
+            <li class="sidebar-sub-item" id="sub-dash-v3">
+              <button type="button" onclick="switchDashboardVersion('v3')">
+                <span class="sidebar-sub-icon-circle"></span>
+                <span>Dashboard v3 (Data Tables Alumnos)</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
         <div class="sidebar-header-title">PLANIFICACIÓN ACADÉMICA</div>
         <ul class="sidebar-nav-list">
           <li class="sidebar-nav-item active" data-target-tab="tab-foro">
@@ -132,24 +163,6 @@
               <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
               <span>3. Habilitadas Oficiales</span>
               <span class="pill-count" id="pill-sidebar-hab">1</span>
-            </button>
-          </li>
-          <li class="sidebar-nav-item" data-target-tab="tab-estadisticas">
-            <button type="button" onclick="switchTab('tab-estadisticas')">
-              <span class="icon"><i class="fa-solid fa-chart-pie"></i></span>
-              <span>4. Estadísticas & Demanda</span>
-              <span class="pill-count" style="background:#0d6efd; color:#fff;">UPDS</span>
-            </button>
-          </li>
-        </ul>
-
-        <div class="sidebar-header-title">TABLAS & REPORTES</div>
-        <ul class="sidebar-nav-list">
-          <li class="sidebar-nav-item" data-target-tab="tab-estudiantes">
-            <button type="button" onclick="switchTab('tab-estudiantes')">
-              <span class="icon"><i class="fa-solid fa-table-list"></i></span>
-              <span>Data Tables: Estudiantes</span>
-              <span class="pill-count" style="background:#0dcaf0; color:#000; font-weight:700;">AdminLTE</span>
             </button>
           </li>
         </ul>
@@ -218,14 +231,29 @@
 
       <!-- CONTENT HEADER / BREADCRUMB -->
       <div class="content-header">
-        <h1 class="content-title" id="page-title">
-          <i class="fa-solid fa-diagram-project" style="color:var(--bs-primary);"></i>
-          <span>Gestión de Apertura de Materias</span>
-        </h1>
-        <div class="content-breadcrumb">
-          <a href="javascript:void(0)" onclick="switchTab('tab-foro')">Decanato</a>
-          <span>/</span>
-          <span id="breadcrumb-current">Materias & Planificación Académica</span>
+        <div>
+          <h1 class="content-title" id="page-title">
+            <i class="fa-solid fa-diagram-project" style="color:var(--bs-primary);"></i>
+            <span>Dashboard v1 — Gestión de Materias SOLICITA</span>
+          </h1>
+          <div class="content-breadcrumb">
+            <a href="javascript:void(0)" onclick="switchDashboardVersion('v1')">Home</a>
+            <span>/</span>
+            <span id="breadcrumb-current">Dashboard v1</span>
+          </div>
+        </div>
+
+        <!-- Quick Dashboard Version Switcher (v1, v2, v3) -->
+        <div class="dashboard-version-pills">
+          <button type="button" id="pill-v1" class="version-pill-btn active" onclick="switchDashboardVersion('v1')">
+            <i class="fa-solid fa-table-cells"></i> v1: Materias SOLICITA
+          </button>
+          <button type="button" id="pill-v2" class="version-pill-btn" onclick="switchDashboardVersion('v2')">
+            <i class="fa-solid fa-chart-line"></i> v2: Chart.js
+          </button>
+          <button type="button" id="pill-v3" class="version-pill-btn" onclick="switchDashboardVersion('v3')">
+            <i class="fa-solid fa-table-list"></i> v3: Data Tables
+          </button>
         </div>
       </div>
 
@@ -237,46 +265,26 @@
         =================================================================== -->
         <div id="view-dashboard">
           
-          <!-- TOP 4 KPI TILES (MATCHING IMAGE 3) -->
-          <div class="kpi-grid">
-            <div class="kpi-card">
-              <div class="kpi-border-accent accent-blue"></div>
-              <div class="kpi-title">
-                <span>Materias en Foro</span>
-                <i class="fa-solid fa-comments" style="color:var(--bs-primary);"></i>
-              </div>
-              <div class="kpi-value" id="kpi-total-foro">4</div>
-              <div class="kpi-subtext">Acumulando solicitudes de estudiantes</div>
+          <!-- TOP 4 KPI TILES (EXACT IMAGE 1 DESIGN: PROJECTS) -->
+          <div class="kpi-grid-projects">
+            <div class="kpi-project-card">
+              <div class="kpi-project-label">Active projects</div>
+              <div class="kpi-project-value" id="kpi-active-projects">6</div>
             </div>
 
-            <div class="kpi-card">
-              <div class="kpi-border-accent accent-green"></div>
-              <div class="kpi-title">
-                <span>En Mesa de Evaluación</span>
-                <i class="fa-solid fa-scale-balanced" style="color:var(--bs-success);"></i>
-              </div>
-              <div class="kpi-value" id="kpi-total-eval">2</div>
-              <div class="kpi-subtext">Superaron el mínimo de 10 alumnos</div>
+            <div class="kpi-project-card">
+              <div class="kpi-project-label">On track</div>
+              <div class="kpi-project-value kpi-val-green" id="kpi-on-track">3</div>
             </div>
 
-            <div class="kpi-card">
-              <div class="kpi-border-accent accent-yellow"></div>
-              <div class="kpi-title">
-                <span>Meta Pendiente (&lt; 10)</span>
-                <i class="fa-solid fa-clock-rotate-left" style="color:var(--bs-warning);"></i>
-              </div>
-              <div class="kpi-value" id="kpi-total-pendientes">2</div>
-              <div class="kpi-subtext">Requieren más postulaciones o difusión</div>
+            <div class="kpi-project-card">
+              <div class="kpi-project-label">At risk / delayed</div>
+              <div class="kpi-project-value kpi-val-yellow" id="kpi-at-risk">2</div>
             </div>
 
-            <div class="kpi-card">
-              <div class="kpi-border-accent accent-cyan"></div>
-              <div class="kpi-title">
-                <span>Habilitadas Oficiales</span>
-                <i class="fa-solid fa-file-circle-check" style="color:var(--bs-info);"></i>
-              </div>
-              <div class="kpi-value" id="kpi-total-habilitadas">1</div>
-              <div class="kpi-subtext">Con acta generada y enviadas a Registro</div>
+            <div class="kpi-project-card">
+              <div class="kpi-project-label">Completed</div>
+              <div class="kpi-project-value" id="kpi-completed">1</div>
             </div>
           </div>
 
@@ -299,22 +307,27 @@
             </button>
           </div>
 
-          <!-- SECTION 1: MATERIAS DEL FORO -->
+          <!-- SECTION 1: MATERIAS DEL FORO (PROJECTS TABLE - IMAGE 1) -->
           <div id="section-foro">
             <div class="card-main">
               <div class="card-toolbar">
                 <div class="card-toolbar-title">
-                  <i class="fa-solid fa-list-check" style="color:var(--bs-primary);"></i>
-                  <span>Materias Activas en Foro de Estudiantes</span>
+                  <span>All projects</span>
                 </div>
                 <div class="card-toolbar-actions">
                   <div class="table-search-box">
                     <i class="fa-solid fa-magnifying-glass table-search-icon"></i>
-                    <input type="text" class="table-search-input" placeholder="Filtrar materias...">
+                    <input type="text" id="filter-foro-search" class="table-search-input" placeholder="Search projects..." oninput="filtrarMateriasForo()">
                   </div>
+                  <select id="filter-foro-status" class="table-filter-select" onchange="filtrarMateriasForo()">
+                    <option value="all">All statuses</option>
+                    <option value="ontrack">On track</option>
+                    <option value="atrisk">At risk</option>
+                    <option value="delayed">Delayed</option>
+                  </select>
                   <button type="button" class="btn-primary-action" onclick="abrirModalPresencial('FORO-01')">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span>+ Registrar Alumno Presencial</span>
+                    <i class="fa-solid fa-plus"></i>
+                    <span>+ New project</span>
                   </button>
                 </div>
               </div>
@@ -322,13 +335,14 @@
                 <table class="adminlte-table">
                   <thead>
                     <tr>
-                      <th>Materia / Carrera</th>
-                      <th>Estado Meta</th>
-                      <th>Progreso (Mín. 10)</th>
-                      <th>Estudiantes</th>
-                      <th>Demanda & Alumnos</th>
-                      <th>Turno Requerido</th>
-                      <th>Acciones</th>
+                      <th style="width:25%;">Project</th>
+                      <th style="width:12%;">Status</th>
+                      <th style="width:16%;">Progress</th>
+                      <th style="width:12%;">Team</th>
+                      <th style="width:10%;">Budget</th>
+                      <th style="width:11%;">Due</th>
+                      <th style="width:8%;">Priority</th>
+                      <th style="width:6%; text-align:right;">Actions</th>
                     </tr>
                   </thead>
                   <tbody id="tbody-foro">
@@ -337,7 +351,7 @@
                 </table>
               </div>
               <div class="card-footer">
-                <div>Nota: Las materias que alcanzan 10 o más alumnos habilitan el botón para <strong>Pasar a Mesa de Evaluación</strong>.</div>
+                <div>Nota: Las materias que alcanzan 10 o más alumnos habilitan la acción para <strong>Pasar a Mesa de Evaluación</strong>.</div>
               </div>
             </div>
           </div>
