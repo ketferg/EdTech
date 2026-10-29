@@ -1906,7 +1906,198 @@ body {
 @media(max-width:760px) { .solution-front>p { min-height: 87px; }.solution-back-heading { flex-wrap: wrap; }.location-map { max-width: 100%; } }
 @media(max-width:450px) { .solution-face { padding: 20px 22px 24px; }.solution-front>p { min-height: 0; }.solution-back-heading { flex-wrap: nowrap; }.solution-description,.solution-back .service-benefits li { font-size: 12px; } }
 
-  </style>
+  /* ===================================================================
+   WIDGET TASA DEL DÍA (ESTILO CYREX STORE - EDTECH BOLIVIA)
+=================================================================== */
+.tasa-widget {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 99;
+  font-family: var(--body);
+}
+
+.tasa-widget-card {
+  background: rgba(16, 29, 49, 0.96);
+  border: 1px solid rgba(255, 149, 28, 0.32);
+  border-radius: 12px;
+  padding: 12px 16px 13px 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  min-width: 220px;
+  max-width: 270px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, border-color 0.3s;
+  user-select: none;
+}
+
+.tasa-widget-card:hover {
+  border-color: rgba(255, 149, 28, 0.65);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 149, 28, 0.2);
+}
+
+.tasa-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.tasa-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tasa-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  display: inline-block;
+  animation: tasaPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes tasaPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.tasa-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.tasa-badge-tag {
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 149, 28, 0.15);
+  border: 1px solid rgba(255, 149, 28, 0.35);
+  color: #ff951c;
+}
+
+.tasa-close-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.tasa-close-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.tasa-main-rate {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.tasa-unit {
+  font-size: 15px;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.tasa-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ff951c; /* Color amarillo/oro de Cyrex Store adaptado a EdTech */
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 10px rgba(255, 149, 28, 0.3);
+}
+
+.tasa-details {
+  font-size: 9.5px;
+  color: #8da2ba;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 5px;
+  margin-top: 4px;
+}
+
+.tasa-details strong {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.tasa-sep {
+  opacity: 0.4;
+}
+
+/* Botón Minimizado tipo píldora */
+.tasa-pill-btn {
+  background: rgba(16, 29, 49, 0.95);
+  border: 1px solid rgba(255, 149, 28, 0.38);
+  border-radius: 30px;
+  padding: 7px 14px;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+}
+
+.tasa-pill-btn:hover {
+  transform: translateY(-2px);
+  border-color: #ff951c;
+  box-shadow: 0 8px 24px rgba(255, 149, 28, 0.3);
+  color: #ffffff;
+}
+
+.tasa-pill-btn strong {
+  color: #ff951c;
+  font-weight: 800;
+}
+
+/* Indicador de conversión en tarjetas de servicios */
+.service-bottom .rate-converted {
+  display: block;
+  font-size: 11px;
+  color: #8fa5c4;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.service-bottom strong {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+@media(max-width: 600px) {
+  .tasa-widget {
+    bottom: 16px;
+    left: 16px;
+  }
+  .tasa-widget-card {
+    min-width: 195px;
+    padding: 10px 14px;
+  }
+}
+
+</style>
 </head>
 <body>
 <dialog id="brand-intro" class="brand-intro" aria-labelledby="intro-title">
@@ -1961,13 +2152,13 @@ body {
 <section class="section services-section" id="servicios">
       <div class="container"><div class="section-heading"><div><p class="eyebrow blue">01 — NUESTROS SERVICIOS</p><h2>Tecnología que se adapta<br>a tu <span class="blue">organización.</span></h2></div><p class="muted">Tu necesidad es el punto de partida.<br>Selecciona los servicios que te interesen y solicita una cotización a medida.</p></div>
         <div class="service-grid">
-          <article id="servicio-web" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">↗</span><span>01</span></div><h3>Páginas web institucionales</h3><p>Una presencia digital clara para presentar tu institución, sus noticias y su oferta educativa.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 2.500</strong></p><button type="button" data-service="web" aria-label="Añadir páginas web institucionales a la cotización">+</button></div></article>
-          <article id="servicio-gestion" class="service featured"><div class="service-top"><span class="service-icon" aria-hidden="true">⌘</span><span>02</span></div><h3>Sistemas de gestión académica</h3><p>Propuestas a medida para organizar inscripciones, notas, horarios y reportes académicos.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 8.000</strong></p><button type="button" data-service="gestion" aria-label="Añadir sistemas de gestión académica a la cotización">+</button></div></article>
-          <article id="servicio-aulas" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">▤</span><span>03</span></div><h3>Plataformas de aulas virtuales</h3><p>Espacios digitales para acercar contenidos, actividades y evaluaciones a tus estudiantes.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 5.500</strong></p><button type="button" data-service="aulas" aria-label="Añadir plataformas de aulas virtuales a la cotización">+</button></div></article>
-          <article id="servicio-automatizacion" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">⇄</span><span>04</span></div><h3>Automatización de procesos</h3><p>Revisamos cómo trabajas y proponemos flujos digitales para simplificar trámites y tareas repetitivas.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 3.500</strong></p><button type="button" data-service="automatizacion" aria-label="Añadir automatización de procesos a la cotización">+</button></div></article>
-          <article id="servicio-asistencia" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">✓</span><span>05</span></div><h3>Control de asistencia</h3><p>Propuestas de registro digital con QR y reportes para estudiantes y personal.</p><div class="service-bottom"><p><small>DESDE</small><strong>Bs 3.000</strong></p><button type="button" data-service="asistencia" aria-label="Añadir control de asistencia a la cotización">+</button></div></article>
-          <article id="servicio-soporte" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">⚙</span><span>06</span></div><h3>Soporte y mantenimiento</h3><p>Acompañamiento técnico, actualizaciones y respaldos según las necesidades del proyecto.</p><div class="service-bottom"><p><small>DESDE / MES</small><strong>Bs 600</strong></p><button type="button" data-service="soporte" aria-label="Añadir soporte y mantenimiento a la cotización">+</button></div></article>
-        </div><p class="pricing-note">Precios orientativos. El alcance, los plazos y el precio final se definen en una cotización según las necesidades de tu proyecto.</p>
+          <article id="servicio-web" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">↗</span><span>01</span></div><h3>Páginas web institucionales</h3><p>Una presencia digital clara para presentar tu institución, sus noticias y su oferta educativa.</p><div class="service-bottom"><p><small>DESDE</small><strong>$ 2.500 USD</strong><span class="rate-converted" data-usd="2500">(≈ Bs 30.000)</span></p><button type="button" data-service="web" aria-label="Añadir páginas web institucionales a la cotización">+</button></div></article>
+          <article id="servicio-gestion" class="service featured"><div class="service-top"><span class="service-icon" aria-hidden="true">⌘</span><span>02</span></div><h3>Implementación integral de SOLICITA</h3><p>Sistema de gestión académica a medida: inscripciones, cupos, notas, kardex, mesas y roles directivos.</p><div class="service-bottom"><p><small>DESDE</small><strong>$ 8.000 USD</strong><span class="rate-converted" data-usd="8000">(≈ Bs 96.000)</span></p><button type="button" data-service="gestion" aria-label="Añadir implementación integral de SOLICITA a la cotización">+</button></div></article>
+          <article id="servicio-aulas" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">▤</span><span>03</span></div><h3>Plataformas de aulas virtuales</h3><p>Espacios digitales para acercar contenidos, actividades y evaluaciones a tus estudiantes.</p><div class="service-bottom"><p><small>DESDE</small><strong>$ 5.500 USD</strong><span class="rate-converted" data-usd="5500">(≈ Bs 66.000)</span></p><button type="button" data-service="aulas" aria-label="Añadir plataformas de aulas virtuales a la cotización">+</button></div></article>
+          <article id="servicio-automatizacion" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">⇄</span><span>04</span></div><h3>Automatización de procesos</h3><p>Revisamos cómo trabajas y proponemos flujos digitales para simplificar trámites y tareas repetitivas.</p><div class="service-bottom"><p><small>DESDE</small><strong>$ 3.500 USD</strong><span class="rate-converted" data-usd="3500">(≈ Bs 42.000)</span></p><button type="button" data-service="automatizacion" aria-label="Añadir automatización de procesos a la cotización">+</button></div></article>
+          <article id="servicio-asistencia" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">✓</span><span>05</span></div><h3>Servicio básico de registro</h3><p>Propuestas de registro digital con QR, validación de asistencia y reportes para estudiantes y personal.</p><div class="service-bottom"><p><small>DESDE</small><strong>$ 3.000 USD</strong><span class="rate-converted" data-usd="3000">(≈ Bs 36.000)</span></p><button type="button" data-service="asistencia" aria-label="Añadir servicio básico de registro a la cotización">+</button></div></article>
+          <article id="servicio-soporte" class="service"><div class="service-top"><span class="service-icon" aria-hidden="true">⚙</span><span>06</span></div><h3>Soporte técnico mensual integral</h3><p>Acompañamiento técnico continuo, mesa de ayuda, actualizaciones y respaldos para el servicio integral.</p><div class="service-bottom"><p><small>DESDE / MES</small><strong>$ 1.500 USD</strong><span class="rate-converted" data-usd="1500" data-monthly="true">(≈ Bs 18.000 / mes)</span></p><button type="button" data-service="soporte" aria-label="Añadir soporte técnico mensual a la cotización">+</button></div></article>
+        </div><p class="pricing-note">Precios en dólares estadounidenses (USD) referenciales según la propuesta técnica de SOLICITA. Facturación y conversión disponibles en moneda nacional (Bs) calculados a la tasa de cambio del día (1 USD = Bs 12.00).</p>
       </div>
     </section>
 
@@ -2149,13 +2340,17 @@ body {
 
 <script>
 'use strict';
+// Tasa de cambio de referencia (Mercado Paralelo Cyrex Store = 12.00 Bs / USD; Oficial BCB = 12.02 Bs / USD)
+let currentRate = 12.00;
+let officialRate = 12.02;
+
 const services = [
-  { id: 'web', name: 'Página web institucional', price: 2500, desc: 'Presencia web, dominio y diseño adaptado a móviles' },
-  { id: 'gestion', name: 'Sistema de gestión académica', price: 8000, desc: 'Notas, inscripciones, kardex y roles para docentes' },
-  { id: 'aulas', name: 'Plataforma de aulas virtuales', price: 5500, desc: 'Espacio digital para tareas, exámenes y materiales' },
-  { id: 'automatizacion', name: 'Automatización de procesos', price: 3500, desc: 'Digitalización de trámites y solicitudes cero papel' },
-  { id: 'asistencia', name: 'Control de asistencia', price: 3000, desc: 'Registro digital mediante código QR y reportes' },
-  { id: 'soporte', name: 'Soporte y mantenimiento', price: 600, monthly: true, desc: 'Actualizaciones periódicas, copias de seguridad y soporte' }
+  { id: 'web', name: 'Páginas web institucionales', price: 2500, desc: 'Presencia web, dominio institucional y diseño adaptado a móviles' },
+  { id: 'gestion', name: 'Implementación integral de SOLICITA', price: 8000, desc: 'Sistema de gestión académica, cupos, notas, kardex y roles directivos/docentes' },
+  { id: 'aulas', name: 'Plataformas de aulas virtuales', price: 5500, desc: 'Espacio digital para tareas, exámenes y materiales interactivos' },
+  { id: 'automatizacion', name: 'Automatización de procesos (Cero Papel)', price: 3500, desc: 'Digitalización de trámites, formularios y flujos administrativos' },
+  { id: 'asistencia', name: 'Servicio básico de registro', price: 3000, desc: 'Registro digital mediante código QR, validación y reportes' },
+  { id: 'soporte', name: 'Soporte técnico mensual del servicio integral', price: 1500, monthly: true, desc: 'Actualizaciones periódicas, copias de seguridad, mesa de ayuda y monitoreo 24/7' }
 ];
 
 const storageKey = 'edtech-cotizacion-v1';
@@ -2164,7 +2359,8 @@ try {
   const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
   if (Array.isArray(saved)) selected = new Set(saved.filter(id => services.some(service => service.id === id)));
 } catch { /* La cotización funciona en memoria si el almacenamiento está bloqueado. */ }
-const money = amount => 'Bs ' + new Intl.NumberFormat('es-BO', { maximumFractionDigits: 0 }).format(amount);
+const money = amount => '$ ' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(amount) + ' USD';
+const moneyBs = amount => 'Bs ' + new Intl.NumberFormat('es-BO', { maximumFractionDigits: 0 }).format(Math.round(amount * currentRate));
 const dialog = document.querySelector('#quote-dialog');
 const list = document.querySelector('#quote-items');
 const sendLink = document.querySelector('#quote-send');
@@ -2205,12 +2401,12 @@ function buildWhatsAppMessage() {
 
     msg += '📋 *Servicios incluidos en mi cotización:*\n';
     chosen.forEach(s => {
-      msg += `• ${s.name} (${money(s.price)}${s.monthly ? ' / mes' : ''})\n`;
+      msg += `• ${s.name} (${money(s.price)}${s.monthly ? ' / mes' : ''} ≈ ${moneyBs(s.price)}${s.monthly ? '/mes' : ''})\n`;
     });
 
-    msg += `\n💰 *Inversión referencial:* ${money(initial)}`;
+    msg += `\n💰 *Inversión referencial:* ${money(initial)} (≈ ${moneyBs(initial)} a tasa 1 USD = Bs ${currentRate.toFixed(2)})`;
     if (monthly) {
-      msg += `\n⚙️ *Mantenimiento mensual opcional:* ${money(monthly)} / mes`;
+      msg += `\n⚙️ *Mantenimiento mensual opcional:* ${money(monthly)} / mes (≈ ${moneyBs(monthly)} / mes)`;
     }
     msg += '\n\n¿Podríamos coordinar una breve llamada o reunión para conocer el alcance y los tiempos de entrega? ¡Muchas gracias!';
   } else {
@@ -2285,6 +2481,11 @@ function renderQuote() {
         const price = document.createElement('span');
         price.className = 'qm-item-price';
         price.textContent = `${money(service.price)}${service.monthly ? ' / mes' : ''}`;
+        const priceBs = document.createElement('small');
+        priceBs.className = 'qm-item-price-bs';
+        priceBs.style.cssText = 'display:block; font-size:10.5px; color:#8fa5c4; margin-top:2px; font-weight:500;';
+        priceBs.textContent = `≈ ${moneyBs(service.price)}${service.monthly ? ' / mes' : ''}`;
+        price.append(priceBs);
 
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
@@ -2302,13 +2503,13 @@ function renderQuote() {
     }
 
     const totalEl = document.querySelector('#quote-summary-total');
-    if (totalEl) totalEl.textContent = money(initial);
+    if (totalEl) totalEl.textContent = `${money(initial)} (≈ ${moneyBs(initial)})`;
 
     const monthlyEl = document.querySelector('#quote-summary-monthly');
     if (monthlyEl) {
       if (monthly > 0) {
         monthlyEl.style.display = 'block';
-        monthlyEl.textContent = `+ Mantenimiento opcional: ${money(monthly)} / mes`;
+        monthlyEl.textContent = `+ Mantenimiento opcional: ${money(monthly)} / mes (≈ ${moneyBs(monthly)} / mes)`;
       } else {
         monthlyEl.style.display = 'none';
       }
@@ -3176,6 +3377,76 @@ function initContactTypewriter() {
   });
 }
 
+// GESTIÓN DE TASA DE CAMBIO DEL DÍA (ESTILO CYREX STORE - EDTECH BOLIVIA)
+// ===================================================================
+function initExchangeRate() {
+  const tasaVal = document.getElementById('tasa-val-display');
+  const tasaPillVal = document.getElementById('tasa-pill-val');
+  const tasaBcbInfo = document.getElementById('tasa-bcb-info');
+  const tasaCard = document.getElementById('tasa-card');
+  const tasaPill = document.getElementById('tasa-pill-btn');
+  const closeBtn = document.getElementById('tasa-close-btn');
+
+  // Recuperar preferencia de minimizado
+  if (localStorage.getItem('edtech-tasa-minimized') === 'true') {
+    if (tasaCard) tasaCard.style.display = 'none';
+    if (tasaPill) tasaPill.style.display = 'flex';
+  }
+
+  closeBtn?.addEventListener('click', () => {
+    if (tasaCard) tasaCard.style.display = 'none';
+    if (tasaPill) tasaPill.style.display = 'flex';
+    localStorage.setItem('edtech-tasa-minimized', 'true');
+  });
+
+  tasaPill?.addEventListener('click', () => {
+    if (tasaPill) tasaPill.style.display = 'none';
+    if (tasaCard) tasaCard.style.display = 'block';
+    localStorage.removeItem('edtech-tasa-minimized');
+  });
+
+  function updateRateDisplays(rate, bcb) {
+    currentRate = rate;
+    if (bcb) officialRate = bcb;
+    const rateStr = 'Bs ' + currentRate.toFixed(2);
+    if (tasaVal) tasaVal.textContent = rateStr;
+    if (tasaPillVal) tasaPillVal.textContent = rateStr;
+    if (tasaBcbInfo) tasaBcbInfo.innerHTML = `BCB Oficial: <strong>Bs ${officialRate.toFixed(2)}</strong>`;
+    
+    // Actualizar etiquetas de conversión en las tarjetas de servicios
+    document.querySelectorAll('[data-usd]').forEach(el => {
+      const usd = parseFloat(el.dataset.usd);
+      if (!isNaN(usd)) {
+        const isMonthly = el.dataset.monthly === 'true';
+        el.textContent = `(≈ Bs ${new Intl.NumberFormat('es-BO', { maximumFractionDigits: 0 }).format(Math.round(usd * currentRate))}${isMonthly ? ' / mes' : ''})`;
+      }
+    });
+
+    renderQuote();
+  }
+
+  // Llamada a la API de tipo de cambio en Bolivia (bo.dolarapi.com)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+  fetch('https://bo.dolarapi.com/v1/dolares', { signal: controller.signal })
+    .then(res => res.json())
+    .then(data => {
+      clearTimeout(timeoutId);
+      if (Array.isArray(data)) {
+        const binance = data.find(d => d.casa === 'binance' || d.casa === 'blue');
+        const oficial = data.find(d => d.casa === 'oficial');
+        const newRate = binance?.venta || binance?.compra || 12.00;
+        const newBcb = oficial?.venta || oficial?.compra || 12.02;
+        updateRateDisplays(newRate, newBcb);
+      }
+    })
+    .catch(() => {
+      // Fallback seguro a 12.00 (tasa referencial Cyrex Store)
+      updateRateDisplays(12.00, 12.02);
+    });
+}
+
 // Ensure execution when DOM is ready
 
 
@@ -3184,13 +3455,46 @@ if (document.readyState === 'loading') {
     initHeroParticles();
     initHexagonParticles();
     initContactTypewriter();
+    initExchangeRate();
   });
 } else {
   initHeroParticles();
   initHexagonParticles();
   initContactTypewriter();
+  initExchangeRate();
 }
 
 </script>
+  <!-- ===================================================================
+       WIDGET TASA DEL DÍA (ESTILO CYREX STORE - EDTECH BOLIVIA)
+  =================================================================== -->
+  <aside id="edtech-exchange-widget" class="tasa-widget" aria-label="Cotización y tipo de cambio del dólar en Bolivia">
+    <div class="tasa-widget-card" id="tasa-card">
+      <div class="tasa-header">
+        <div class="tasa-title-group">
+          <span class="tasa-pulse-dot" title="Cotización activa en tiempo real"></span>
+          <span class="tasa-title">TASA DEL DÍA</span>
+          <span class="tasa-badge-tag" id="tasa-source-badge">PARALELO</span>
+        </div>
+        <button type="button" class="tasa-close-btn" id="tasa-close-btn" aria-label="Minimizar tasa del día" title="Minimizar">×</button>
+      </div>
+      <div class="tasa-body">
+        <div class="tasa-main-rate">
+          <span class="tasa-unit">1 USD =</span>
+          <span class="tasa-val" id="tasa-val-display">Bs 12.00</span>
+        </div>
+        <div class="tasa-details">
+          <span id="tasa-bcb-info">BCB Oficial: <strong>Bs 12.02</strong></span>
+          <span class="tasa-sep">•</span>
+          <span id="tasa-updated-time">Mercado hoy</span>
+        </div>
+      </div>
+    </div>
+    <!-- Botón minimizado tipo píldora -->
+    <button type="button" class="tasa-pill-btn" id="tasa-pill-btn" aria-label="Ver tasa de cambio del dólar del día" style="display:none;" title="Ver tasa de cambio del día">
+      <span class="tasa-pill-icon">💵</span>
+      <span class="tasa-pill-text">1 USD = <strong id="tasa-pill-val">Bs 12.00</strong></span>
+    </button>
+  </aside>
 </body>
 </html>

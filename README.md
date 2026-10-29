@@ -14,10 +14,10 @@ Accede a la plataforma web oficial directamente desde tu navegador:
 
 ## 🚀 Contenido del Repositorio
 
-- **`index.html`**: Página principal interactiva (Landing page oficial de EdTech) con presentación de marca animada, cotizador de servicios interactivo y catálogo de soluciones.
+- **`index.html`**: Página principal interactiva (Landing page oficial de EdTech) con presentación de marca animada, cotizador de servicios interactivo en dólares (USD), catálogo de soluciones y widget en vivo de tasa de cambio (Paralelo / BCB).
 - **`edtech-assets/`**: Estilos CSS modernos, scripts de interactividad (`app.js`) y recursos gráficos del equipo.
 - **`updsnet_visualizacion_completa_solicitudes (1).html`**: Prototipo interactivo de la plataforma SOLICITA para gestión de materias.
-- **`presentacion.html`**: Presentación ejecutiva y métricas de impacto del proyecto.
+- **`presentacion.html`**: Presentación ejecutiva, métricas de impacto y estructura financiera del proyecto.
 
 ---
 

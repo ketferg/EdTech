@@ -1,11 +1,15 @@
 'use strict';
+// Tasa de cambio de referencia (Mercado Paralelo Cyrex Store = 12.00 Bs / USD; Oficial BCB = 12.02 Bs / USD)
+let currentRate = 12.00;
+let officialRate = 12.02;
+
 const services = [
-  { id: 'web', name: 'Página web institucional', price: 2500, desc: 'Presencia web, dominio y diseño adaptado a móviles' },
-  { id: 'gestion', name: 'Sistema de gestión académica', price: 8000, desc: 'Notas, inscripciones, kardex y roles para docentes' },
-  { id: 'aulas', name: 'Plataforma de aulas virtuales', price: 5500, desc: 'Espacio digital para tareas, exámenes y materiales' },
-  { id: 'automatizacion', name: 'Automatización de procesos', price: 3500, desc: 'Digitalización de trámites y solicitudes cero papel' },
-  { id: 'asistencia', name: 'Control de asistencia', price: 3000, desc: 'Registro digital mediante código QR y reportes' },
-  { id: 'soporte', name: 'Soporte y mantenimiento', price: 600, monthly: true, desc: 'Actualizaciones periódicas, copias de seguridad y soporte' }
+  { id: 'web', name: 'Páginas web institucionales', price: 2500, desc: 'Presencia web, dominio institucional y diseño adaptado a móviles' },
+  { id: 'gestion', name: 'Implementación integral de SOLICITA', price: 8000, desc: 'Sistema de gestión académica, cupos, notas, kardex y roles directivos/docentes' },
+  { id: 'aulas', name: 'Plataformas de aulas virtuales', price: 5500, desc: 'Espacio digital para tareas, exámenes y materiales interactivos' },
+  { id: 'automatizacion', name: 'Automatización de procesos (Cero Papel)', price: 3500, desc: 'Digitalización de trámites, formularios y flujos administrativos' },
+  { id: 'asistencia', name: 'Servicio básico de registro', price: 3000, desc: 'Registro digital mediante código QR, validación y reportes' },
+  { id: 'soporte', name: 'Soporte técnico mensual del servicio integral', price: 1500, monthly: true, desc: 'Actualizaciones periódicas, copias de seguridad, mesa de ayuda y monitoreo 24/7' }
 ];
 
 const storageKey = 'edtech-cotizacion-v1';
@@ -14,7 +18,8 @@ try {
   const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
   if (Array.isArray(saved)) selected = new Set(saved.filter(id => services.some(service => service.id === id)));
 } catch { /* La cotización funciona en memoria si el almacenamiento está bloqueado. */ }
-const money = amount => 'Bs ' + new Intl.NumberFormat('es-BO', { maximumFractionDigits: 0 }).format(amount);
+const money = amount => '$ ' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(amount) + ' USD';
+const moneyBs = amount => 'Bs ' + new Intl.NumberFormat('es-BO', { maximumFractionDigits: 0 }).format(Math.round(amount * currentRate));
 const dialog = document.querySelector('#quote-dialog');
 const list = document.querySelector('#quote-items');
 const sendLink = document.querySelector('#quote-send');
@@ -55,12 +60,12 @@ function buildWhatsAppMessage() {
 
     msg += '📋 *Servicios incluidos en mi cotización:*\n';
     chosen.forEach(s => {
-      msg += `• ${s.name} (${money(s.price)}${s.monthly ? ' / mes' : ''})\n`;
+      msg += `• ${s.name} (${money(s.price)}${s.monthly ? ' / mes' : ''} ≈ ${moneyBs(s.price)}${s.monthly ? '/mes' : ''})\n`;
     });
 
-    msg += `\n💰 *Inversión referencial:* ${money(initial)}`;
+    msg += `\n💰 *Inversión referencial:* ${money(initial)} (≈ ${moneyBs(initial)} a tasa 1 USD = Bs ${currentRate.toFixed(2)})`;
     if (monthly) {
-      msg += `\n⚙️ *Mantenimiento mensual opcional:* ${money(monthly)} / mes`;
+      msg += `\n⚙️ *Mantenimiento mensual opcional:* ${money(monthly)} / mes (≈ ${moneyBs(monthly)} / mes)`;
     }
     msg += '\n\n¿Podríamos coordinar una breve llamada o reunión para conocer el alcance y los tiempos de entrega? ¡Muchas gracias!';
   } else {
@@ -135,6 +140,11 @@ function renderQuote() {
         const price = document.createElement('span');
         price.className = 'qm-item-price';
         price.textContent = `${money(service.price)}${service.monthly ? ' / mes' : ''}`;
+        const priceBs = document.createElement('small');
+        priceBs.className = 'qm-item-price-bs';
+        priceBs.style.cssText = 'display:block; font-size:10.5px; color:#8fa5c4; margin-top:2px; font-weight:500;';
+        priceBs.textContent = `≈ ${moneyBs(service.price)}${service.monthly ? ' / mes' : ''}`;
+        price.append(priceBs);
 
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
@@ -152,13 +162,13 @@ function renderQuote() {
     }
 
     const totalEl = document.querySelector('#quote-summary-total');
-    if (totalEl) totalEl.textContent = money(initial);
+    if (totalEl) totalEl.textContent = `${money(initial)} (≈ ${moneyBs(initial)})`;
 
     const monthlyEl = document.querySelector('#quote-summary-monthly');
     if (monthlyEl) {
       if (monthly > 0) {
         monthlyEl.style.display = 'block';
-        monthlyEl.textContent = `+ Mantenimiento opcional: ${money(monthly)} / mes`;
+        monthlyEl.textContent = `+ Mantenimiento opcional: ${money(monthly)} / mes (≈ ${moneyBs(monthly)} / mes)`;
       } else {
         monthlyEl.style.display = 'none';
       }
@@ -1026,6 +1036,78 @@ function initContactTypewriter() {
   });
 }
 
+
+// ===================================================================
+// GESTIÓN DE TASA DE CAMBIO DEL DÍA (ESTILO CYREX STORE - EDTECH BOLIVIA)
+// ===================================================================
+function initExchangeRate() {
+  const tasaVal = document.getElementById('tasa-val-display');
+  const tasaPillVal = document.getElementById('tasa-pill-val');
+  const tasaBcbInfo = document.getElementById('tasa-bcb-info');
+  const tasaCard = document.getElementById('tasa-card');
+  const tasaPill = document.getElementById('tasa-pill-btn');
+  const closeBtn = document.getElementById('tasa-close-btn');
+
+  // Recuperar preferencia de minimizado
+  if (localStorage.getItem('edtech-tasa-minimized') === 'true') {
+    if (tasaCard) tasaCard.style.display = 'none';
+    if (tasaPill) tasaPill.style.display = 'flex';
+  }
+
+  closeBtn?.addEventListener('click', () => {
+    if (tasaCard) tasaCard.style.display = 'none';
+    if (tasaPill) tasaPill.style.display = 'flex';
+    localStorage.setItem('edtech-tasa-minimized', 'true');
+  });
+
+  tasaPill?.addEventListener('click', () => {
+    if (tasaPill) tasaPill.style.display = 'none';
+    if (tasaCard) tasaCard.style.display = 'block';
+    localStorage.removeItem('edtech-tasa-minimized');
+  });
+
+  function updateRateDisplays(rate, bcb) {
+    currentRate = rate;
+    if (bcb) officialRate = bcb;
+    const rateStr = 'Bs ' + currentRate.toFixed(2);
+    if (tasaVal) tasaVal.textContent = rateStr;
+    if (tasaPillVal) tasaPillVal.textContent = rateStr;
+    if (tasaBcbInfo) tasaBcbInfo.innerHTML = `BCB Oficial: <strong>Bs ${officialRate.toFixed(2)}</strong>`;
+    
+    // Actualizar etiquetas de conversión en las tarjetas de servicios
+    document.querySelectorAll('[data-usd]').forEach(el => {
+      const usd = parseFloat(el.dataset.usd);
+      if (!isNaN(usd)) {
+        const isMonthly = el.dataset.monthly === 'true';
+        el.textContent = `(≈ Bs ${new Intl.NumberFormat('es-BO', { maximumFractionDigits: 0 }).format(Math.round(usd * currentRate))}${isMonthly ? ' / mes' : ''})`;
+      }
+    });
+
+    renderQuote();
+  }
+
+  // Llamada a la API de tipo de cambio en Bolivia (bo.dolarapi.com)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+  fetch('https://bo.dolarapi.com/v1/dolares', { signal: controller.signal })
+    .then(res => res.json())
+    .then(data => {
+      clearTimeout(timeoutId);
+      if (Array.isArray(data)) {
+        const binance = data.find(d => d.casa === 'binance' || d.casa === 'blue');
+        const oficial = data.find(d => d.casa === 'oficial');
+        const newRate = binance?.venta || binance?.compra || 12.00;
+        const newBcb = oficial?.venta || oficial?.compra || 12.02;
+        updateRateDisplays(newRate, newBcb);
+      }
+    })
+    .catch(() => {
+      // Fallback seguro a 12.00 (tasa referencial Cyrex Store)
+      updateRateDisplays(12.00, 12.02);
+    });
+}
+
 // Ensure execution when DOM is ready
 
 
@@ -1034,9 +1116,11 @@ if (document.readyState === 'loading') {
     initHeroParticles();
     initHexagonParticles();
     initContactTypewriter();
+    initExchangeRate();
   });
 } else {
   initHeroParticles();
   initHexagonParticles();
   initContactTypewriter();
+  initExchangeRate();
 }
